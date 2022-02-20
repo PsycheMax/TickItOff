@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Button, SafeAreaView, Text, View } from "react-native";
+import { Button, SafeAreaView, Text, View, TextInput } from "react-native";
 import tailwind from "tailwind-rn";
 import axios from "axios";
 
+import { setInStorage, getFromStorage } from '../utils/StorageManager.js';
 import dotEnv from "../.env.js";
 
 class UserManager extends Component {
@@ -11,8 +12,14 @@ class UserManager extends Component {
         super(props);
         this.state = {
             JWTToken: "",
+            email: "",
+            password: "",
+            mammeta: "UFF"
         }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.loginRequest = this.loginRequest.bind(this);
+
     }
 
     static defaultProps = {
@@ -20,17 +27,35 @@ class UserManager extends Component {
 
     }
 
-    async loginRequest(username, password) {
+    handleChange(value, name) {
+        this.setState({ [name]: value })
+    }
+
+    async componentDidUpdate() {
+        if (this.state.JWTToken) {
+            this.setState({ mammeta: await getFromStorage("jwt-token") })
+        }
+    }
+
+    async handleSubmit(event) {
+        if (this.state.email && this.state.password) {
+            await this.loginRequest();
+            console.log(localStorage.getItem('jwt-token'));
+        }
+    }
+
+    async loginRequest() {
         let target = dotEnv.API_SERVER;
         let data = {
             "loginUser": {
-                "password": "AdminMax",
-                "email": "AdminMax".toLowerCase()
+                "password": this.state.password,
+                "email": this.state.email
             }
         };
-        console.log(target);
         let toSetInState = await axios.post(`${target}/user/login`, data);
         console.log(toSetInState.data);
+        setInStorage("jwt-token", toSetInState.data.token);
+
         this.setState((prevState) => { return { JWTToken: toSetInState.data.token } });
     }
 
@@ -44,7 +69,33 @@ class UserManager extends Component {
                 <Text style={tailwind("bg-blue-500 px-5 py-3 rounded-full")}>
                     {this.state.JWTToken}
                 </Text>
-                <Button onPress={this.loginRequest} > UFFA </Button>
+                <TextInput
+                    style={{ height: 40 }}
+                    onChangeText={this.handleChange}
+                    name="email"
+                    value={this.state.email}
+                    placeholder="Enter your email"
+                    autocomplete={"email"}
+                    autocorrect={false}
+                    autofocus={true}
+                    onChangeText={(value) => { this.handleChange(value, "email") }}
+
+                />
+                <TextInput
+                    style={{ height: 40 }}
+                    onChangeText={this.handleChange}
+                    name="password"
+                    value={this.state.password}
+                    placeholder="Enter your password"
+                    autocomplete={"password"}
+                    autocorrect={false}
+                    onChangeText={(value) => { this.handleChange(value, "password") }}
+
+                />
+                <Button onPress={this.handleSubmit} title={"Mammeta"} > GLIES </Button>
+                <Text>
+                    {this.state.mammeta}
+                </Text>
             </View>
         )
     }
@@ -67,25 +118,13 @@ export default UserManager;
     "tasks": {
         "created": [
             "620fd98f61e1927c9ff2a1b1",
-            "620fdaa0b31b7ff22362c2fb",
-            "620fdab50124a8acdbb88e27",
-            "620fdb0505be7535dc8984cc",
-            "620fdc37d4dde77a048f19a6",
-            "620fdc50b43b94f77acae7ea",
-            "620fdc774c33628925c81365",
-            "620fdc8c0e1e0f5a3b71ae8a",
+            ...                     ,
             "620fdd072c14c2e8023aa11d"
         ],
         "assigned": [],
         "managed": [
             "620fd98f61e1927c9ff2a1b1",
-            "620fdaa0b31b7ff22362c2fb",
-            "620fdab50124a8acdbb88e27",
-            "620fdb0505be7535dc8984cc",
-            "620fdc37d4dde77a048f19a6",
-            "620fdc50b43b94f77acae7ea",
-            "620fdc774c33628925c81365",
-            "620fdc8c0e1e0f5a3b71ae8a",
+            ...,
             "620fdd072c14c2e8023aa11d"
         ],
         "completed": []
