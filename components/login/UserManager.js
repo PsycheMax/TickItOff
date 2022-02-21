@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { Button, SafeAreaView, Text, View, TextInput } from "react-native";
 import tailwind from "tailwind-rn";
-import axios from "axios";
 
-import { setInStorage, getFromStorage } from '../utils/StorageManager.js';
-import dotEnv from "../.env.js";
+import { setInStorage, getFromStorage } from '../../utils/StorageManager.js';
+import { axiosPost } from '../APIManager.js';
+
 
 class UserManager extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            JWTToken: "",
+            JWTToken: undefined,
             email: "",
             password: "",
-            mammeta: "UFF"
+            loggedUserData: undefined
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,16 +24,31 @@ class UserManager extends Component {
 
     static defaultProps = {
         JWTToken: "",
-
     }
 
     handleChange(value, name) {
         this.setState({ [name]: value })
     }
 
-    async componentDidUpdate() {
-        if (this.state.JWTToken) {
-            this.setState({ mammeta: await getFromStorage("jwt-token") })
+    async componentDidMount() {
+        console.log("in CompUpdate");
+        if (this.state.JWTToken === undefined) {
+            console.log("JWT UNdefined")
+            let localSessionStored = await getFromStorage("jwt-token");
+            if (localSessionStored !== null) {
+                console.log("LocalSession not null");
+                this.setState({ JWTToken: localSessionStored });
+            }
+        }
+        if (this.state.loggedUserData === undefined) {
+            console.log("Logged userdata undefined");
+            let userDataInStorage = await getFromStorage("loggedUserData");
+            userDataInStorage = JSON.parse(userDataInStorage);
+            console.log(userDataInStorage);
+            if (userDataInStorage !== null) {
+                console.log("UserDataInStorage not null");
+                this.setState({ loggedUserData: userDataInStorage });
+            }
         }
     }
 
@@ -45,26 +60,23 @@ class UserManager extends Component {
     }
 
     async loginRequest() {
-        let target = dotEnv.API_SERVER;
         let data = {
             "loginUser": {
                 "password": this.state.password,
                 "email": this.state.email
             }
         };
-        let toSetInState = await axios.post(`${target}/user/login`, data);
-        console.log(toSetInState.data);
-        setInStorage("jwt-token", toSetInState.data.token);
-
-        this.setState((prevState) => { return { JWTToken: toSetInState.data.token } });
+        let toSetInState = await axiosPost('/user/login', data);
+        await setInStorage("jwt-token", toSetInState.data.token);
+        await setInStorage("loggedUserData", JSON.stringify(toSetInState.data));
+        this.setState((prevState) => { return { JWTToken: toSetInState.data.token, loggedUserData: toSetInState.data } });
     }
 
     render() {
         return (
             <View>
                 <Text>
-                    Ciao
-                    {dotEnv.API_TOKEN}
+                    Ciao {this.state.loggedUserData ? this.state.loggedUserData.username : ", please login"}
                 </Text>
                 <Text style={tailwind("bg-blue-500 px-5 py-3 rounded-full")}>
                     {this.state.JWTToken}
@@ -94,8 +106,9 @@ class UserManager extends Component {
                 />
                 <Button onPress={this.handleSubmit} title={"Mammeta"} > GLIES </Button>
                 <Text>
-                    {this.state.mammeta}
+                    {this.state.JWTToken}
                 </Text>
+                {this.props.children}
             </View>
         )
     }
@@ -134,7 +147,7 @@ export default UserManager;
     },
     "_id": "620fd2edc7effb0abb07ccbf",
     "username": "AdminMax",
-    "password": "$2a$10$pndpSqfT2S2hpxdWMzAQE.CJqR0C9HwU8rKzF6wh1AxqtsS1IbsNi",
+    "password": "",
     "email": "adminmax",
     "image": "AdminMax",
     "status": "Active",

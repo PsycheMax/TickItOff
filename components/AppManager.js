@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, View } from "react-native";
+import { View } from "react-native";
 import tailwind from "tailwind-rn";
-import UserManager from './UserManager';
 
 
 class AppManager extends Component {
@@ -16,11 +15,9 @@ class AppManager extends Component {
 
     render() {
         return (
-            <Text>
-                {/* Ciao
-                {this.state.mammeta ? "Mammeta" : ""} */}
-                <UserManager />
-            </Text>
+            <View>
+                {this.props.children}
+            </View>
         )
     }
 }

@@ -8,7 +8,7 @@ export async function setInStorage(key, value) {
     }
 }
 
-export async function getFromStorage() {
+export async function getFromStorage(key) {
     try {
         let toReturn = await AsyncStorage.getItem(key);
         if (toReturn) {
