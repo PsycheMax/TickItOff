@@ -3,7 +3,7 @@ import { Button, SafeAreaView, Text, View, TextInput } from "react-native";
 import tailwind from "tailwind-rn";
 
 import { setInStorage, getFromStorage } from '../../utils/StorageManager.js';
-import { axiosPost } from '../APIManager.js';
+import { axiosPost } from '../../utils/APIManager.js';
 
 
 class UserManager extends Component {
