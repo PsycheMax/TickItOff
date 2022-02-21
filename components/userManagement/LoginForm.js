@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { useOll } from './UserPanel';
+import { LoggedUserContext } from './UserManager';
 
 const LoginForm = (props) => {
-    // The loginUser for the API is loginUser:{email:"", password:""}
+    // The loginUserObj for the API is loginUser:{email:"", password:""}
     const [loginUser, setLoginUser] = useState({ email: "", password: "" });
+
+    const context = useContext(LoggedUserContext);
 
     function handleChange(value, fieldName) {
         console.log(JSON.stringify(loginUser));
@@ -12,7 +14,7 @@ const LoginForm = (props) => {
     }
 
     function handleSubmit() {
-        props.happensOnSubmit();
+        context.loginUserFunc(loginUser.email, loginUser.password);
     }
 
     return (
@@ -44,10 +46,6 @@ const LoginForm = (props) => {
             <Button onPress={handleSubmit} title={"Mammeta"} > GLIES </Button>
         </View>
     )
-}
-
-LoginForm.defaultProps = {
-    happensOnSubmit: () => { console.log("Submitted") }
 }
 
 export default LoginForm;

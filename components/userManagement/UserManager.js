@@ -1,161 +1,66 @@
-import React, { Component } from 'react';
-import { Button, SafeAreaView, Text, View, TextInput } from "react-native";
-import tailwind from "tailwind-rn";
+import React, { useState, useEffect } from 'react';
+import { axiosPost } from '../../utils/APIManager';
+import LoginForm from './LoginForm';
+import UserPanel from './UserPanel';
 
-import { setInStorage, getFromStorage } from '../../utils/StorageManager.js';
-import { axiosPost } from '../../utils/APIManager.js';
+// Created a context template here, it will send down a logout function, a login function, and the logged User Data.
+export const LoggedUserContext = React.createContext({
+    loginUserFunc: (email, password) => { },
+    logoutUserFunc: () => { },
+    jwtToken: "",
+    userData: {}
+});
 
+const UserManager = (props) => {
 
-class UserManager extends Component {
+    const [loggedUserData, setLoggedUserData] = useState({});
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            JWTToken: undefined,
-            email: "",
-            password: "",
-            loggedUserData: undefined
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.loginRequest = this.loginRequest.bind(this);
-
-    }
-
-    static defaultProps = {
-        JWTToken: "",
-    }
-
-    handleChange(value, name) {
-        this.setState({ [name]: value })
-    }
-
-    async componentDidMount() {
-        console.log("in CompUpdate");
-        if (this.state.JWTToken === undefined) {
-            console.log("JWT UNdefined")
-            let localSessionStored = await getFromStorage("jwt-token");
-            if (localSessionStored !== null) {
-                console.log("LocalSession not null");
-                this.setState({ JWTToken: localSessionStored });
-            }
-        }
-        if (this.state.loggedUserData === undefined) {
-            console.log("Logged userdata undefined");
-            let userDataInStorage = await getFromStorage("loggedUserData");
-            userDataInStorage = JSON.parse(userDataInStorage);
-            console.log(userDataInStorage);
-            if (userDataInStorage !== null) {
-                console.log("UserDataInStorage not null");
-                this.setState({ loggedUserData: userDataInStorage });
-            }
-        }
-    }
-
-    async handleSubmit(event) {
-        if (this.state.email && this.state.password) {
-            await this.loginRequest();
-            console.log(localStorage.getItem('jwt-token'));
-        }
-    }
-
-    async loginRequest() {
-        let data = {
+    // The following functions are to be passed down as context.functions()
+    async function loginUserFunc(email, password) {
+        let loginUserObj = {
             "loginUser": {
-                "password": this.state.password,
-                "email": this.state.email
+                email: email,
+                password: password
             }
         };
-        let toSetInState = await axiosPost('/user/login', data);
-        await setInStorage("jwt-token", toSetInState.data.token);
-        await setInStorage("loggedUserData", JSON.stringify(toSetInState.data));
-        this.setState((prevState) => { return { JWTToken: toSetInState.data.token, loggedUserData: toSetInState.data } });
+        console.log(loginUserObj);
+        console.log("CALLED")
+        let response = await axiosPost('/user/login', loginUserObj);
+        console.log(response);
+        setLoggedUserData(response);
     }
 
-    render() {
-        return (
-            <View>
-                <Text>
-                    Ciao {this.state.loggedUserData ? this.state.loggedUserData.username : ", please login"}
-                </Text>
-                <Text style={tailwind("bg-blue-500 px-5 py-3 rounded-full")}>
-                    {this.state.JWTToken}
-                </Text>
-                <TextInput
-                    style={{ height: 40 }}
-                    onChangeText={this.handleChange}
-                    name="email"
-                    value={this.state.email}
-                    placeholder="Enter your email"
-                    autocomplete={"email"}
-                    autocorrect={false}
-                    autofocus={true}
-                    onChangeText={(value) => { this.handleChange(value, "email") }}
-
-                />
-                <TextInput
-                    style={{ height: 40 }}
-                    onChangeText={this.handleChange}
-                    name="password"
-                    value={this.state.password}
-                    placeholder="Enter your password"
-                    autocomplete={"password"}
-                    autocorrect={false}
-                    onChangeText={(value) => { this.handleChange(value, "password") }}
-
-                />
-                <Button onPress={this.handleSubmit} title={"Mammeta"} > GLIES </Button>
-                <Text>
-                    {this.state.JWTToken}
-                </Text>
-                {this.props.children}
-            </View>
-        )
+    async function logoutUserFunc() {
+        let response = await axiosPost('/user/logout', {}, loggedUserData.token);
+        console.log(response);
+        setLoggedUserData({});
     }
+
+    useEffect(() => {
+        if (loggedUserData._id === undefined) {
+
+        }
+
+        return () => {
+            // This only runs on componentDestroy
+        }
+    }, []) //when empty, it only runs once
+
+    return (
+        <LoggedUserContext.Provider value={{
+            loginUserFunc: loginUserFunc,
+            logoutUserFunc: logoutUserFunc,
+            jwtToken: loggedUserData.token,
+            userData: loggedUserData,
+        }}>
+            <LoginForm />
+            <UserPanel />
+        </LoggedUserContext.Provider>
+    )
+}
+
+UserManager.defaultProps = {
+
 }
 
 export default UserManager;
-
-// EXAMPLE of returned object after login
-/* {
-    "projects": {
-        "created": [
-            "620fd33cc7effb0abb07ccca"
-        ],
-        "joined": [],
-        "managed": [
-            "620fd33cc7effb0abb07ccca"
-        ],
-        "completed": []
-    },
-    "tasks": {
-        "created": [
-            "620fd98f61e1927c9ff2a1b1",
-            ...                     ,
-            "620fdd072c14c2e8023aa11d"
-        ],
-        "assigned": [],
-        "managed": [
-            "620fd98f61e1927c9ff2a1b1",
-            ...,
-            "620fdd072c14c2e8023aa11d"
-        ],
-        "completed": []
-    },
-    "settings": {
-        "colorScheme": "DefaultModified"
-    },
-    "_id": "620fd2edc7effb0abb07ccbf",
-    "username": "AdminMax",
-    "password": "",
-    "email": "adminmax",
-    "image": "AdminMax",
-    "status": "Active",
-    "creationDate": "2022-02-18T17:10:05.162Z",
-    "modificationDate": "2022-02-18T17:10:05.162Z",
-    "notifications": [],
-    "lastLogin": "2022-02-19T12:50:54.043Z",
-    "__v": 20,
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjIwZmQyZWRjN2VmZmIwYWJiMDdjY2JmIiwiZW1haWwiOiJhZG1pbm1heCIsImlhdCI6MTY0NTI3NTA1NCwiZXhwIjoxNjQ1Mjc4NjU0fQ.D3uOIrFlMRPBBN2fYLxwQLGCCmtYMvGuIltrhFv3mF0"
-}
-*/

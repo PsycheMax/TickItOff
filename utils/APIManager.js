@@ -3,33 +3,68 @@ import dotEnv from "../.env.js";
 
 const APIDestination = dotEnv.API_SERVER;
 
-export async function axiosGet(pathDestination) {
+export async function axiosGet(pathDestination, accessToken) {
     try {
-        return await axios.get(`${APIDestination}${pathDestination}`, {});
+        const configuration = {
+            method: 'get',
+            url: APIDestination + pathDestination,
+            headers: {
+                'x-access-token': accessToken
+            }
+        }
+        const response = await axios(configuration);
+        return response.data;
     }
     catch (error) {
         return error.response.data;
     }
 }
-export async function axiosPost(pathDestination, objectToSend) {
+export async function axiosPost(pathDestination, objectToSend, accessToken) {
     try {
-        return await axios.post(`${APIDestination}${pathDestination}`, objectToSend);
+        const configuration = {
+            method: 'post',
+            url: APIDestination + pathDestination,
+            headers: {
+                'x-access-token': accessToken
+            },
+            data: objectToSend
+        }
+        const response = await axios(configuration);
+        return response.data;
     }
     catch (error) {
         return error.response.data;
     }
 }
-export async function axiosPatch(pathDestination, objectToSend) {
+export async function axiosPatch(pathDestination, objectToSend, accessToken) {
     try {
-        return await axios.patch(`${APIDestination}${pathDestination}`, objectToSend);
+        const configuration = {
+            method: 'patch',
+            url: APIDestination + pathDestination,
+            headers: {
+                'x-access-token': accessToken
+            },
+            data: objectToSend
+        }
+        const response = await axios(configuration);
+        return response.data;
     }
     catch (error) {
         return error.response.data;
     }
 }
-export async function axiosDelete(pathDestination, objectToSend) {
+export async function axiosDelete(pathDestination, objectToSend, accessToken) {
     try {
-        return await axios.delete(`${APIDestination}${pathDestination}`, objectToSend);
+        const configuration = {
+            method: 'delete',
+            url: APIDestination + pathDestination,
+            headers: {
+                'x-access-token': accessToken
+            },
+            data: objectToSend
+        }
+        const response = await axios(configuration);
+        return response.data;
     }
     catch (error) {
         return error.response.data;
