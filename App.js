@@ -19,7 +19,7 @@ export default function App() {
         <AppManager>
 
           <UserManager>
-            <LoginForm />
+            {/* <LoginForm /> */}
             <UserPanel />
           </UserManager>
         </AppManager>

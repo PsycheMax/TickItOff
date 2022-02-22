@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
     view: {
         justifyContent: 'center',
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 2,
         color: '#FFFFFF',
-        backgroundColor: '#674359',
+        backgroundColor: '#000000',
         paddingTop: 25
     },
     text: {

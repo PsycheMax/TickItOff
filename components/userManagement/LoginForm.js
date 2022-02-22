@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { LoggedUserContext } from './UserManager';
 import tailwind from 'tailwind-rn';
 
@@ -27,17 +27,19 @@ const LoginForm = (props) => {
 
     if (context.jwtToken) {
         return (
-            <View style={tailwind("justify-center self-center w-96 h-full")}>
-                <Text>Welcome {context.userData.username}</Text>
-                <Button onPress={handleLogout} title={"Logout"} >Logout</Button>
+            <View >
+                <View style={tailwind("justify-center self-center w-96 h-full")}>
+                    <Text>Welcome {context.userData.username}</Text>
+                    <Button onPress={handleLogout} title={"Logout"} >Logout</Button>
+                </View>
             </View>
         )
     } else {
         return (
-            <View style={tailwind("justify-center self-center w-3/4 h-3/5 flex flex-col")}>
+            <View style={tailwind("justify-center self-center w-3/4 h-3/5 flex")}>
                 <Button onPress={handleAdminLogin} title={"AdminLogin"}>Admin Login</Button>
                 <TextInput
-                    style={tailwind("w-full border-2 border-indigo-200 h-24 rounded-xl px-12 py-5")}
+                    style={tailwind("w-full border-2 border-indigo-200 h-12 rounded-xl px-2 my-3 text-white")}
                     onChangeText={handleChange}
                     name="email"
                     value={loginUser.email}
@@ -49,7 +51,7 @@ const LoginForm = (props) => {
 
                 />
                 <TextInput
-                    style={tailwind("w-full border-2 border-indigo-200 h-24 rounded-xl px-12 py-5")}
+                    style={tailwind("w-full border-2 border-indigo-200 h-12 rounded-xl px-2 my-3 text-white")}
                     onChangeText={handleChange}
                     name="password"
                     value={loginUser.password}
@@ -59,10 +61,35 @@ const LoginForm = (props) => {
                     onChangeText={(value) => { handleChange(value, "password") }}
 
                 />
-                <Button onPress={handleLogin} title={"Login"} > Login </Button>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        // style={tailwind("w-6 max-w-sm")}
+                        style={styles.button}
+                        onPress={handleLogin}
+                        title={"Login"}
+
+                    > Login </Button>
+                </View>
             </View>
         )
     }
 }
 
 export default LoginForm;
+
+const styles = StyleSheet.create({
+    button: {
+        // width: '75%'
+        backgroundColor: '#654987',
+        color: "#654978",
+
+    },
+    buttonContainer: {
+        maxWidth: '65%',
+        width: '60%',
+        height: 15,
+        alignSelf: 'center'
+        // justifyContent: 'center',
+        // alignItems: 'center'
+    }
+})
