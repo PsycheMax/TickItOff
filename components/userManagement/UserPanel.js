@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput } from 'react-native';
-import { axiosGet } from '../../utils/APIManager';
-import LoginForm from './LoginForm';
 import { LoggedUserContext } from './UserManager';
 
 const UserPanel = (props) => {

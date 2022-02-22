@@ -6,7 +6,7 @@ import { setInStorage, getFromStorage } from '../../utils/StorageManager.js';
 import { axiosPost } from '../../utils/APIManager.js';
 import LoginForm from './LoginForm.js';
 
-const useLoggedUserData = (returnJwt) => {
+const useLoggedUserData = () => {
     const [loggedUserData, setLoggedUserData] = useState({
         "projects": {
             "_id": undefined,

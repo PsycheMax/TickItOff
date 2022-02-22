@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from "react-native";
+import { View, ImageBackground, Image } from "react-native";
 import tailwind from "tailwind-rn";
 
 
@@ -15,9 +15,11 @@ class AppManager extends Component {
 
     render() {
         return (
-            <View>
+
+            <View style={tailwind("flex-1 items-center justify-center")}>
                 {this.props.children}
             </View>
+
         )
     }
 }
