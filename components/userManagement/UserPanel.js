@@ -2,16 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { axiosGet } from '../../utils/APIManager';
 import LoginForm from './LoginForm';
-// import useLoggedUserData from './useLoggedUserData';
 import { LoggedUserContext } from './UserManager';
 
 const UserPanel = (props) => {
 
-    const [userData, setUserData] = useState();
-
     const context = useContext(LoggedUserContext);
+    console.log(context);
 
-    // let loggedUserData = useLoggedUserData();
     useEffect(() => {
         // setUserData(loggedUserData);
         return () => {
@@ -36,7 +33,11 @@ const UserPanel = (props) => {
                 <br />
                 {userData} */}
 
-                {context.jwtToken}
+
+                {/* {context.jwtToken} */}
+                {context.jwtToken ? context.userData.username : ""}
+
+                {context.jwtToken ? Date(context.userData.lastOnline) : ""}
             </Text>
         </View>
     )

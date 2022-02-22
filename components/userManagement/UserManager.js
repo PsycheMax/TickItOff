@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { axiosPost } from '../../utils/APIManager';
-import LoginForm from './LoginForm';
-import UserPanel from './UserPanel';
 
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const LoggedUserContext = React.createContext({
@@ -33,7 +31,14 @@ const UserManager = (props) => {
     async function logoutUserFunc() {
         let response = await axiosPost('/user/logout', {}, loggedUserData.token);
         console.log(response);
-        setLoggedUserData({});
+        setLoggedUserData({
+            "_id": "",
+            "username": "",
+            "password": "",
+            "email": "",
+            "image": "",
+            "token": ""
+        });
     }
 
     useEffect(() => {
@@ -53,8 +58,7 @@ const UserManager = (props) => {
             jwtToken: loggedUserData.token,
             userData: loggedUserData,
         }}>
-            <LoginForm />
-            <UserPanel />
+            {props.children}
         </LoggedUserContext.Provider>
     )
 }
