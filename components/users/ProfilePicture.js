@@ -1,25 +1,30 @@
 import React from 'react';
-import { Avatar } from 'native-base';
+import { Avatar, PresenceTransition } from 'native-base';
 
 const ProfilePicture = (props) => {
 
     return (
-        <Avatar
-            source={{ uri: props.source }}
-            bg="green.500"
-            size="lg"
-            borderRadius={50} margin={5} borderWidth="1" borderColor={"muted.400"}
-            alt={`Profile picture for user ${props.username}`
-            }
-        >
-            {props.username.slice(0, 3)};
-        </Avatar >
+        <PresenceTransition w="100%" visible={props.makeItBigger} initial={{ scale: 0.66 }}
+            animate={{ scale: 1, transition: { duration: 250, overshootClamping: true, bounciness: 5, stiffness: 5 } }}>
+            <Avatar
+                source={{ uri: props.source }}
+                bg="indigo.500"
+                // size={props.makeItBigger ? "xl" : "lg"}
+                size="xl"
+                borderRadius={100} margin={5} borderColor={"muted.400"} borderWidth={props.makeItBigger ? "1" : "2"}
+                alt={`Profile picture for user ${props.username}`
+                }
+            >
+                {props.username.slice(0, 3)};
+            </Avatar >
+        </PresenceTransition>
     )
 }
 
 ProfilePicture.defaultProps = {
     source: "https://randomuser.me/api/portraits/lego/3.jpg",
-    username: "Default Username"
+    username: "Default Username",
+    makeItBigger: false
 }
 
 export default ProfilePicture;

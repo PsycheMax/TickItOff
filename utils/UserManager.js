@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { axiosPost } from './APIManager';
-import LoginForm from '../components/users/LoginForm/LoginForm';
+import LoginForm from '../components/users/UserForms/LoginForm';
 
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const LoggedUserContext = React.createContext({
     loginUserFunc: (email, password) => { },
     logoutUserFunc: () => { },
+    registerNewUserFunc: (userData) => { },
+    patchUserFunc: (patchedUser, target) => { },
     jwtToken: "",
     userData: {}
 });
@@ -87,8 +89,7 @@ const UserManager = (props) => {
     }
 
     async function logoutUserFunc() {
-        console.log(_TEMPTOKEN);
-        let response = await axiosPost('/user/logout', {}, _TEMPTOKEN);
+        let response = await axiosPost('/user/logout', {}, loggedUserData.token);
         console.log(response);
         setLoggedUserData({
             "_id": "",
@@ -98,6 +99,28 @@ const UserManager = (props) => {
             "image": null,
             "token": ""
         });
+    }
+
+    async function registerNewUserFunc(newUserObj) {
+        console.log(newUserObj);
+        let response = await axiosPost('/user', newUserObj);
+        console.log(response);
+        let toSetInState = newUserObj;
+        toSetInState.password = "HIDDEN";
+        setLoggedUserData({
+            newUserObj
+        })
+    }
+
+    async function patchUserFunc(patchedUser, targetID) {
+        console.log(patchedUser, targetID);
+        let response = await axiosPatch(`/user/${targetID}`, patchedUser, loggedUserData._id);
+        console.log(response);
+        let toSetInState = patchedUser;
+        toSetInState.password = "HIDDEN";
+        setLoggedUserData({
+            patchedUser
+        })
     }
 
     useEffect(() => {
@@ -115,6 +138,8 @@ const UserManager = (props) => {
         <LoggedUserContext.Provider value={{
             loginUserFunc: loginUserFunc,
             logoutUserFunc: logoutUserFunc,
+            registerNewUserFunc: registerNewUserFunc,
+            patchUserFunc: patchUserFunc,
             jwtToken: loggedUserData.token,
             userData: loggedUserData,
         }}>
