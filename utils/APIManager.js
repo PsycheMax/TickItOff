@@ -21,6 +21,7 @@ export async function axiosGet(pathDestination, accessToken) {
 }
 export async function axiosPost(pathDestination, objectToSend, accessToken) {
     try {
+        console.log(accessToken);
         const configuration = {
             method: 'post',
             url: APIDestination + pathDestination,

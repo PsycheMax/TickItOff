@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { StylesContext } from '../AppManager';
-import { LoggedUserContext } from './UserManager';
-import ProfilePicture from '../Users/ProfilePicture';
+import { LoggedUserContext } from '../../utils/UserManager';
+import ProfilePicture from './ProfilePicture';
+import UserMenu from './UserMenu';
 
 const UserPanel = (props) => {
 
-    const context = useContext(LoggedUserContext);
+    const [menuOpen, useMenuOpen] = useState(true);
+
+    const loggedUser = useContext(LoggedUserContext);
     const basicStyle = useContext(StylesContext);
-    console.log(context);
 
     useEffect(() => {
         // setUserData(loggedUserData);
@@ -26,8 +28,9 @@ const UserPanel = (props) => {
     return (
         <View style={styles.userPanel}>
             <View style={styles.topContainer}>
-                <ProfilePicture source={context.userData.image} /><Text style={StyleSheet.compose(basicStyle.base.typography, styles.userName)}>
-                    {context.userData.username}
+                <ProfilePicture source={loggedUser.userData.image} /><Text style={StyleSheet.compose(basicStyle.base.typography, styles.userName)}>
+                    {/* {context.userData.username} */}
+                    {menuOpen ? <UserMenu username={loggedUser.userData.username} /> : "Figa"}
                 </Text>
             </View>
 
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         marginLeft: 15,
-        marginTop: 15
+        marginTop: 15,
     },
     topContainer: {
         flexDirection: "row",

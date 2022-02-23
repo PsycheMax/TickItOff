@@ -6,7 +6,7 @@ const ProfilePicture = (props) => {
     return (
         <Image
             accessibilityLabel={`Profile picture for user ${props.username}`}
-            source={props.source}
+            source={{ uri: props.source }}
             style={styles.avatar}
         />
     )
@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
         height: 66,
         borderRadius: 66 / 2,
         margin: 10,
-
+        borderWidth: 2,
+        borderColor: "#C6C4D3"
     }
 })
 

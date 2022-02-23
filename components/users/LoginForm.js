@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { LoggedUserContext } from './UserManager';
-import tailwind from 'tailwind-rn';
+import { HStack, VStack, Button, Input, IconButton, Box, Text, Center } from 'native-base';
+import { LoggedUserContext } from '../../utils/UserManager';
+import { MaterialIcons } from "@native-base/icons";
 
 const LoginForm = (props) => {
     // The loginUserObj for the API is loginUser:{email:"", password:""}
     const [loginUser, setLoginUser] = useState({ email: "", password: "" });
+    const [showPassword, setShowPassword] = useState(false);
+
     // Context here is necessary to call the login and logout functions
     const context = useContext(LoggedUserContext);
 
@@ -27,20 +29,21 @@ const LoginForm = (props) => {
 
     if (context.jwtToken) {
         return (
-            <View >
-                <View style={tailwind("justify-center self-center w-96 h-full")}>
-                    <Text>Welcome {context.userData.username}</Text>
+            <VStack >
+                <Center >
+                    <Text fontSize="lg">Welcome {context.userData.username}</Text>
+                    <Text>{context.userData.token}</Text>
                     <Button onPress={handleLogout} title={"Logout"} >Logout</Button>
-                </View>
-            </View>
+                </Center>
+            </VStack>
         )
     } else {
         return (
-            <View style={tailwind("justify-center self-center w-3/4 h-3/5 flex")}>
+            <VStack w="75%">
+                <Center>{context.userData.token}</Center>
                 <Button onPress={handleAdminLogin} title={"AdminLogin"}>Admin Login</Button>
-                <TextInput
-                    style={tailwind("w-full border-2 border-indigo-200 h-12 rounded-xl px-2 my-3 text-white")}
-                    onChangeText={handleChange}
+                <Input
+                    variant="underlined"
                     name="email"
                     value={loginUser.email}
                     placeholder="Email"
@@ -50,46 +53,39 @@ const LoginForm = (props) => {
                     onChangeText={(value) => { handleChange(value, "email") }}
 
                 />
-                <TextInput
-                    style={tailwind("w-full border-2 border-indigo-200 h-12 rounded-xl px-2 my-3 text-white")}
-                    onChangeText={handleChange}
+                <Input
+                    type={showPassword ? "text" : "password"}
+                    variant="underlined"
+
+                    justifyItems="center"
+                    // InputRightElement={<Button size="xs" rounded="none" w="1/6" h="full"
+                    //     onPress={() => { setShowPassword(!showPassword) }}> {showPassword ? "Hide" : "Show"} </Button>}
+                    InputRightElement={<IconButton
+                        _icon={{ as: MaterialIcons, name: "visibility-off", }}
+                        mx="auto"
+                        colorScheme='indigo' size="xs" rounded="none" w="1/6" h="full"
+                        onPress={() => { setShowPassword(!showPassword) }}>  </IconButton>}
+
                     name="password"
                     value={loginUser.password}
                     placeholder="Password"
-                    autocomplete={"password"}
+                    autocomplete="password"
                     autocorrect={false}
                     onChangeText={(value) => { handleChange(value, "password") }}
 
                 />
-                <View style={styles.buttonContainer}>
+                < VStack >
                     <Button
                         // style={tailwind("w-6 max-w-sm")}
-                        style={styles.button}
+
                         onPress={handleLogin}
                         title={"Login"}
 
                     > Login </Button>
-                </View>
-            </View>
+                </VStack >
+            </VStack >
         )
     }
 }
 
 export default LoginForm;
-
-const styles = StyleSheet.create({
-    button: {
-        // width: '75%'
-        backgroundColor: '#654987',
-        color: "#654978",
-
-    },
-    buttonContainer: {
-        maxWidth: '65%',
-        width: '60%',
-        height: 15,
-        alignSelf: 'center'
-        // justifyContent: 'center',
-        // alignItems: 'center'
-    }
-})

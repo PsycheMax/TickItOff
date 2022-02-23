@@ -5,8 +5,8 @@ import tailwind from "tailwind-rn";
 
 const basicStyle = StyleSheet.create({
     typography: {
-        color: "#FFFFFF",
-        fontSize: 32
+        color: "#000000",
+        fontSize: 24
     },
 })
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
@@ -30,12 +30,18 @@ class AppManager extends Component {
             <StylesContext.Provider value={{
                 base: basicStyle
             }}>
-                <View style={tailwind("flex-1 items-center justify-center text-white")}>
+                <View style={tailwind("flex-1 items-center justify-center")}>
                     {this.props.children}
                 </View>
             </StylesContext.Provider>
 
         )
+    }
+}
+
+const styles = {
+    appManagerMainView: {
+
     }
 }
 

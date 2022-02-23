@@ -1,10 +1,11 @@
 import { SafeAreaView, Text, View, StyleSheet, ImageBackground } from "react-native";
 import tailwind from "tailwind-rn";
+import { NativeBaseProvider } from "native-base";
 
 import AppManager from "./components/AppManager";
-import LoginForm from "./components/userManagement/LoginForm";
-import UserPanel from "./components/userManagement/UserPanel";
-import UserManager from "./components/userManagement/UserManager";
+import LoginForm from "./components/users/LoginForm";
+import UserPanel from "./components/users/UserPanel";
+import UserManager from "./utils/UserManager";
 import Header from "./components/header/Header";
 
 export default function App() {
@@ -12,19 +13,20 @@ export default function App() {
 
   return (
     // <SafeAreaView style={tailwind("flex-1 items-center justify-center")}>
-
-    <View style={style.appManager}>
-      <ImageBackground style={style.imageBG} source={require('./img/first.jpg')}>
+    <NativeBaseProvider>
+      <View style={style.appManager}>
+        {/* <ImageBackground style={style.imageBG} source={require('./img/first.jpg')}> */}
         <Header />
         <AppManager>
 
           <UserManager>
-            {/* <LoginForm /> */}
+            <LoginForm />
             <UserPanel />
           </UserManager>
         </AppManager>
-      </ImageBackground>
-    </View>
+        {/* </ImageBackground> */}
+      </View>
+    </NativeBaseProvider>
   );
 }
 
