@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { StylesContext } from '../AppManager';
+import { VStack, Button, Center, Flex, Box, Pressable } from 'native-base';
+
 import { LoggedUserContext } from '../../utils/UserManager';
-import ProfilePicture from './ProfilePicture';
 import UserMenu from './UserMenu';
+import ProfilePicture from './ProfilePicture';
 
 const UserPanel = (props) => {
 
-    const [menuOpen, useMenuOpen] = useState(true);
-
-    const loggedUser = useContext(LoggedUserContext);
-    const basicStyle = useContext(StylesContext);
+    const loggedUser = useContext(LoggedUserContext).userData;
 
     useEffect(() => {
         // setUserData(loggedUserData);
@@ -25,48 +22,17 @@ const UserPanel = (props) => {
         return "CULO";
     }
 
+
     return (
-        <View style={styles.userPanel}>
-            <View style={styles.topContainer}>
-                <ProfilePicture source={loggedUser.userData.image} /><Text style={StyleSheet.compose(basicStyle.base.typography, styles.userName)}>
-                    {/* {context.userData.username} */}
-                    {menuOpen ? <UserMenu username={loggedUser.userData.username} /> : "Figa"}
-                </Text>
-            </View>
-
-            {/* <Text style={basicStyle.base.typography}>{context.userData.image}</Text> */}
-
-            {/* <Text style={basicStyle.base.typography}>
-                {context.jwtToken ? context.userData.username : ""}
-
-                {context.jwtToken ? Date(context.userData.lastOnline) : ""}
-            </Text> */}
-        </View>
+        <Box width="100%" minW={"100%"} position="absolute" top="0" left="0" _web={{ pt: 25 }} pt={"5%"}>
+            <UserMenu username={loggedUser.username} />
+        </Box>
     )
 }
 
 UserPanel.defaultProps = {
     loggedUserData: undefined
 }
-
-const styles = StyleSheet.create({
-    userPanel: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        marginLeft: 15,
-        marginTop: 15,
-    },
-    topContainer: {
-        flexDirection: "row",
-        alignItems: 'center'
-
-    },
-    userName: {
-        marginLeft: 5,
-        paddingLeft: 5,
-    }
-})
 
 export default UserPanel;
 

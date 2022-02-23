@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { axiosPost } from './APIManager';
+import LoginForm from '../components/users/LoginForm/LoginForm';
 
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const LoggedUserContext = React.createContext({
@@ -55,7 +56,7 @@ const fakeUser = {
     "username": "AdminMax",
     "password": "HIDDEN",
     "email": "adminmax@mammeto.it",
-    "image": "https://randomuser.me/api/portraits/med/men/75.jpg",
+    "image": "https://randomuser.me/api/portraits/lego/6.jpg",
     "status": "Active",
     "creationDate": "2022-02-18T17:10:05.162Z",
     "modificationDate": "2022-02-18T17:10:05.162Z",
@@ -94,7 +95,7 @@ const UserManager = (props) => {
             "username": "",
             "password": "",
             "email": "",
-            "image": "",
+            "image": null,
             "token": ""
         });
     }
@@ -117,7 +118,8 @@ const UserManager = (props) => {
             jwtToken: loggedUserData.token,
             userData: loggedUserData,
         }}>
-            {props.children}
+            {/* If the user is loggedin, the rest of the app is shown */}
+            {loggedUserData._id !== "" ? props.children : <LoginForm />}
         </LoggedUserContext.Provider>
     )
 }

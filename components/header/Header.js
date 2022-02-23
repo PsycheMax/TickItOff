@@ -1,34 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { VStack, Text } from 'native-base';
 
 
 const Header = (props) => {
 
     return (
-        <View>
+        <VStack pt={25}>
 
-            <Text style={styles.view}>Shopping List</Text>
+            {/* <Text >Shopping List</Text> */}
 
-        </View>
+        </VStack>
     )
 }
-
-Header.defaultProps = {
-    loggedUserData: undefined
-}
-
-const styles = StyleSheet.create({
-    view: {
-        justifyContent: 'center',
-        textAlign: 'center',
-        fontSize: 2,
-        color: '#FFFFFF',
-        paddingTop: 25
-    },
-    text: {
-
-    }
-})
 
 export default Header;
 

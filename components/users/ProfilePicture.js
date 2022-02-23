@@ -1,31 +1,25 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React from 'react';
+import { Avatar } from 'native-base';
 
 const ProfilePicture = (props) => {
 
     return (
-        <Image
-            accessibilityLabel={`Profile picture for user ${props.username}`}
+        <Avatar
             source={{ uri: props.source }}
-            style={styles.avatar}
-        />
+            bg="green.500"
+            size="lg"
+            borderRadius={50} margin={5} borderWidth="1" borderColor={"muted.400"}
+            alt={`Profile picture for user ${props.username}`
+            }
+        >
+            {props.username.slice(0, 3)};
+        </Avatar >
     )
 }
 
 ProfilePicture.defaultProps = {
-    source: "https://randomuser.me/api/portraits/med/men/75.jpg",
+    source: "https://randomuser.me/api/portraits/lego/3.jpg",
     username: "Default Username"
 }
-
-const styles = StyleSheet.create({
-    avatar: {
-        width: 66,
-        height: 66,
-        borderRadius: 66 / 2,
-        margin: 10,
-        borderWidth: 2,
-        borderColor: "#C6C4D3"
-    }
-})
 
 export default ProfilePicture;
