@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { axiosPost } from './APIManager';
-import LoginForm from '../components/users/UserForms/LoginForm';
+import LoginSignupPanel from '../components/users/LoginSignupPanel';
 
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const LoggedUserContext = React.createContext({
@@ -8,7 +8,7 @@ export const LoggedUserContext = React.createContext({
     logoutUserFunc: () => { },
     registerNewUserFunc: (userData) => { },
     patchUserFunc: (patchedUser, target) => { },
-    jwtToken: "",
+    setUserDataWithoutLoginFunc: (userData) => { },
     userData: {}
 });
 
@@ -85,7 +85,12 @@ const UserManager = (props) => {
         console.log("CALLED")
         let response = await axiosPost('/user/login', loginUserObj);
         console.log(response);
-        setLoggedUserData(response);
+        if (response.status === 200) {
+            setLoggedUserData(response.data);
+            return (response);
+        } else {
+            return (response);
+        }
     }
 
     async function logoutUserFunc() {
@@ -105,10 +110,10 @@ const UserManager = (props) => {
         console.log(newUserObj);
         let response = await axiosPost('/user', newUserObj);
         console.log(response);
-        let toSetInState = newUserObj;
-        toSetInState.password = "HIDDEN";
+        let toSetInState = newUserObj.newUser;
+        // toSetInState.password = "HIDDEN";
         setLoggedUserData({
-            newUserObj
+            toSetInState
         })
     }
 
@@ -121,6 +126,11 @@ const UserManager = (props) => {
         setLoggedUserData({
             patchedUser
         })
+    }
+
+    async function setUserDataWithoutLoginFunc(userData) {
+        console.log(userData);
+        setLoggedUserData(userData);
     }
 
     useEffect(() => {
@@ -140,11 +150,11 @@ const UserManager = (props) => {
             logoutUserFunc: logoutUserFunc,
             registerNewUserFunc: registerNewUserFunc,
             patchUserFunc: patchUserFunc,
-            jwtToken: loggedUserData.token,
+            setUserDataWithoutLoginFunc: setUserDataWithoutLoginFunc,
             userData: loggedUserData,
         }}>
             {/* If the user is loggedin, the rest of the app is shown */}
-            {loggedUserData._id !== "" ? props.children : <LoginForm />}
+            {props.children}
         </LoggedUserContext.Provider>
     )
 }

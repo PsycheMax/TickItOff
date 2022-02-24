@@ -1,10 +1,11 @@
 import { NativeBaseProvider, VStack, Container, Box } from "native-base";
 
-import UserPanel from "./components/users/UserPanel";
+import UserPanel from "./components/users/UserPanel/UserPanel";
 import UserManager from "./utils/UserManager";
 import Header from "./components/header/Header";
 
 import SignUpForm from "./components/users/UserForms/SignUpForm";
+import LoginSignupPanel from "./components/users/LoginSignupPanel";
 
 export default function App() {
 
@@ -16,9 +17,9 @@ export default function App() {
 
           <Header />
           <UserManager>
-            <SignUpForm />
-            {/* <UserPanel /> */}
-
+            <LoginSignupPanel>
+              <UserPanel />
+            </LoginSignupPanel>
           </UserManager>
         </VStack>
       </Box>

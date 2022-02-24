@@ -3,20 +3,76 @@ import { HStack, VStack, Button, Input, IconButton, Text, Center, Box, Heading, 
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
 
+// Move this into some UserAction or UserManagement Context
+const inputRules = {
+    email: {
+        minLength: 8,
+        regEx: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
+    },
+    username: {
+        minLength: 8,
+        regEx: `^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$`
+    },
+    password: {
+        minLength: 8,
+        regEx: ``
+    }
+}
 // Username, PW, EMAIL, IMAGE
 const SignUpForm = (props) => {
     // The loginUserObj for the API is newUser:{username:"",email:"", password:"", image:""}
     const [newUser, setNewUser] = useState({ email: "", password: "", passwordRepeat: "", username: "", image: "" });
     const [showPassword, setShowPassword] = useState(false);
+    const [readyToSend, setReadyToSend] = useState(false);
+
+    const [alertMessages, setAlertMessages] = useState({
+        email: {
+            show: false,
+            content: "Alert goes here"
+        },
+        password: {
+            show: false,
+            content: "Alert goes here"
+        },
+        passwordRepeat: {
+            show: false,
+            content: "Alert goes here"
+        },
+        username: {
+            show: false,
+            content: "Alert goes here"
+        },
+        genericForm: {
+            show: false,
+            content: "Alert goes here"
+        },
+    })
 
     const userDataContext = useContext(LoggedUserContext);
 
     function handleChange(value, fieldName) {
+        if (newUser.password !== null && newUser.password.length >= inputRules.password.minLength) {
+            newUser.password === newUser.passwordRepeat ? setReadyToSend(true) : setReadyToSend(false);
+        }
+        console.log(readyToSend);
         setNewUser(prevState => { return { ...prevState, [fieldName]: value } })
     }
 
     function handleRegistration() {
-        context.registerNewUserFunc(newUser);
+        if (readyToSend) {
+            console.log({ newUser });
+            userDataContext.registerNewUserFunc({ newUser });
+            setNewUser({ email: "", password: "", passwordRepeat: "", username: "", image: "" });
+            userDataContext.setUserDataWithoutLoginFunc(newUser);
+        } else {
+
+        }
+    }
+
+
+
+    function handleLinkClick() {
+        props.showOtherFormFunc();
     }
 
     return (
@@ -35,7 +91,7 @@ const SignUpForm = (props) => {
                     </Heading>
 
                     <VStack space={3} mt="5">
-                        <FormControl>
+                        <FormControl isRequired >
                             <FormControl.Label>Username</FormControl.Label>
                             <Input
                                 name="username"
@@ -45,9 +101,10 @@ const SignUpForm = (props) => {
                                 autocorrect={false}
                                 autofocus={true}
                                 onChangeText={(value) => { handleChange(value, "username") }}
+
                             />
                         </FormControl>
-                        <FormControl>
+                        <FormControl isRequired >
                             <FormControl.Label>Email</FormControl.Label>
                             <Input
                                 name="email"
@@ -57,9 +114,10 @@ const SignUpForm = (props) => {
                                 autocorrect={false}
                                 autofocus={true}
                                 onChangeText={(value) => { handleChange(value, "email") }}
+
                             />
                         </FormControl>
-                        <FormControl>
+                        <FormControl isRequired >
                             <FormControl.Label>Image</FormControl.Label>
                             <Input
                                 name="image"
@@ -69,9 +127,10 @@ const SignUpForm = (props) => {
                                 autocorrect={false}
                                 autofocus={true}
                                 onChangeText={(value) => { handleChange(value, "image") }}
+
                             />
                         </FormControl>
-                        <FormControl>
+                        <FormControl isRequired >
                             <FormControl.Label>Password</FormControl.Label>
                             <Input
                                 type={showPassword ? "text" : "password"}
@@ -81,6 +140,7 @@ const SignUpForm = (props) => {
                                 autocomplete="password"
                                 autocorrect={false}
                                 onChangeText={(value) => { handleChange(value, "password") }}
+
                                 InputRightElement={
                                     <Center size="xs" >
                                         <IconButton
@@ -100,6 +160,7 @@ const SignUpForm = (props) => {
                                 autocomplete="password"
                                 autocorrect={false}
                                 onChangeText={(value) => { handleChange(value, "passwordRepeat") }}
+                                isRequired
                                 InputRightElement={
                                     <Center size="xs" >
                                         <IconButton
@@ -125,7 +186,7 @@ const SignUpForm = (props) => {
                                 color: "indigo.500",
                                 fontWeight: "medium",
                                 fontSize: "sm"
-                            }} href="#">
+                            }} onPress={handleLinkClick}>
                                 Log In
                             </Link>
                         </HStack>

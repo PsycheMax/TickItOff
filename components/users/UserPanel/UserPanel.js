@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { VStack, Button, Center, Flex, Box, Pressable } from 'native-base';
 
-import { LoggedUserContext } from '../../utils/UserManager';
+import { LoggedUserContext } from '../../../utils/UserManager';
 import UserMenu from './UserMenu';
 import ProfilePicture from './ProfilePicture';
 
@@ -35,4 +35,3 @@ UserPanel.defaultProps = {
 }
 
 export default UserPanel;
-

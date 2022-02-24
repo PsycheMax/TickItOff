@@ -13,10 +13,10 @@ export async function axiosGet(pathDestination, accessToken) {
             }
         }
         const response = await axios(configuration);
-        return response.data;
+        return response;
     }
     catch (error) {
-        return error.response.data;
+        return error.response;
     }
 }
 export async function axiosPost(pathDestination, objectToSend, accessToken) {
@@ -30,10 +30,10 @@ export async function axiosPost(pathDestination, objectToSend, accessToken) {
             data: objectToSend
         }
         const response = await axios(configuration);
-        return response.data;
+        return response;
     }
     catch (error) {
-        return error.response.data;
+        return error.response;
     }
 }
 export async function axiosPatch(pathDestination, objectToSend, accessToken) {
@@ -47,10 +47,10 @@ export async function axiosPatch(pathDestination, objectToSend, accessToken) {
             data: objectToSend
         }
         const response = await axios(configuration);
-        return response.data;
+        return response;
     }
     catch (error) {
-        return error.response.data;
+        return error.response;
     }
 }
 export async function axiosDelete(pathDestination, objectToSend, accessToken) {
@@ -64,9 +64,9 @@ export async function axiosDelete(pathDestination, objectToSend, accessToken) {
             data: objectToSend
         }
         const response = await axios(configuration);
-        return response.data;
+        return response;
     }
     catch (error) {
-        return error.response.data;
+        return error.response;
     }
 }

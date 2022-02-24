@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { HStack, Heading, Box, Center, Pressable, PresenceTransition, Text } from 'native-base';
 
-import { LoggedUserContext } from '../../utils/UserManager';
+import { LoggedUserContext } from '../../../utils/UserManager';
 import ProfilePicture from './ProfilePicture';
-import LoginForm from './UserForms/LoginForm';
+import LoginForm from '../UserForms/LoginForm';
+import LogoutButton from '../UserForms/LogoutButton';
 
 
 const UserMenu = (props) => {
@@ -33,7 +34,7 @@ const UserMenu = (props) => {
                 </Center >
                 <Center w={"25%"}>
                     <PresenceTransition w="100%" visible={menuOpen} initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 250 } }}>
-                        <LoginForm />
+                        <LogoutButton />
                     </PresenceTransition>
                 </Center >
             </HStack>
