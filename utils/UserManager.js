@@ -6,7 +6,7 @@ import LoginSignupPanel from '../components/users/LoginSignupPanel';
 export const LoggedUserContext = React.createContext({
     loginUserFunc: (email, password) => { },
     logoutUserFunc: () => { },
-    registerNewUserFunc: (userData) => { },
+    registerNewUserFunc: (newUser) => { },
     patchUserFunc: (patchedUser, target) => { },
     setUserDataWithoutLoginFunc: (userData) => { },
     userData: {}
@@ -106,26 +106,33 @@ const UserManager = (props) => {
         });
     }
 
-    async function registerNewUserFunc(newUserObj) {
-        console.log(newUserObj);
-        let response = await axiosPost('/user', newUserObj);
+    async function registerNewUserFunc(newUser) {
+        console.log({ newUser });
+        let response = await axiosPost('/user', { newUser });
         console.log(response);
-        let toSetInState = newUserObj.newUser;
-        // toSetInState.password = "HIDDEN";
-        setLoggedUserData({
-            toSetInState
-        })
+        if (response.status === 201) {
+            console.log("In stat 201")
+            let toSetInState = response.data;
+            toSetInState.password = "HIDDEN";
+            setLoggedUserData({
+                ...toSetInState
+            });
+            return response;
+        } else {
+            console.log("NOT stat 201")
+            return response;
+        }
     }
 
     async function patchUserFunc(patchedUser, targetID) {
         console.log(patchedUser, targetID);
-        let response = await axiosPatch(`/user/${targetID}`, patchedUser, loggedUserData._id);
+        let response = await axiosPatch(`/user/${targetID}`, { patchedUser }, loggedUserData._id);
         console.log(response);
-        let toSetInState = patchedUser;
+        let toSetInState = response;
         toSetInState.password = "HIDDEN";
         setLoggedUserData({
-            patchedUser
-        })
+            ...toSetInState
+        });
     }
 
     async function setUserDataWithoutLoginFunc(userData) {

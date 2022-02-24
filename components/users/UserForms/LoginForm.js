@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { HStack, VStack, Button, Input, IconButton, Text, Center, Box, Heading, FormControl, Link, Icon } from 'native-base';
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
+import FormField from './FormField';
 
 // MoveThis into some UserManagemetn Context, - same in SIGNUPFORM
 const inputRules = {
@@ -35,7 +36,7 @@ const LoginForm = (props) => {
     })
 
     // Context here is necessary to call the login and logout functions
-    const context = useContext(LoggedUserContext);
+    const userDataContext = useContext(LoggedUserContext);
 
     function handleChange(value, fieldName) {
         setLoginUser(prevState => { return { ...prevState, [fieldName]: value } })
@@ -57,7 +58,7 @@ const LoginForm = (props) => {
 
         if (loginUser.email.length >= inputRules.email.minLength && loginUser.password.length >= inputRules.password.minLength) {
             console.log("LOGIN")
-            const response = await context.loginUserFunc(loginUser.email, loginUser.password);
+            const response = await userDataContext.loginUserFunc(loginUser.email, loginUser.password);
             if (response.status !== 200) {
                 console.log(response.data);
                 setAlertMessages({ ...toSetInAlertMessages, genericForm: { show: true, content: response.data } });
@@ -65,12 +66,8 @@ const LoginForm = (props) => {
         }
     }
 
-    function handleLogout() {
-        context.logoutUserFunc();
-    }
-
     function handleAdminLogin() {
-        context.loginUserFunc("AdminMax", "AdminMax");
+        userDataContext.loginUserFunc("AdminMax", "AdminMax");
     }
 
     function handleLinkClick() {
@@ -94,44 +91,23 @@ const LoginForm = (props) => {
                     </Heading>
 
                     <VStack space={3} mt="5">
-                        <FormControl isInvalid={alertMessages.email.show} >
-                            <FormControl.Label>Email</FormControl.Label>
-                            <Input
-                                name="email"
-                                value={loginUser.email}
-                                placeholder="Email"
-                                autocomplete={"email"}
-                                autocorrect={false}
-                                autofocus={true}
-                                onChangeText={(value) => { handleChange(value, "email") }}
-                            />
-                            <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
-                                {alertMessages.email.content}
-                            </FormControl.ErrorMessage>
-                        </FormControl>
-                        <FormControl isInvalid={alertMessages.password.show} >
-                            <FormControl.Label>Password</FormControl.Label>
-                            <Input
-                                type={showPassword ? "text" : "password"}
-                                name="password"
-                                value={loginUser.password}
-                                placeholder="Password"
-                                autocomplete="password"
-                                autocorrect={false}
-                                onChangeText={(value) => { handleChange(value, "password") }}
-                                InputRightElement={
-                                    <Center size="xs" >
-                                        <IconButton
-                                            _icon={{ as: MaterialIcons, name: "visibility-off" }}
-                                            colorScheme='indigo' size="xs" rounded="none" w="full" h="full"
-
-                                            onPress={() => { setShowPassword(!showPassword) }}>  </IconButton>
-                                    </Center>
-                                }
-                            />
-                            <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="sm" />}>
-                                {alertMessages.password.content}
-                            </FormControl.ErrorMessage>
+                        <FormField
+                            isInvalid={alertMessages.email.show} isRequired={alertMessages.email.show} value={loginUser.email} type="text"
+                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "email") }}
+                            inputRightElement={false}
+                            text={{
+                                label: "Email", name: "email", autocomplete: "email", placeholder: "Email address", alertMessage: alertMessages.email.content,
+                                iconName: "error"
+                            }} >
+                        </FormField>
+                        <FormField
+                            isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={loginUser.password}
+                            autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
+                            onChangeText={(value) => { handleChange(value, "password") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
+                            inputRightElement={true} text={{
+                                label: "Password", name: "password", autocomplete: "password", placeholder: "Password", alertMessage: alertMessages.password.content,
+                                iconName: "error"
+                            }} >
                             <Link _text={{
                                 fontSize: "xs",
                                 fontWeight: "500",
@@ -139,7 +115,8 @@ const LoginForm = (props) => {
                             }} alignSelf="flex-end" mt="1">
                                 Forget Password?
                             </Link>
-                        </FormControl>
+                        </FormField>
+
                         <FormControl isInvalid={alertMessages.genericForm.show} >
                             <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
                                 {alertMessages.genericForm.content}
