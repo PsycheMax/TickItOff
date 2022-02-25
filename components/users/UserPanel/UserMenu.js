@@ -3,9 +3,8 @@ import { HStack, Heading, Box, Center, Pressable, PresenceTransition, Text } fro
 
 import { LoggedUserContext } from '../../../utils/UserManager';
 import ProfilePicture from './ProfilePicture';
-import LoginForm from '../UserForms/LoginForm';
-import LogoutButton from '../UserForms/LogoutButton';
-
+import LogoutButton from '../UserForms/FormComponents/LogoutButton';
+import EditProfileButton from '../UserForms/FormComponents/EditProfileButton';
 
 const UserMenu = (props) => {
     const [menuOpen, useMenuOpen] = useState(true);
@@ -32,11 +31,14 @@ const UserMenu = (props) => {
                         <Text fontSize={"md"} underlined>{loggedUser.email}</Text>
                     </PresenceTransition>
                 </Center >
-                <Center w={"25%"}>
-                    <PresenceTransition w="100%" visible={menuOpen} initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 250 } }}>
+                <HStack w={"25%"} alignItems="center">
+                    <PresenceTransition w="50%" visible={menuOpen} initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 250 } }}>
+                        <EditProfileButton />
+                    </PresenceTransition>
+                    <PresenceTransition w="50%" visible={menuOpen} initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 250 } }}>
                         <LogoutButton />
                     </PresenceTransition>
-                </Center >
+                </HStack >
             </HStack>
 
         </HStack >

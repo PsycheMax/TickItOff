@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { HStack, VStack, Button, Input, IconButton, Text, Center, Box, Heading, FormControl, Link, Square } from 'native-base';
-import { LoggedUserContext } from '../../../utils/UserManager';
+import React, { useContext } from 'react';
+import { IconButton, Center } from 'native-base';
+import { LoggedUserContext } from '../../../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
 
 const LogoutButton = (props) => {
@@ -14,7 +14,7 @@ const LogoutButton = (props) => {
     return (
 
         <Center size="sm" alignSelf={"auto"} ml="5%">
-            <IconButton colorScheme='indigo' key="logout" variant="solid" size="sm"
+            <IconButton colorScheme='amber' key="logout" variant="solid" size="sm"
                 _icon={{
                     as: MaterialIcons, name: "logout", alignSelf: "center"
                 }}

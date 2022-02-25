@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { axiosPost } from './APIManager';
-import LoginSignupPanel from '../components/users/LoginSignupPanel';
+import { axiosPost, axiosGet, axiosPatch, axiosDelete } from './APIManager';
 
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const LoggedUserContext = React.createContext({
@@ -8,11 +7,12 @@ export const LoggedUserContext = React.createContext({
     logoutUserFunc: () => { },
     registerNewUserFunc: (newUser) => { },
     patchUserFunc: (patchedUser, target) => { },
+    getUserDataFunc: (target) => { },
     setUserDataWithoutLoginFunc: (userData) => { },
     userData: {}
 });
 
-const _TEMPTOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjIwZmQyZWRjN2VmZmIwYWJiMDdjY2JmIiwiZW1haWwiOiJhZG1pbm1heCIsImlhdCI6MTY0NTYwODQ4MywiZXhwIjoxNjUxMDA4NDgzfQ.pSTxNd5KYhFaVeJ0ETP2ZJ7s1LZASJGRc8YTNpcKL4M";
+const _TEMPTOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjIwZmQyZWRjN2VmZmIwYWJiMDdjY2JmIiwiZW1haWwiOiJhZG1pbm1heCIsImlhdCI6MTY0NTc4MTQ5NCwiZXhwIjoxNjUxMTgxNDk0fQ.bl6Jo74U1CzUQ9KoIlYWwrG620DcWG60AhzPd-WJsbQ";
 
 const fakeUser = {
     "projects": {
@@ -126,13 +126,29 @@ const UserManager = (props) => {
 
     async function patchUserFunc(patchedUser, targetID) {
         console.log(patchedUser, targetID);
-        let response = await axiosPatch(`/user/${targetID}`, { patchedUser }, loggedUserData._id);
+        let response = await axiosPatch(`/user/${targetID}`, { patchedUser }, loggedUserData.token);
         console.log(response);
-        let toSetInState = response;
-        toSetInState.password = "HIDDEN";
-        setLoggedUserData({
-            ...toSetInState
-        });
+        if (response.status === 200) {
+            console.log("In status 200");
+            let toSetInState = response.data;
+            toSetInState.password = "Hidden";
+            setLoggedUserData({
+                ...toSetInState, token: loggedUserData.token
+            });
+            return response;
+        } else {
+            console.log("Status not 200");
+            return response;
+        }
+    }
+
+    async function getUserDataFunc(targetID) {
+        console.log(targetID);
+        let response = await axiosGet(`/user/${targetID}`, loggedUserData.token);
+        console.log(response);
+        let toReturn = response;
+        toReturn.password = "HIDDEN";
+        return toReturn;
     }
 
     async function setUserDataWithoutLoginFunc(userData) {
@@ -157,6 +173,7 @@ const UserManager = (props) => {
             logoutUserFunc: logoutUserFunc,
             registerNewUserFunc: registerNewUserFunc,
             patchUserFunc: patchUserFunc,
+            getUserDataFunc: getUserDataFunc,
             setUserDataWithoutLoginFunc: setUserDataWithoutLoginFunc,
             userData: loggedUserData,
         }}>

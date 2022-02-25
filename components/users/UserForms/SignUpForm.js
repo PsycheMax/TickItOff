@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link } from 'native-base';
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
-import FormField from './FormField';
+import FormField from './FormComponents/FormField';
 
 // Move this into some UserAction or UserManagement Context
 const inputRules = {

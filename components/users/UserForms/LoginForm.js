@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { HStack, VStack, Button, Input, IconButton, Text, Center, Box, Heading, FormControl, Link, Icon } from 'native-base';
+import React, { useState, useContext } from 'react';
+import { HStack, VStack, Button, Text, Center, Box, Heading, FormControl, Link, Icon } from 'native-base';
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
-import FormField from './FormField';
+import FormField from './FormComponents/FormField';
 
 // MoveThis into some UserManagemetn Context, - same in SIGNUPFORM
 const inputRules = {
