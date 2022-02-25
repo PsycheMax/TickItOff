@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link } from 'native-base';
+import { VStack, Button, Icon, Center, Box, Heading, FormControl, ScrollView } from 'native-base';
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
 import FormField from './FormComponents/FormField';
-import { axiosGet } from '../../../utils/APIManager';
 
 // Move this into some UserAction or UserManagement Context
 const inputRules = {
@@ -179,85 +178,87 @@ const EditUserForm = (props) => {
     }
 
     return (
-        <VStack h={"100%"} justifyContent={"center"}>
-            <Center w="100%">
-                <Box safeArea p="2" py="8" w="90%" maxW="290">
-                    <Heading mt="1" _dark={{
-                        color: "warmGray.200"
-                    }} color="coolGray.600" fontWeight="medium" size="xs">
-                        Edit your profile
-                    </Heading>
+        <ScrollView maxHeight={"100%"} h={"100%"} mt={"0"} pt={"0"} >
+            <VStack h={"100%"} justifyContent={"center"} >
+                <Center w="100%">
+                    <Box safeArea w="90%" maxW="290">
+                        <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
+                            color: "warmGray.50"
+                        }}>
+                            Edit your profile
+                        </Heading>
 
-                    <VStack space={3} mt="5">
-                        <FormField
-                            isInvalid={alertMessages.username.show} isRequired={alertMessages.username.show} value={patchedUser.username} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "username") }}
-                            inputRightElement={false}
-                            text={{
-                                label: "Public Username", name: "username", autocomplete: "username", placeholder: "Username", alertMessage: alertMessages.username.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.email.show} isRequired={alertMessages.email.show} value={patchedUser.email} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "email") }}
-                            inputRightElement={false}
-                            text={{
-                                label: "Email", name: "email", autocomplete: "email", placeholder: "Email", alertMessage: alertMessages.email.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.image.show} isRequired={alertMessages.image.show} value={patchedUser.image} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "image") }}
-                            inputRightElement={false}
-                            text={{
-                                label: "image", name: "image", autocomplete: "image", placeholder: "image", alertMessage: alertMessages.image.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.oldPassword.show} isRequired={alertMessages.oldPassword.show} value={patchedUser.oldPassword}
-                            autocorrect={false} autofocus={true} type={showOldPassword ? "text" : "password"}
-                            onChangeText={(value) => { handleChange(value, "oldPassword") }} showPasswordCommand={() => { setShowOldPassword(!showOldPassword) }}
-                            inputRightElement={true} text={{
-                                label: "Old Password", name: "oldPassword", autocomplete: "password", placeholder: "Old Password", alertMessage: alertMessages.oldPassword.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={patchedUser.password}
-                            autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
-                            onChangeText={(value) => { handleChange(value, "password") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
-                            inputRightElement={true} text={{
-                                label: "New Password", name: "password", autocomplete: "password", placeholder: "Password", alertMessage: alertMessages.password.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={patchedUser.passwordRepeat}
-                            autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
-                            onChangeText={(value) => { handleChange(value, "passwordRepeat") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
-                            inputRightElement={true} text={{
-                                label: "Repeat New Password", name: "password", placeholder: "Repeat Password", alertMessage: alertMessages.password.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
+                        <VStack space={3} >
+                            <FormField
+                                isInvalid={alertMessages.username.show} isRequired={alertMessages.username.show} value={patchedUser.username} type="text"
+                                autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "username") }}
+                                inputRightElement={false}
+                                text={{
+                                    label: "Public Username", name: "username", autocomplete: "username", placeholder: "Username", alertMessage: alertMessages.username.content,
+                                    iconName: "error"
+                                }} >
+                            </FormField>
+                            <FormField
+                                isInvalid={alertMessages.email.show} isRequired={alertMessages.email.show} value={patchedUser.email} type="text"
+                                autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "email") }}
+                                inputRightElement={false}
+                                text={{
+                                    label: "Email", name: "email", autocomplete: "email", placeholder: "Email", alertMessage: alertMessages.email.content,
+                                    iconName: "error"
+                                }} >
+                            </FormField>
+                            <FormField
+                                isInvalid={alertMessages.image.show} isRequired={alertMessages.image.show} value={patchedUser.image} type="text"
+                                autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "image") }}
+                                inputRightElement={false}
+                                text={{
+                                    label: "image", name: "image", autocomplete: "image", placeholder: "image", alertMessage: alertMessages.image.content,
+                                    iconName: "error"
+                                }} >
+                            </FormField>
+                            <FormField
+                                isInvalid={alertMessages.oldPassword.show} isRequired={alertMessages.oldPassword.show} value={patchedUser.oldPassword}
+                                autocorrect={false} autofocus={true} type={showOldPassword ? "text" : "password"}
+                                onChangeText={(value) => { handleChange(value, "oldPassword") }} showPasswordCommand={() => { setShowOldPassword(!showOldPassword) }}
+                                inputRightElement={true} text={{
+                                    label: "Old Password", name: "oldPassword", autocomplete: "password", placeholder: "Old Password", alertMessage: alertMessages.oldPassword.content,
+                                    iconName: "error"
+                                }} >
+                            </FormField>
+                            <FormField
+                                isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={patchedUser.password}
+                                autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
+                                onChangeText={(value) => { handleChange(value, "password") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
+                                inputRightElement={true} text={{
+                                    label: "New Password", name: "password", autocomplete: "password", placeholder: "Password", alertMessage: alertMessages.password.content,
+                                    iconName: "error"
+                                }} >
+                            </FormField>
+                            <FormField
+                                isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={patchedUser.passwordRepeat}
+                                autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
+                                onChangeText={(value) => { handleChange(value, "passwordRepeat") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
+                                inputRightElement={true} text={{
+                                    label: "Repeat New Password", name: "password", placeholder: "Repeat Password", alertMessage: alertMessages.password.content,
+                                    iconName: "error"
+                                }} >
+                            </FormField>
 
-                        <FormControl isInvalid={alertMessages.genericForm.show} >
-                            <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name={alertMessages.genericForm.success ? "check-circle" : "error"} size={alertMessages.genericForm.success ? "sm" : "xs"} />}>
-                                {alertMessages.genericForm.content}
-                            </FormControl.ErrorMessage>
-                        </FormControl>
+                            <FormControl isInvalid={alertMessages.genericForm.show} >
+                                <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name={alertMessages.genericForm.success ? "check-circle" : "error"} size={alertMessages.genericForm.success ? "sm" : "xs"} />}>
+                                    {alertMessages.genericForm.content}
+                                </FormControl.ErrorMessage>
+                            </FormControl>
 
-                        <Button mt="2" colorScheme="indigo"
-                            onPress={handlePatching} title={"patch"}>
-                            Modify User
-                        </Button>
-                    </VStack>
-                </Box>
-            </Center>
-        </VStack >
+                            <Button mt="2" colorScheme="indigo"
+                                onPress={handlePatching} title={"patch"}>
+                                Modify User
+                            </Button>
+                        </VStack>
+                    </Box>
+                </Center>
+            </VStack >
+        </ScrollView >
     )
 }
 

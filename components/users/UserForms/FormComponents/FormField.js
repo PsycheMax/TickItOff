@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, FormControl, Icon, Center, IconButton } from 'native-base';
+import { Input, FormControl, Icon, Square, IconButton } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";
 
 
@@ -18,13 +18,13 @@ const FormField = (props) => {
                 autofocus={props.autofocus}
                 onChangeText={props.onChangeText}
                 InputRightElement={
-                    props.inputRightElement ? <Center size="xs" >
+                    props.inputRightElement ? <Square size="8">
                         <IconButton
                             _icon={{ as: MaterialIcons, name: "visibility-off" }}
                             colorScheme='indigo' size="xs" rounded="none" w="full" h="full"
 
                             onPress={props.showPasswordCommand}>  </IconButton>
-                    </Center> : null
+                    </Square> : null
                 }
             />
             <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name={props.text.iconName} size="xs" />}>

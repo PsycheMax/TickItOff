@@ -13,10 +13,10 @@ const LogoutButton = (props) => {
 
     return (
 
-        <Center size="sm" alignSelf={"auto"} ml="5%">
+        <Center size="xs" alignSelf={"auto"}>
             <IconButton colorScheme='amber' key="logout" variant="solid" size="sm"
                 _icon={{
-                    as: MaterialIcons, name: "logout", alignSelf: "center"
+                    as: MaterialIcons, name: "logout", alignSelf: "center", size: "6"
                 }}
                 onPress={handleLogout} title={"Logout"}
             />
