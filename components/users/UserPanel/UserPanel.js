@@ -3,12 +3,11 @@ import { Box, ScrollView } from 'native-base';
 
 import { LoggedUserContext } from '../../../utils/UserManager';
 import UserMenu from './UserMenu';
-import { ViewManagerContext } from '../../mainView/ViewManagerContextProvider';
+import ViewManager from '../../mainView/ViewManager';
 
 const UserPanel = (props) => {
 
     const loggedUser = useContext(LoggedUserContext).userData;
-    const ViewManager = useContext(ViewManagerContext);
 
     useEffect(() => {
         // setUserData(loggedUserData);
@@ -27,7 +26,7 @@ const UserPanel = (props) => {
     return (
         <Box maxH={"100%"} width="100%" minW={"100%"} position="absolute" top="0" left="0" _web={{ pt: 25 }} pt={"5%"}>
             <UserMenu username={loggedUser.username} />
-            {ViewManager.renderCurrentView()}
+            <ViewManager />
         </Box>
     )
 }

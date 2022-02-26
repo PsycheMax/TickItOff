@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { VStack, Button, Center, Flex, Box, Pressable, Text, ScrollView } from 'native-base';
 import EditUserForm from '../users/UserForms/EditUserForm';
+import LogoutView from '../users/UserForms/LogoutView';
 
 export const ViewManagerContext = React.createContext({
     changeCurrentViewTo: (targetView, propsForNewView) => { },
@@ -17,20 +18,28 @@ const ViewManagerContextProvider = (props) => {
             case "EditUserForm":
                 return <EditUserForm />
                 break;
-            // case "LogoutForm":
-            //     return <LogoutForm />
-            case "Explicame":
+            case "LogoutView":
+                return <LogoutView />;
+                break;
+            case "default":
             default:
-                <Text>The idea here is to create a context that affects this component: calling the CONTEXT.Functions() will modify this component, showing different things
+                return <Text bgColor={"red.500"}>The idea here is to create a context that affects this component: calling the CONTEXT.Functions() will modify this component, showing different things
                     Maybe via a switch (context.state.currentView) case (profile): break; or something similar
                 </Text>
-                return null;
+
                 break;
         }
     }
 
     function changeCurrentViewTo(targetView, propsForView) {
-        setCurrentView(targetView);
+        console.log(targetView);
+        console.log(currentView);
+        if (currentView === targetView) {
+            setCurrentView("default");
+        } else {
+            setCurrentView(targetView);
+        }
+
     }
 
     return (

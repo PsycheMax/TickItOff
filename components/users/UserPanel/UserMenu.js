@@ -41,7 +41,7 @@ const UserMenu = (props) => {
                     </PresenceTransition>
                     <PresenceTransition visible={menuOpen} initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 250 } }}>
                         <GenericIconButton
-                            onPress={routerContext.changeCurrentViewTo.bind(this, "logout")}
+                            onPress={routerContext.changeCurrentViewTo.bind(this, "LogoutView")}
                             iconName={"logout"} iconSize={"6"} iconButtonSize={"sm"} centerSize={"sm"}
                             colorScheme={"amber"} key={"Logout"} title={"Logout"} />
                     </PresenceTransition>
