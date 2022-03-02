@@ -9,9 +9,8 @@ const ProfilePicture = (props) => {
             <Avatar
                 source={{ uri: props.source }}
                 bg="indigo.500"
-                // size={props.makeItBigger ? "xl" : "lg"}
                 size="xl"
-                borderRadius={100} margin={5} borderColor={"muted.400"} borderWidth={props.makeItBigger ? "1" : "2"}
+                borderRadius={100} borderColor={"muted.400"} borderWidth={props.makeItBigger ? "1" : "2"}
                 alt={`Profile picture for user ${props.username}`
                 }
             >
@@ -23,8 +22,7 @@ const ProfilePicture = (props) => {
 
 ProfilePicture.defaultProps = {
     source: "https://randomuser.me/api/portraits/lego/3.jpg",
-    username: "Default Username",
-    makeItBigger: false
+    username: "Default Username"
 }
 
 export default ProfilePicture;

@@ -166,7 +166,6 @@ const EditUserForm = (props) => {
     }
 
     async function setInitialValues() {
-        console.log(userDataContext.userData._id);
         if (userDataContext.userData._id !== undefined) {
             let response = await userDataContext.getUserDataFunc(userDataContext.userData._id);
             let toSetInState = response.data;

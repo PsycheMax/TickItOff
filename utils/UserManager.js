@@ -12,16 +12,24 @@ export const LoggedUserContext = React.createContext({
     userData: {}
 });
 
-const _TEMPTOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjIwZmQyZWRjN2VmZmIwYWJiMDdjY2JmIiwiZW1haWwiOiJhZG1pbm1heCIsImlhdCI6MTY0NTc4MTQ5NCwiZXhwIjoxNjUxMTgxNDk0fQ.bl6Jo74U1CzUQ9KoIlYWwrG620DcWG60AhzPd-WJsbQ";
-
 const fakeUser = {
     "projects": {
         "created": [
-            "620fd33cc7effb0abb07ccca"
+            {
+                "_id": "620fd33cc7effb0abb07ccca",
+                "name": "PostMan name 1 - After MOD",
+                "image": "reqUser.image - after MOD -1",
+                "status": "Active"
+            }
         ],
         "joined": [],
         "managed": [
-            "620fd33cc7effb0abb07ccca"
+            {
+                "_id": "620fd33cc7effb0abb07ccca",
+                "name": "PostMan name 1 - After MOD",
+                "image": "reqUser.image - after MOD -1",
+                "status": "Active"
+            }
         ],
         "completed": []
     },
@@ -35,7 +43,8 @@ const fakeUser = {
             "620fdc50b43b94f77acae7ea",
             "620fdc774c33628925c81365",
             "620fdc8c0e1e0f5a3b71ae8a",
-            "620fdd072c14c2e8023aa11d"
+            "620fdd072c14c2e8023aa11d",
+            "621c9ff3f3a9ca7ebd2e112c"
         ],
         "assigned": [],
         "managed": [
@@ -47,7 +56,8 @@ const fakeUser = {
             "620fdc50b43b94f77acae7ea",
             "620fdc774c33628925c81365",
             "620fdc8c0e1e0f5a3b71ae8a",
-            "620fdd072c14c2e8023aa11d"
+            "620fdd072c14c2e8023aa11d",
+            "621c9ff3f3a9ca7ebd2e112c"
         ],
         "completed": []
     },
@@ -57,16 +67,16 @@ const fakeUser = {
     "_id": "620fd2edc7effb0abb07ccbf",
     "username": "AdminMax",
     "password": "HIDDEN",
-    "email": "adminmax@mammeto.it",
+    "email": "adminmax",
     "image": "https://randomuser.me/api/portraits/lego/6.jpg",
     "status": "Active",
     "creationDate": "2022-02-18T17:10:05.162Z",
-    "modificationDate": "2022-02-18T17:10:05.162Z",
+    "modificationDate": "2022-02-25T11:23:40.439Z",
     "notifications": [],
     "lastLogin": "2022-02-22T08:40:33.162Z",
-    "__v": 20,
-    "lastOnline": "2022-02-22T17:34:21.040Z",
-    "token": _TEMPTOKEN
+    "__v": 22,
+    "lastOnline": "2022-03-01T11:05:08.945Z",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjIwZmQyZWRjN2VmZmIwYWJiMDdjY2JmIiwiZW1haWwiOiJhZG1pbm1heCIsImlhdCI6MTY0NjEzMjcwOCwiZXhwIjoxNjUxNTMyNzA4fQ.Zzn4Xeo3aABY4-Rd9-S7WZBAvldRBN9jEBkBYddDfN4"
 }
 
 const UserManager = (props) => {

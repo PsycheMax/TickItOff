@@ -15,13 +15,13 @@ const LogoutView = (props) => {
                 <Heading size="lg">Do you want to log out?</Heading>
                 <HStack w="100%" pt={"10%"}>
                     <Center w="50%">
-                        <Button size="lg" colorScheme='primary' py="5" px="8" borderRadius={"100"} w="100"
+                        <Button size="lg" colorScheme='primary' mx="2" py="5" px="8" borderRadius={"100"} w="100"
                             onPress={() => { userFunctionContext.logoutUserFunc() }}>
                             Yes
                         </Button>
                     </Center>
                     <Center w="50%">
-                        <Button size="lg" colorScheme='primary' py="5" px="8" borderRadius={"100"} w="100"
+                        <Button size="lg" colorScheme='primary' mx="2" py="5" px="8" borderRadius={"100"} w="100"
                             onPress={() => { viewManagerContext.changeCurrentViewTo("LogoutView") }}>
                             No
                         </Button>

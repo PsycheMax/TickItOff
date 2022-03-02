@@ -3,6 +3,7 @@ import { NativeBaseProvider, VStack, Container, Box, ScrollView } from "native-b
 import UserPanel from "./components/users/UserPanel/UserPanel";
 import UserManagerContextProvider from "./utils/UserManager";
 import ViewManagerContextProvider from "./components/mainView/ViewManagerContextProvider";
+import ProjectManagerContextProvider from "./utils/ProjectManager";
 
 import Header from "./components/header/Header";
 
@@ -17,11 +18,14 @@ export default function App() {
           <Header />
           <UserManagerContextProvider>
             <ViewManagerContextProvider>
-              {/* <ScrollView> */}
-              <LoginSignupPanel>
-                <UserPanel />
-              </LoginSignupPanel>
-              {/* </ScrollView> */}
+              <ProjectManagerContextProvider>
+
+
+                <LoginSignupPanel>
+                  <UserPanel />
+                </LoginSignupPanel>
+
+              </ProjectManagerContextProvider>
             </ViewManagerContextProvider>
           </UserManagerContextProvider>
         </VStack>

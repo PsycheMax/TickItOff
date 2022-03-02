@@ -3,6 +3,8 @@ import dotEnv from "../.env.js";
 
 const APIDestination = dotEnv.API_SERVER;
 
+// TODO I can change this, make it get the ACCESS TOKEN from the context
+
 export async function axiosGet(pathDestination, accessToken) {
     try {
         const configuration = {
@@ -53,7 +55,7 @@ export async function axiosPatch(pathDestination, objectToSend, accessToken) {
         return error.response;
     }
 }
-export async function axiosDelete(pathDestination, objectToSend, accessToken) {
+export async function axiosDelete(pathDestination, accessToken) {
     try {
         const configuration = {
             method: 'delete',

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { VStack, Button, Center, Flex, Box, Pressable, Text, ScrollView } from 'native-base';
 import EditUserForm from '../users/UserForms/EditUserForm';
 import LogoutView from '../users/UserForms/LogoutView';
+import Task from '../tasks/Task';
+import NewProjectForm from '../projects/NewProjectForm';
 
 export const ViewManagerContext = React.createContext({
     changeCurrentViewTo: (targetView, propsForNewView) => { },
@@ -21,11 +23,16 @@ const ViewManagerContextProvider = (props) => {
             case "LogoutView":
                 return <LogoutView />;
                 break;
+            case "NewProjectForm":
+                return <NewProjectForm />
+                break;
             case "default":
             default:
-                return <Text bgColor={"red.500"}>The idea here is to create a context that affects this component: calling the CONTEXT.Functions() will modify this component, showing different things
-                    Maybe via a switch (context.state.currentView) case (profile): break; or something similar
-                </Text>
+                return <NewProjectForm />
+                // return <Task></Task>
+                // return <Text bgColor={"red.500"}>The idea here is to create a context that affects this component: calling the CONTEXT.Functions() will modify this component, showing different things
+                //     Maybe via a switch (context.state.currentView) case (profile): break; or something similar
+                // </Text>
 
                 break;
         }
