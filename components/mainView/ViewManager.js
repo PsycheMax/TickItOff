@@ -8,9 +8,9 @@ const ViewManager = (props) => {
     const ViewContext = useContext(ViewManagerContext);
 
     return (
-        <ScrollView>
+        <React.Fragment>
             {ViewContext.renderCurrentView()}
-        </ScrollView>
+        </React.Fragment>
     )
 }
 

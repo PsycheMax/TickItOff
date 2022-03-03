@@ -172,7 +172,7 @@ const EditUserForm = (props) => {
             toSetInState.oldPassword = "";
             toSetInState.password = "";
             toSetInState.passwordRepeat = "";
-            setPatchedUser(response.data);
+            setPatchedUser(toSetInState);
         }
     }
 

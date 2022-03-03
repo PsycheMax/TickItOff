@@ -20,7 +20,7 @@ const inputRules = {
     }
 }
 
-// Username, PW, EMAIL, IMAGE
+
 const NewProjectForm = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
@@ -94,6 +94,10 @@ const NewProjectForm = (props) => {
 
 
                         const response = await ProjectFunctions.createProjectFunc(newProject);
+                        console.log(response);
+
+                        // TODO Redirect here to the ProjectView of new Project
+
                         if (response.status !== 201) {
                             console.log(response.data);
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }

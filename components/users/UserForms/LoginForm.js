@@ -75,7 +75,7 @@ const LoginForm = (props) => {
     }
 
     return (
-        <VStack h={"100%"} justifyContent={"center"}>
+        <VStack h={"100%"} justifyContent={"center"} w="full">
             <Center w="100%">
                 <Button onPress={handleAdminLogin} title={"AdminLogin"} mt="2" colorScheme='indigo'>Admin Login</Button>
                 <Box safeArea p="2" py="8" w="90%" maxW="290">

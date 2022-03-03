@@ -24,10 +24,12 @@ const UserPanel = (props) => {
 
 
     return (
-        <Box maxH={"100%"} width="100%" minW={"100%"} position="absolute" top="0" left="0" _web={{ pt: 25 }} pt={"5%"}>
+        <React.Fragment>
+            {/*  _web={{ pt: 25 }} pt={"5%"} */}
             <UserMenu username={loggedUser.username} />
             <ViewManager />
-        </Box>
+
+        </React.Fragment>
     )
 }
 

@@ -5,12 +5,6 @@ import ProfilePicture from '../users/UserPanel/ProfilePicture';
 
 const Task = (props) => {
 
-
-
-    function handleLogout() {
-        context.logoutUserFunc();
-    }
-
     return (
 
         <Center size="lg" alignSelf={"auto"} w={"full"} h={"100%"}>

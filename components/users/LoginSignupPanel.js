@@ -15,12 +15,13 @@ const LoginSignupPanel = (props) => {
     }
 
     return (
-        <Box w="100%" h="100%">
+        // <Box w="100%" h="100%">
+        <React.Fragment>
             {loggedUser._id !== "" ? props.children
                 : showLogin ? <LoginForm showOtherFormFunc={showOtherForm} /> : <SignUpForm showOtherFormFunc={showOtherForm} />}
+        </React.Fragment>
 
-
-        </Box>
+        // </Box>
     )
 }
 

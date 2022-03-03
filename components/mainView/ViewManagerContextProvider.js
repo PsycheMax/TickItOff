@@ -4,6 +4,8 @@ import EditUserForm from '../users/UserForms/EditUserForm';
 import LogoutView from '../users/UserForms/LogoutView';
 import Task from '../tasks/Task';
 import NewProjectForm from '../projects/NewProjectForm';
+import EditProjectForm from '../projects/EditProjectForm';
+import ViewProject from '../projects/ViewProject';
 
 export const ViewManagerContext = React.createContext({
     changeCurrentViewTo: (targetView, propsForNewView) => { },
@@ -28,7 +30,9 @@ const ViewManagerContextProvider = (props) => {
                 break;
             case "default":
             default:
-                return <NewProjectForm />
+                return <ViewProject />
+                // return <EditProjectForm />
+                // return <NewProjectForm />
                 // return <Task></Task>
                 // return <Text bgColor={"red.500"}>The idea here is to create a context that affects this component: calling the CONTEXT.Functions() will modify this component, showing different things
                 //     Maybe via a switch (context.state.currentView) case (profile): break; or something similar
@@ -54,7 +58,9 @@ const ViewManagerContextProvider = (props) => {
             renderCurrentView: renderCurrentView,
             changeCurrentViewTo: changeCurrentViewTo
         }} >
-            {props.children}
+            <ScrollView h={"full"} w={"full"}>
+                {props.children}
+            </ScrollView>
             {/* <ScrollView h={"100%"} minW={"100%"} width="100%" minW={"100%"} _web={{ pt: 25 }} pt={"5%"}>
                 {renderCurrentView()}
             </ScrollView> */}
