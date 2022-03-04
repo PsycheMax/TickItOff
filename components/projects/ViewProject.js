@@ -4,6 +4,7 @@ import { MaterialIcons } from "@native-base/icons";;
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
 import TaskSimple from '../tasks/TaskSimple';
 import { ProjectContext } from '../../utils/ProjectManager';
+import NewTaskForm from '../tasks/NewTaskForm';
 
 const ViewProject = (props) => {
 
@@ -11,7 +12,7 @@ const ViewProject = (props) => {
     console.log("******************************")
     console.log(ProjectData);
     return (
-        <Container size={"full"} maxW={"3/4"} minW={"3/4"} w={"3/4"}>
+        <VStack>
 
             <Heading size={"lg"} fontSize={"lg"}>{ProjectData.name}</Heading>
             <Text>{ProjectData.description}</Text>
@@ -34,7 +35,7 @@ const ViewProject = (props) => {
                 : null}
             {ProjectData.users.joiners.length > 0 ?
                 <HStack alignItems={"center"}>
-                    <Text>Can be viewed by by: </Text>
+                    <Text>Can be viewed by: </Text>
                     <Avatar.Group size={"sm"} max={4}>
                         <ProfilePicture zIndex={0} source={ProjectData.users.joiners[0].image} username={ProjectData.users.joiners[0].username}></ProfilePicture>
                     </Avatar.Group>
@@ -53,15 +54,18 @@ const ViewProject = (props) => {
                     </Box>} keyExtractor={item => item._id} />
             </Box> : <Text>Niente</Text>}
 
-
+            <NewTaskForm />
 
             <Text>Created on {ProjectData.creationDate}</Text>
             <Text>Modificated on {ProjectData.modificationDate}</Text>
 
-        </Container>
+        </VStack>
     )
 }
 
+export default ViewProject;
+
+/*
 ViewProject.defaultProps = {
     project: {
         "users": {
@@ -125,4 +129,4 @@ ViewProject.defaultProps = {
     }
 }
 
-export default ViewProject;
+*/

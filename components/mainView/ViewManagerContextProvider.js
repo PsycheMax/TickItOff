@@ -14,6 +14,7 @@ import UserPanel from '../users/UserPanel/UserPanel';
 import NewTaskForm from '../tasks/NewTaskForm';
 import EditTaskForm from '../tasks/EditTaskForm';
 import { ProjectContext } from '../../utils/ProjectManager';
+import ProjectSelector from '../projects/ProjectSelector';
 
 export const ViewManagerContext = React.createContext({
     changeCurrentViewTo: (targetView, propsForNewView) => { },
@@ -77,7 +78,7 @@ const ViewManagerContextProvider = (props) => {
                     break;
                 case "default":
                 default:
-                    return <NewProjectForm />
+                    return <ProjectSelector />
                     break;
             }
         } else {

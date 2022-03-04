@@ -94,7 +94,7 @@ const NewTaskForm = (props) => {
                     if (newTask.completion !== null) {
 
 
-                        const response = await ProjectFunctions.createTaskInProjectFunc(newTask);
+                        const response = await ProjectFunctions.createTaskInProjectFunc(ProjectFunctions.currentProjectData._id, newTask);
                         console.log(response);
 
                         // TODO Redirect here to the ProjectView of new Project
@@ -103,7 +103,6 @@ const NewTaskForm = (props) => {
                             console.log(response.data);
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }
                         } else {
-                            // REDIRECT GOES HERE
                             ViewFunctions.changeCurrentViewTo('ViewProject');
                         }
                     } else {
@@ -135,7 +134,7 @@ const NewTaskForm = (props) => {
                     <Heading mt="1" _dark={{
                         color: "warmGray.200"
                     }} color="coolGray.600" fontWeight="medium" size="xs">
-                        Create a new Project
+                        Add a new Task
                     </Heading>
 
                     <VStack space={3} mt="5">
@@ -183,8 +182,8 @@ const NewTaskForm = (props) => {
                         </FormControl>
 
                         <Button mt="2" colorScheme="indigo"
-                            onPress={handleSubmit} title={"Add project"}>
-                            Create Project
+                            onPress={handleSubmit} title={"Add task"}>
+                            Add task
                         </Button>
                     </VStack>
                 </Box>

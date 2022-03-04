@@ -1,61 +1,51 @@
 import React, { useContext } from 'react';
-import { IconButton, Center, Text, Checkbox, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, View, Container } from 'native-base';
+import { IconButton, Center, Text, Checkbox, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, View, Container, Button, Spinner } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";;
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
 import TaskSimple from '../tasks/TaskSimple';
+import { LoggedUserContext } from '../../utils/UserManager';
+import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
+import { ProjectContext } from '../../utils/ProjectManager';
 
 const ProjectSelector = (props) => {
 
-    return (
-        <Container maxW={"3/4"} minW={"3/4"} w={"3/4"}>
+    const UserData = useContext(LoggedUserContext).userData;
+    const ViewFunctions = useContext(ViewManagerContext);
+    const ProjectFunctions = useContext(ProjectContext);
 
-            <Heading size={"lg"} fontSize={"lg"}>{props.project.name}</Heading>
-            <Text>{props.project.description}</Text>
+    let projects = UserData.projects;
+    console.log(UserData);
+    console.log(projects);
 
-            <Text>{props.project.level}</Text>
+    async function selectProject(targetID) {
+        await ProjectFunctions.setCurrentProjectDataFunc(targetID);
+        await ViewFunctions.changeCurrentViewTo("ViewProject");
+    }
 
-            <HStack alignItems={"center"}>
-                <Text>Created by: </Text>
-                <Avatar.Group size={"sm"} max={4}>
-                    <ProfilePicture zIndex={0} source={props.project.users.creators[0].image} username={props.project.users.creators[0].username}></ProfilePicture>
-                </Avatar.Group>
-            </HStack>
-            {props.project.users.managers.length > 0 ?
-                <HStack alignItems={"center"}>
-                    <Text>Managed by: </Text>
-                    <Avatar.Group size={"sm"} max={4}>
-                        <ProfilePicture zIndex={0} source={props.project.users.managers[0].image} username={props.project.users.managers[0].username}></ProfilePicture>
-                    </Avatar.Group>
-                </HStack>
-                : null}
-            {props.project.users.joiners.length > 0 ?
-                <HStack alignItems={"center"}>
-                    <Text>Can be viewed by by: </Text>
-                    <Avatar.Group size={"sm"} max={4}>
-                        <ProfilePicture zIndex={0} source={props.project.users.joiners[0].image} username={props.project.users.joiners[0].username}></ProfilePicture>
-                    </Avatar.Group>
-                </HStack>
-                : null}
+    if (UserData._id !== undefined) {
+        return (
+            <VStack maxW={"3/4"} minW={"3/4"} w={"3/4"}>
 
-            {props.project.tasks ? <Box>
-                <Heading fontSize="xl" p="4" pb="3">
-                    Tasks
-                </Heading>
-                <FlatList data={props.project.tasks}
+                <FlatList data={projects.managed}
                     renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
                         borderColor: "gray.600"
                     }} borderColor="coolGray.200" pl="4" pr="5" py="2">
-                        <TaskSimple task={item} />
+                        <Button onPress={selectProject.bind(this, item._id)} >{item.name}</Button>
                     </Box>} keyExtractor={item => item._id} />
-            </Box> : <Text>Niente</Text>}
 
+            </VStack>
+        )
+    } else {
+        return (
+            <HStack space={2} justifyContent="center">
+                <Spinner accessibilityLabel="Loading posts" />
+                <Heading color="primary.500" fontSize="md">
+                    Loading
+                </Heading>
+            </HStack>
+        );
+    }
 
-
-            <Text>Created on {props.project.creationDate}</Text>
-            <Text>Modificated on {props.project.modificationDate}</Text>
-
-        </Container>
-    )
 }
 
 ProjectSelector.defaultProps = {

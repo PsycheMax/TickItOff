@@ -6,13 +6,13 @@ import { LoggedUserContext } from './UserManager';
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const ProjectContext = React.createContext({
     currentProjectData: {},
-    setCurrentProjectDataFunc: () => { },
-    createProjectFunc: () => { },
-    patchProjectFunc: () => { },
-    deleteProjectFunc: () => { },
-    createTaskInProjectFunc: () => { },
-    patchTaskInProjectFunc: () => { },
-    deleteTaskInProjectFunc: () => { },
+    setCurrentProjectDataFunc: (projectID) => { },
+    createProjectFunc: (projectData) => { },
+    patchProjectFunc: (projectID, projectData) => { },
+    deleteProjectFunc: (projectID) => { },
+    createTaskInProjectFunc: (projectID, taskData) => { },
+    patchTaskInProjectFunc: (projectID, taskID, taskData) => { },
+    deleteTaskInProjectFunc: (projectID, taskID) => { },
 });
 
 const tempProjectData = {
@@ -164,8 +164,8 @@ const ProjectManager = (props) => {
      * @param {object} newTaskData is an object containing the task data {name: "", description:"", ...}
      * @returns The API response
      */
-    async function createTaskInProjectFunc(projectID, newTaskData) {
-        let response = await axiosPost(`/project/${projectID}/`, { newTaskData }, loggedUserData.token);
+    async function createTaskInProjectFunc(projectID, newTask) {
+        let response = await axiosPost(`/project/${projectID}/task`, { newTask }, loggedUserData.token);
         if (response.status === 201) {
             console.log("Status 201");
             return response;
@@ -182,7 +182,7 @@ const ProjectManager = (props) => {
      * @returns 
      */
     async function patchTaskInProjectFunc(projectID, taskID, patchedTaskData) {
-        let response = await axiosPatch(`/project/${projectID}/task/${taskID}`, { patchedTaskData }, loggedUserData.token);
+        let response = await axiosPatch(`/project/${projectID}/task/${taskID}`, { patchedTask }, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
             return response;
