@@ -5,10 +5,8 @@ import { LoggedUserContext } from './UserManager';
 
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const ProjectContext = React.createContext({
-    // userProjects: {},
     currentProjectData: {},
-    getProjectList: () => { },
-    getProjectDataFunc: () => { },
+    setCurrentProjectDataFunc: () => { },
     createProjectFunc: () => { },
     patchProjectFunc: () => { },
     deleteProjectFunc: () => { },
@@ -91,7 +89,12 @@ const ProjectManager = (props) => {
     //     return loggedUserData.projects;
     // }
 
-    async function getProjectDataFunc(projectID) {
+    /**
+     * This function changes the CurrentProjectData in the Context - as the context gives the Views directions on what to show, this is an essential part of the "changeView" function
+     * @param {string} projectID string,  
+     * @returns the api response, in case it's necessary
+     */
+    async function setCurrentProjectDataFunc(projectID) {
         let response = await axiosGet(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("In status 200");
@@ -103,10 +106,15 @@ const ProjectManager = (props) => {
         }
     }
 
+    /**
+     * This function creates a new project in the database, and sets it into the CurrentProjectData in the context.
+     * @param {Object} newProject is an object containing the project data {name: "", description:"", ...}
+     * @returns the API response
+     */
     async function createProjectFunc(newProject) {
         let response = await axiosPost(`/project`, { newProject }, loggedUserData.token);
-        if (response.status === 200) {
-            console.log("Status 200");
+        if (response.status === 201) {
+            console.log("Status 201");
             setCurrentProjectData(response.data);
             return response;
         } else {
@@ -115,6 +123,12 @@ const ProjectManager = (props) => {
         }
     }
 
+    /**
+     * This function patches an existing project in the database, and sets the new, patched object into the CurrentProjectData in the context
+     * @param {string} projectID 
+     * @param {object} patchedProjectData is an object containing the project data {name: "", description:"", ...} that has to be sent to the API
+     * @returns The API response
+     */
     async function patchProjectFunc(projectID, patchedProjectData) {
         let response = await axiosPatch(`/project/${projectID}`, { patchedProjectData }, loggedUserData.token);
         if (response.status === 200) {
@@ -127,6 +141,11 @@ const ProjectManager = (props) => {
         }
     }
 
+    /**
+     * This function "deletes" a project from the API - the deletion is not absolute, the intent is to keep track of every project.
+     * @param {string} projectID the project to delete 
+     * @returns The API response
+     */
     async function deleteProjectFunc(projectID) {
         let response = await axiosDelete(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
@@ -139,17 +158,29 @@ const ProjectManager = (props) => {
         }
     }
 
+    /**
+     * This function creates a task inside a project (identified via projectID). The project belongs to the logged user, who has to be a manager of the Project identified by ProjectID
+     * @param {string} projectID 
+     * @param {object} newTaskData is an object containing the task data {name: "", description:"", ...}
+     * @returns The API response
+     */
     async function createTaskInProjectFunc(projectID, newTaskData) {
         let response = await axiosPost(`/project/${projectID}/`, { newTaskData }, loggedUserData.token);
-        if (response.status === 200) {
-            console.log("Status 200");
+        if (response.status === 201) {
+            console.log("Status 201");
             return response;
         } else {
             console.log("Status not 200");
             return response;
         }
     }
-
+    /**
+     * This function patches an existing Task (taskID) inside a Project (ProjectID). 
+     * @param {string} projectID A string with the ID of the project the task belongs to
+     * @param {string} taskID A string with the ID of the TASK that needs modifying
+     * @param {object} patchedTaskData An object data with the new data for the target task
+     * @returns 
+     */
     async function patchTaskInProjectFunc(projectID, taskID, patchedTaskData) {
         let response = await axiosPatch(`/project/${projectID}/task/${taskID}`, { patchedTaskData }, loggedUserData.token);
         if (response.status === 200) {
@@ -160,7 +191,12 @@ const ProjectManager = (props) => {
             return response;
         }
     }
-
+    /**
+     * This function "deletes" an existing task from an existing Project. The deletion is not definitive, the intent is to keep track of everything
+     * @param {string} projectID 
+     * @param {string} taskID 
+     * @returns 
+     */
     async function deleteTaskInProjectFunc(projectID, taskID) {
         let response = await axiosDelete(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
         if (response.status === 200) {
@@ -173,16 +209,15 @@ const ProjectManager = (props) => {
     }
 
     useEffect(() => {
-        if (!currentProjectData._i || currentProjectData._id.length === 0) {
-            setCurrentProjectData(tempProjectData);
-        }
-    })
+        // if (!currentProjectData._id || currentProjectData._id.length === 0) {
+        //     setCurrentProjectData(tempProjectData);
+        // }
+    }, [])
 
     return (
         <ProjectContext.Provider value={{
-            // userProjects: userProjects,
             currentProjectData: currentProjectData,
-            getProjectDataFunc: getProjectDataFunc,
+            setCurrentProjectDataFunc: setCurrentProjectDataFunc,
             createProjectFunc: createProjectFunc,
             patchProjectFunc: patchProjectFunc,
             deleteProjectFunc: deleteProjectFunc,

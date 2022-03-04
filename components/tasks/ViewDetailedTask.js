@@ -3,7 +3,7 @@ import { IconButton, Center, Text, Checkbox, Heading, Icon, VStack, HStack, Avat
 import { MaterialIcons } from "@native-base/icons";
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
 
-const Task = (props) => {
+const ViewDetailedTask = (props) => {
 
     return (
 
@@ -52,7 +52,7 @@ const Task = (props) => {
     )
 }
 
-Task.defaultProps = {
+ViewDetailedTask.defaultProps = {
     task: {
         "users": {
             "creators": [
@@ -96,4 +96,4 @@ Task.defaultProps = {
     }
 }
 
-export default Task;
+export default ViewDetailedTask;

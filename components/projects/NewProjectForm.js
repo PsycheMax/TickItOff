@@ -4,6 +4,7 @@ import { LoggedUserContext } from '../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
 import FormField from '../users/UserForms/FormComponents/FormField';
 import { ProjectContext } from '../../utils/ProjectManager';
+import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 
 const inputRules = {
     name: {
@@ -20,11 +21,10 @@ const inputRules = {
     }
 }
 
-
 const NewProjectForm = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
-
+    const ViewFunctions = useContext(ViewManagerContext);
 
     const [newProject, setNewProject] = useState({ name: "", description: "", status: "", completion: "", image: "" });
 
@@ -101,6 +101,9 @@ const NewProjectForm = (props) => {
                         if (response.status !== 201) {
                             console.log(response.data);
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }
+                        } else {
+                            // The project has already been set by the Projectfunction CreateProjectFunc function
+                            ViewFunctions.changeCurrentViewTo('ViewProject');
                         }
                     } else {
                         toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };

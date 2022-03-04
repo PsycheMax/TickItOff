@@ -5,30 +5,21 @@ import UserManagerContextProvider from "./utils/UserManager";
 import ViewManagerContextProvider from "./components/mainView/ViewManagerContextProvider";
 import ProjectManagerContextProvider from "./utils/ProjectManager";
 
-import Header from "./components/header/Header";
-
 import LoginSignupPanel from "./components/users/LoginSignupPanel";
+import ViewManager from "./components/mainView/ViewManager";
 
 export default function App() {
 
   return (
     <NativeBaseProvider>
       <Box h={"100%"} w={"100%"} maxW={1024} mx={"auto"}>
-        <VStack h={"100%"}  >
-          <Header />
-          <UserManagerContextProvider>
-            <ViewManagerContextProvider>
-              <ProjectManagerContextProvider>
-
-
-                <LoginSignupPanel>
-                  <UserPanel />
-                </LoginSignupPanel>
-
-              </ProjectManagerContextProvider>
-            </ViewManagerContextProvider>
-          </UserManagerContextProvider>
-        </VStack>
+        <UserManagerContextProvider>
+          <ViewManagerContextProvider>
+            <ProjectManagerContextProvider>
+              <ViewManager />
+            </ProjectManagerContextProvider>
+          </ViewManagerContextProvider>
+        </UserManagerContextProvider>
       </Box>
     </NativeBaseProvider>
   );

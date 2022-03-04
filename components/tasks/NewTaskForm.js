@@ -1,12 +1,33 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link } from 'native-base';
-import { LoggedUserContext } from '../../../utils/UserManager';
+import { LoggedUserContext } from '../../utils/UserManager';
+import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import { MaterialIcons } from "@native-base/icons";
-import FormField from './FormComponents/FormField';
+import FormField from '../users/UserForms/FormComponents/FormField';
+import { ProjectContext } from '../../utils/ProjectManager';
+
+const inputRules = {
+    name: {
+        minLength: 8,
+        regEx: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
+    },
+    description: {
+        minLength: 8,
+        regEx: `^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$`
+    },
+    image: {
+        minLength: 0,
+        regEx: ``
+    }
+}
 
 const NewTaskForm = (props) => {
-    // The loginUserObj for the API is newUser:{username:"",email:"", password:"", image:""}
-    const [newUser, setNewUser] = useState({ name: "", description: "", status: "", completion: "", image: "" });
+
+    const ProjectFunctions = useContext(ProjectContext);
+    const ViewFunctions = useContext(ViewManagerContext);
+
+
+    const [newTask, setNewTask] = useState({ name: "", description: "", status: "", completion: "", image: "" });
 
     const [alertMessages, setAlertMessages] = useState({
         name: {
@@ -17,7 +38,7 @@ const NewTaskForm = (props) => {
             show: false,
             content: "Alert goes here"
         },
-        image: {
+        status: {
             show: false,
             content: "Alert goes here"
         },
@@ -25,7 +46,7 @@ const NewTaskForm = (props) => {
             show: false,
             content: "Alert goes here"
         },
-        status: {
+        image: {
             show: false,
             content: "Alert goes here"
         },
@@ -40,21 +61,21 @@ const NewTaskForm = (props) => {
     function checkFields() {
         let toSetInAlertMessages = {};
         toSetInAlertMessages.genericForm = alertMessages.genericForm;
-        newUser.email.length < inputRules.email.minLength ? toSetInAlertMessages.email = {
+        newTask.name.length < inputRules.name.minLength ? toSetInAlertMessages.name = {
             show: true,
-            content: `Email must be at least ${inputRules.email.minLength} characters long`
-        } : toSetInAlertMessages.email = { show: false, content: "Alert goes here" };
-        newUser.password.length < inputRules.password.minLength ? toSetInAlertMessages.password = {
+            content: `Name must be at least ${inputRules.name.minLength} characters long`
+        } : toSetInAlertMessages.name = { show: false, content: "Alert goes here" };
+        newTask.description.length < inputRules.description.minLength ? toSetInAlertMessages.description = {
             show: true,
-            content: `Passwords must be at least ${inputRules.password.minLength} characters long`
-        } : toSetInAlertMessages.password = { show: false, content: "Alert goes here" };
-        newUser.username.length < inputRules.username.minLength ? toSetInAlertMessages.username = {
-            show: true,
-            content: `Username must be at least ${inputRules.username.minLength} characters long`
-        } : toSetInAlertMessages.username = { show: false, content: "Alert goes here" };
-        newUser.image.length === 0 ? toSetInAlertMessages.image = {
+            content: `Descriptions must be at least ${inputRules.description.minLength} characters long`
+        } : toSetInAlertMessages.description = { show: false, content: "Alert goes here" };
+        newTask.image.length === 0 ? toSetInAlertMessages.image = {
             show: true, content: "Image cannot be empty"
         } : toSetInAlertMessages.image = { show: false, content: "Alert goes here" };
+        newTask.completion === null ? toSetInAlertMessages.completion = {
+            show: true,
+            content: `Completion must be set`
+        } : toSetInAlertMessages.completion = { show: false, content: "Alert goes here" };
         setAlertMessages(toSetInAlertMessages);
     }
 
@@ -62,44 +83,28 @@ const NewTaskForm = (props) => {
         if (alertMessages.genericForm.show) {
             checkFields();
         }
-        setNewUser(prevState => { return { ...prevState, [fieldName]: value } });
+        setNewTask(prevState => { return { ...prevState, [fieldName]: value } });
     }
 
-    useEffect(() => {
-        if (newUser.password !== null) {
-            if (newUser.password === newUser.passwordRepeat) {
-                if (!identicalPasswords) {
-                    setIdenticalPasswords(true);
-                    setAlertMessages({ ...alertMessages, password: { show: false, content: "Alert goes here" } });
-                }
-            } else {
-                if (identicalPasswords) {
-                    setIdenticalPasswords(false);
-                    setAlertMessages({ ...alertMessages, password: { show: true, content: "Passwords do not match" } })
-                }
-            }
-        }
-    })
-
-
-    async function handleRegistration() {
+    async function handleSubmit() {
         let toSetInAlertMessages = alertMessages;
-        if (newUser.email.length >= inputRules.email.minLength) {
-            if (newUser.username.length >= inputRules.username.minLength) {
-                if (newUser.password.length >= inputRules.password.minLength) {
-                    if (identicalPasswords) {
-                        if (newUser.image.length !== 0) {
+        if (newTask.name.length >= inputRules.name.minLength) {
+            if (newTask.description.length >= inputRules.description.minLength) {
+                if (newTask.image.length >= inputRules.image.minLength) {
+                    if (newTask.completion !== null) {
 
 
-                            const response = await userDataContext.registerNewUserFunc(newUser);
-                            if (response.status !== 201) {
-                                console.log(response.data);
-                                toSetInAlertMessages.email = { show: true, content: response.data };
-                                toSetInAlertMessages.genericForm = { show: true, content: response.data }
-                            }
+                        const response = await ProjectFunctions.createTaskInProjectFunc(newTask);
+                        console.log(response);
 
+                        // TODO Redirect here to the ProjectView of new Project
+
+                        if (response.status !== 201) {
+                            console.log(response.data);
+                            toSetInAlertMessages.genericForm = { show: true, content: response.data }
                         } else {
-                            toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                            // REDIRECT GOES HERE
+                            ViewFunctions.changeCurrentViewTo('ViewProject');
                         }
                     } else {
                         toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
@@ -118,46 +123,42 @@ const NewTaskForm = (props) => {
 
     }
 
-    function handleLinkClick() {
-        props.showOtherFormFunc();
-    }
-
     return (
         <VStack h={"100%"} justifyContent={"center"}>
             <Center w="100%">
                 <Box safeArea p="2" py="8" w="90%" maxW="290">
-                    <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
+                    {/* <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
                         color: "warmGray.50"
                     }}>
                         Welcome
-                    </Heading>
+                    </Heading> */}
                     <Heading mt="1" _dark={{
                         color: "warmGray.200"
                     }} color="coolGray.600" fontWeight="medium" size="xs">
-                        Sign up, it's free!
+                        Create a new Project
                     </Heading>
 
                     <VStack space={3} mt="5">
                         <FormField
-                            isInvalid={alertMessages.username.show} isRequired={alertMessages.username.show} value={newUser.username} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "username") }}
+                            isInvalid={alertMessages.name.show} isRequired={alertMessages.name.show} value={newTask.name} type="text"
+                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "name") }}
                             inputRightElement={false}
                             text={{
-                                label: "Username", name: "username", autocomplete: "username", placeholder: "Username", alertMessage: alertMessages.username.content,
+                                label: "name", name: "name", placeholder: "name", alertMessage: alertMessages.name.content,
                                 iconName: "error"
                             }} >
                         </FormField>
                         <FormField
-                            isInvalid={alertMessages.email.show} isRequired={alertMessages.email.show} value={newUser.email} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "email") }}
+                            isInvalid={alertMessages.description.show} isRequired={alertMessages.description.show} value={newTask.description} type="text"
+                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "description") }}
                             inputRightElement={false}
                             text={{
-                                label: "Email", name: "email", autocomplete: "email", placeholder: "Email", alertMessage: alertMessages.email.content,
+                                label: "Description", name: "description", autocomplete: "description", placeholder: "Description", alertMessage: alertMessages.description.content,
                                 iconName: "error"
                             }} >
                         </FormField>
                         <FormField
-                            isInvalid={alertMessages.image.show} isRequired={alertMessages.image.show} value={newUser.image} type="text"
+                            isInvalid={alertMessages.image.show} isRequired={alertMessages.image.show} value={newTask.image} type="text"
                             autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "image") }}
                             inputRightElement={false}
                             text={{
@@ -166,20 +167,11 @@ const NewTaskForm = (props) => {
                             }} >
                         </FormField>
                         <FormField
-                            isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={newUser.password}
-                            autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
-                            onChangeText={(value) => { handleChange(value, "password") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
-                            inputRightElement={true} text={{
-                                label: "Password", name: "password", autocomplete: "password", placeholder: "Password", alertMessage: alertMessages.password.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={newUser.passwordRepeat}
-                            autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
-                            onChangeText={(value) => { handleChange(value, "passwordRepeat") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
-                            inputRightElement={true} text={{
-                                label: "Repeat Password", name: "password", placeholder: "Repeat Password", alertMessage: alertMessages.password.content,
+                            isInvalid={alertMessages.completion.show} isRequired={alertMessages.completion.show} value={newTask.completion} type="text"
+                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "completion") }}
+                            inputRightElement={false}
+                            text={{
+                                label: "completion", name: "completion", autocomplete: "completion", placeholder: "completion", alertMessage: alertMessages.completion.content,
                                 iconName: "error"
                             }} >
                         </FormField>
@@ -191,23 +183,9 @@ const NewTaskForm = (props) => {
                         </FormControl>
 
                         <Button mt="2" colorScheme="indigo"
-                            onPress={handleRegistration} title={"SignUp"}>
-                            Sign up
+                            onPress={handleSubmit} title={"Add project"}>
+                            Create Project
                         </Button>
-                        <HStack mt="6" justifyContent="center">
-                            <Text fontSize="sm" color="coolGray.600" _dark={{
-                                color: "warmGray.200"
-                            }}>
-                                I'm an existing user.{" "}
-                            </Text>
-                            <Link _text={{
-                                color: "indigo.500",
-                                fontWeight: "medium",
-                                fontSize: "sm"
-                            }} onPress={handleLinkClick}>
-                                Log In
-                            </Link>
-                        </HStack>
                     </VStack>
                 </Box>
             </Center>

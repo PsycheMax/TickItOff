@@ -84,6 +84,13 @@ const UserManager = (props) => {
     const [loggedUserData, setLoggedUserData] = useState({});
 
     // The following functions are to be passed down as context.functions()
+
+    /**
+     This function logs the user into the API server, and returns a data object containing the user data and a JWT token. IT also sets the logged user, if the login is successful, inside the context.loggedUserData.
+     * @param {String} email 
+     * @param {String} password 
+     * @returns The API response, containing user data at response.data
+     */
     async function loginUserFunc(email, password) {
         let loginUserObj = {
             "loginUser": {
@@ -103,19 +110,32 @@ const UserManager = (props) => {
         }
     }
 
+    /**
+     * This function sends a "logout" command to the API and, when the server responds successfully, removes the local userdata from the context
+     */
     async function logoutUserFunc() {
         let response = await axiosPost('/user/logout', {}, loggedUserData.token);
         console.log(response);
-        setLoggedUserData({
-            "_id": "",
-            "username": "",
-            "password": "",
-            "email": "",
-            "image": null,
-            "token": ""
-        });
+        if (response.status === 200) {
+            setLoggedUserData({
+                "_id": "",
+                "username": "",
+                "password": "",
+                "email": "",
+                "image": null,
+                "token": ""
+            });
+        } else {
+            console.log("NOT stat 200");
+            return response;
+        }
     }
 
+    /**
+     * This function creates a new user serverside, in the APIS. If the parameters are correct, the user is created and then logged into the app, locally, via JWT.
+     * @param {object} newUser this object contains the new user information {username:"", password:"", ...}
+     * @returns The API response, after logging in the user into the app
+     */
     async function registerNewUserFunc(newUser) {
         console.log({ newUser });
         let response = await axiosPost('/user', { newUser });
@@ -134,6 +154,12 @@ const UserManager = (props) => {
         }
     }
 
+    /**
+     * This function patches an existing user (targetID) server side, and logs the new user in the app locally - setting it into the context
+     * @param {object} patchedUser 
+     * @param {string} targetID 
+     * @returns 
+     */
     async function patchUserFunc(patchedUser, targetID) {
         console.log(patchedUser, targetID);
         let response = await axiosPatch(`/user/${targetID}`, { patchedUser }, loggedUserData.token);
@@ -152,6 +178,11 @@ const UserManager = (props) => {
         }
     }
 
+    /**
+     * This function gets userdata for another user - it's useful when viewing a profile and such stuff, and it's only available to logged users.
+     * @param {String} targetID 
+     * @returns The API response, containing the target userData under response.data
+     */
     async function getUserDataFunc(targetID) {
         console.log(targetID);
         let response = await axiosGet(`/user/${targetID}`, loggedUserData.token);
@@ -161,16 +192,19 @@ const UserManager = (props) => {
         return toReturn;
     }
 
+    /**
+     * Temp function to speed up testing. 
+     * TODO remove this when deploying
+     * @param {*} userData 
+     */
     async function setUserDataWithoutLoginFunc(userData) {
         console.log(userData);
         setLoggedUserData(userData);
     }
 
+    // TODO remove this when deploying, this logs in the admin user for test purposes
     useEffect(() => {
         setLoggedUserData(fakeUser);
-        if (loggedUserData._id === "") {
-
-        }
 
         return () => {
             // This only runs on componentDestroy
@@ -187,14 +221,9 @@ const UserManager = (props) => {
             setUserDataWithoutLoginFunc: setUserDataWithoutLoginFunc,
             userData: loggedUserData,
         }}>
-            {/* If the user is loggedin, the rest of the app is shown */}
             {props.children}
         </LoggedUserContext.Provider>
     )
-}
-
-UserManager.defaultProps = {
-
 }
 
 export default UserManager;
