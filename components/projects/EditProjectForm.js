@@ -26,8 +26,6 @@ const EditProjectForm = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
 
-    const userDataContext = useContext(LoggedUserContext);
-
 
     const [patchedProject, setPatchedProject] = useState({ name: "", description: "", status: "", completion: "", image: "" });
     const [initialValueModified, setInitialValueModified] = useState(false);

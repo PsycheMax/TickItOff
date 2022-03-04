@@ -7,9 +7,11 @@ import { LoggedUserContext } from './UserManager';
 export const ProjectContext = React.createContext({
     currentProjectData: {},
     setCurrentProjectDataFunc: (projectID) => { },
+    getProjectDataFunc: (projectID) => { },
     createProjectFunc: (projectData) => { },
     patchProjectFunc: (projectID, projectData) => { },
     deleteProjectFunc: (projectID) => { },
+    getTaskInProjectFunc: (projectID, taskID) => { },
     createTaskInProjectFunc: (projectID, taskData) => { },
     patchTaskInProjectFunc: (projectID, taskID, taskData) => { },
     deleteTaskInProjectFunc: (projectID, taskID) => { },
@@ -107,6 +109,22 @@ const ProjectManager = (props) => {
     }
 
     /**
+     * Fetches from the API a project by its projectID
+     * @param {string} projectID 
+     * @returns the API response, with .data 
+     */
+    async function getProjectDataFunc(projectID) {
+        let response = await axiosGet(`/project/${projectID}`, loggedUserData.token);
+        if (response.status === 200) {
+            console.log("In status 200");
+            return response;
+        } else {
+            console.log("Status not 200");
+            return response;
+        }
+    }
+
+    /**
      * This function creates a new project in the database, and sets it into the CurrentProjectData in the context.
      * @param {Object} newProject is an object containing the project data {name: "", description:"", ...}
      * @returns the API response
@@ -151,6 +169,23 @@ const ProjectManager = (props) => {
         if (response.status === 200) {
             console.log("Status 200");
             setCurrentProjectData(response.data);
+            return response;
+        } else {
+            console.log("Status not 200");
+            return response;
+        }
+    }
+
+    /**
+     * Fetches a TaskID, which is part of a Project, and returns it
+     * @param {String} projectID 
+     * @param {String} taskID 
+     * @returns the API response
+     */
+    async function getTaskInProjectFunc(projectID, taskID) {
+        let response = await axiosGet(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
+        if (response.status === 200) {
+            console.log("In status 200");
             return response;
         } else {
             console.log("Status not 200");
@@ -218,9 +253,11 @@ const ProjectManager = (props) => {
         <ProjectContext.Provider value={{
             currentProjectData: currentProjectData,
             setCurrentProjectDataFunc: setCurrentProjectDataFunc,
+            getProjectDataFunc: getProjectDataFunc,
             createProjectFunc: createProjectFunc,
             patchProjectFunc: patchProjectFunc,
             deleteProjectFunc: deleteProjectFunc,
+            getTaskInProjectFunc: getTaskInProjectFunc,
             createTaskInProjectFunc: createTaskInProjectFunc,
             patchTaskInProjectFunc: patchTaskInProjectFunc,
             deleteTaskInProjectFunc: deleteTaskInProjectFunc

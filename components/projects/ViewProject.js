@@ -12,54 +12,56 @@ const ViewProject = (props) => {
     console.log("******************************")
     console.log(ProjectData);
     return (
-        <VStack>
+        <Center mawW={"full"} minW={"full"}>
+            <VStack maxW={"full"} minW={"full"}>
 
-            <Heading size={"lg"} fontSize={"lg"}>{ProjectData.name}</Heading>
-            <Text>{ProjectData.description}</Text>
+                <Heading size={"lg"} fontSize={"lg"}>{ProjectData.name}</Heading>
+                <Text>{ProjectData.description}</Text>
 
-            <Text>{ProjectData.level}</Text>
+                <Text>{ProjectData.level}</Text>
 
-            <HStack alignItems={"center"}>
-                <Text>Created by: </Text>
-                <Avatar.Group size={"sm"} max={4}>
-                    <ProfilePicture zIndex={0} source={ProjectData.users.creators[0].image} username={ProjectData.users.creators[0].username}></ProfilePicture>
-                </Avatar.Group>
-            </HStack>
-            {ProjectData.users.managers.length > 0 ?
                 <HStack alignItems={"center"}>
-                    <Text>Managed by: </Text>
+                    <Text>Created by: </Text>
                     <Avatar.Group size={"sm"} max={4}>
-                        <ProfilePicture zIndex={0} source={ProjectData.users.managers[0].image} username={ProjectData.users.managers[0].username}></ProfilePicture>
+                        <ProfilePicture zIndex={0} source={ProjectData.users.creators[0].image} username={ProjectData.users.creators[0].username}></ProfilePicture>
                     </Avatar.Group>
                 </HStack>
-                : null}
-            {ProjectData.users.joiners.length > 0 ?
-                <HStack alignItems={"center"}>
-                    <Text>Can be viewed by: </Text>
-                    <Avatar.Group size={"sm"} max={4}>
-                        <ProfilePicture zIndex={0} source={ProjectData.users.joiners[0].image} username={ProjectData.users.joiners[0].username}></ProfilePicture>
-                    </Avatar.Group>
-                </HStack>
-                : null}
+                {ProjectData.users.managers.length > 0 ?
+                    <HStack alignItems={"center"}>
+                        <Text>Managed by: </Text>
+                        <Avatar.Group size={"sm"} max={4}>
+                            <ProfilePicture zIndex={0} source={ProjectData.users.managers[0].image} username={ProjectData.users.managers[0].username}></ProfilePicture>
+                        </Avatar.Group>
+                    </HStack>
+                    : null}
+                {ProjectData.users.joiners.length > 0 ?
+                    <HStack alignItems={"center"}>
+                        <Text>Can be viewed by: </Text>
+                        <Avatar.Group size={"sm"} max={4}>
+                            <ProfilePicture zIndex={0} source={ProjectData.users.joiners[0].image} username={ProjectData.users.joiners[0].username}></ProfilePicture>
+                        </Avatar.Group>
+                    </HStack>
+                    : null}
 
-            {ProjectData.tasks ? <Box>
-                <Heading fontSize="xl" p="4" pb="3">
-                    Tasks
-                </Heading>
-                <FlatList data={ProjectData.tasks}
-                    renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
-                        borderColor: "gray.600"
-                    }} borderColor="coolGray.200" pl="4" pr="5" py="2">
-                        <TaskSimple task={item} />
-                    </Box>} keyExtractor={item => item._id} />
-            </Box> : <Text>Niente</Text>}
+                {ProjectData.tasks ? <Box>
+                    <Heading fontSize="xl" p="4" pb="3">
+                        Tasks
+                    </Heading>
+                    <FlatList data={ProjectData.tasks}
+                        renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
+                            borderColor: "gray.600"
+                        }} borderColor="coolGray.200" pl="4" pr="5" py="2">
+                            <TaskSimple task={item} />
+                        </Box>} keyExtractor={item => item._id} />
+                </Box> : <Text>Niente</Text>}
 
-            <NewTaskForm />
+                <NewTaskForm />
 
-            <Text>Created on {ProjectData.creationDate}</Text>
-            <Text>Modificated on {ProjectData.modificationDate}</Text>
+                <Text>Created on {ProjectData.creationDate}</Text>
+                <Text>Modificated on {ProjectData.modificationDate}</Text>
 
-        </VStack>
+            </VStack>
+        </Center>
     )
 }
 

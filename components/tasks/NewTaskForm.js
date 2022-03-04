@@ -123,71 +123,64 @@ const NewTaskForm = (props) => {
     }
 
     return (
-        <VStack h={"100%"} justifyContent={"center"}>
-            <Center w="100%">
-                <Box safeArea p="2" py="8" w="90%" maxW="290">
-                    {/* <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
-                        color: "warmGray.50"
-                    }}>
-                        Welcome
-                    </Heading> */}
-                    <Heading mt="1" _dark={{
-                        color: "warmGray.200"
-                    }} color="coolGray.600" fontWeight="medium" size="xs">
-                        Add a new Task
-                    </Heading>
+        <VStack w={"full"} minW={"full"} maxW={"768"} h={"100%"} justifyContent={"center"}>
 
-                    <VStack space={3} mt="5">
-                        <FormField
-                            isInvalid={alertMessages.name.show} isRequired={alertMessages.name.show} value={newTask.name} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "name") }}
-                            inputRightElement={false}
-                            text={{
-                                label: "name", name: "name", placeholder: "name", alertMessage: alertMessages.name.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.description.show} isRequired={alertMessages.description.show} value={newTask.description} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "description") }}
-                            inputRightElement={false}
-                            text={{
-                                label: "Description", name: "description", autocomplete: "description", placeholder: "Description", alertMessage: alertMessages.description.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.image.show} isRequired={alertMessages.image.show} value={newTask.image} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "image") }}
-                            inputRightElement={false}
-                            text={{
-                                label: "image", name: "image", autocomplete: "image", placeholder: "image", alertMessage: alertMessages.image.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
-                        <FormField
-                            isInvalid={alertMessages.completion.show} isRequired={alertMessages.completion.show} value={newTask.completion} type="text"
-                            autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "completion") }}
-                            inputRightElement={false}
-                            text={{
-                                label: "completion", name: "completion", autocomplete: "completion", placeholder: "completion", alertMessage: alertMessages.completion.content,
-                                iconName: "error"
-                            }} >
-                        </FormField>
+            <Heading mt="1" _dark={{
+                color: "warmGray.200"
+            }} color="coolGray.600" fontWeight="medium" size="xs">
+                Add a new Task
+            </Heading>
 
-                        <FormControl isInvalid={alertMessages.genericForm.show} >
-                            <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
-                                {alertMessages.genericForm.content}
-                            </FormControl.ErrorMessage>
-                        </FormControl>
+            <VStack space={3} mt="5">
+                <FormField
+                    isInvalid={alertMessages.name.show} isRequired={alertMessages.name.show} value={newTask.name} type="text"
+                    autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "name") }}
+                    inputRightElement={false}
+                    text={{
+                        label: "name", name: "name", placeholder: "name", alertMessage: alertMessages.name.content,
+                        iconName: "error"
+                    }} >
+                </FormField>
+                <FormField
+                    isInvalid={alertMessages.description.show} isRequired={alertMessages.description.show} value={newTask.description} type="text"
+                    autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "description") }}
+                    inputRightElement={false}
+                    text={{
+                        label: "Description", name: "description", autocomplete: "description", placeholder: "Description", alertMessage: alertMessages.description.content,
+                        iconName: "error"
+                    }} >
+                </FormField>
+                <FormField
+                    isInvalid={alertMessages.image.show} isRequired={alertMessages.image.show} value={newTask.image} type="text"
+                    autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "image") }}
+                    inputRightElement={false}
+                    text={{
+                        label: "image", name: "image", autocomplete: "image", placeholder: "image", alertMessage: alertMessages.image.content,
+                        iconName: "error"
+                    }} >
+                </FormField>
+                <FormField
+                    isInvalid={alertMessages.completion.show} isRequired={alertMessages.completion.show} value={newTask.completion} type="text"
+                    autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "completion") }}
+                    inputRightElement={false}
+                    text={{
+                        label: "completion", name: "completion", autocomplete: "completion", placeholder: "completion", alertMessage: alertMessages.completion.content,
+                        iconName: "error"
+                    }} >
+                </FormField>
 
-                        <Button mt="2" colorScheme="indigo"
-                            onPress={handleSubmit} title={"Add task"}>
-                            Add task
-                        </Button>
-                    </VStack>
-                </Box>
-            </Center>
+                <FormControl isInvalid={alertMessages.genericForm.show} >
+                    <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
+                        {alertMessages.genericForm.content}
+                    </FormControl.ErrorMessage>
+                </FormControl>
+
+                <Button mt="2" colorScheme="indigo"
+                    onPress={handleSubmit} title={"Add task"}>
+                    Add task
+                </Button>
+            </VStack>
+
         </VStack >
     )
 }

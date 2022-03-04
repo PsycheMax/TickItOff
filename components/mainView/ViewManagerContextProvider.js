@@ -34,6 +34,7 @@ const ViewManagerContextProvider = (props) => {
 
     const [currentView, setCurrentView] = useState("editUserForm");
     const [lastView, setLastView] = useState("");
+    const [propsForView, setPropsForView] = useState({});
 
     const userData = useContext(LoggedUserContext).userData;
     const projectData = useContext(ProjectContext).currentProjectData;
@@ -74,7 +75,7 @@ const ViewManagerContextProvider = (props) => {
                     return <ViewDetailedTask />
                     break;
                 case "EditTaskForm":
-                    return <EditTaskForm />
+                    return <EditTaskForm taskID={propsForView.taskID} />
                     break;
                 case "default":
                 default:
@@ -92,13 +93,18 @@ const ViewManagerContextProvider = (props) => {
      * E.g. If the user is viewing a project and wants to open up the logout panel, but then wants to go back to the last project they were viewing, the logout view change command will first show the logout view, and then on the second call, will show the previous view.
      * @param {String} targetView This is the name of the wanted view. No props are necessary to be passed to the new views, since all the necessary data will be taken from the contexts.
      */
-    function changeCurrentViewTo(targetView) {
+    function changeCurrentViewTo(targetView, propsForNewView) {
         console.log(`${currentView} => ${targetView}`);
         if (currentView === targetView) {
             setCurrentView(lastView);
         } else {
             setLastView(currentView);
+
+            if (propsForNewView) {
+                setPropsForView = propsForNewView;
+            }
             setCurrentView(targetView);
+
         }
     }
 

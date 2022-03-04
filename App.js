@@ -1,4 +1,4 @@
-import { NativeBaseProvider, VStack, Container, Box, ScrollView } from "native-base";
+import { NativeBaseProvider, VStack, Container, Box, ScrollView, View, Center } from "native-base";
 
 import UserPanel from "./components/users/UserPanel/UserPanel";
 import UserManagerContextProvider from "./utils/UserManager";
@@ -12,7 +12,7 @@ export default function App() {
 
   return (
     <NativeBaseProvider>
-      <Box h={"100%"} w={"100%"} maxW={1024} mx={"auto"}>
+      <Center h={"100%"} w={"100%"} maxW={1024} mx={"auto"}>
         <UserManagerContextProvider>
           <ViewManagerContextProvider>
             <ProjectManagerContextProvider>
@@ -20,7 +20,7 @@ export default function App() {
             </ProjectManagerContextProvider>
           </ViewManagerContextProvider>
         </UserManagerContextProvider>
-      </Box>
+      </Center>
     </NativeBaseProvider>
   );
 }
