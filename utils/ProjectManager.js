@@ -6,6 +6,7 @@ import { LoggedUserContext } from './UserManager';
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
 export const ProjectContext = React.createContext({
     currentProjectData: {},
+    reloadCurrentProjectDataFunc: () => { },
     setCurrentProjectDataFunc: (projectID) => { },
     getProjectDataFunc: (projectID) => { },
     createProjectFunc: (projectData) => { },
@@ -90,6 +91,22 @@ const ProjectManager = (props) => {
     //     setUserProjects(loggedUserData.projects);
     //     return loggedUserData.projects;
     // }
+
+    /**
+     * This function reloads the CurrentProjectData in the context - useful when the project has been updated and the updates need to be used in the app
+     * @returns The api response, in case it's necessary
+     */
+    async function reloadCurrentProjectDataFunc() {
+        let response = await axiosGet(`/project/${currentProjectData._id}`, loggedUserData.token);
+        if (response.status === 200) {
+            console.log("In status 200");
+            setCurrentProjectData(response.data);
+            return response;
+        } else {
+            console.log("Status not 200");
+            return response;
+        }
+    }
 
     /**
      * This function changes the CurrentProjectData in the Context - as the context gives the Views directions on what to show, this is an essential part of the "changeView" function
@@ -216,7 +233,7 @@ const ProjectManager = (props) => {
      * @param {object} patchedTaskData An object data with the new data for the target task
      * @returns 
      */
-    async function patchTaskInProjectFunc(projectID, taskID, patchedTaskData) {
+    async function patchTaskInProjectFunc(projectID, taskID, patchedTask) {
         let response = await axiosPatch(`/project/${projectID}/task/${taskID}`, { patchedTask }, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
@@ -233,7 +250,10 @@ const ProjectManager = (props) => {
      * @returns 
      */
     async function deleteTaskInProjectFunc(projectID, taskID) {
+        console.log(projectID)
+        console.log(taskID)
         let response = await axiosDelete(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
+        console.log(response);
         if (response.status === 200) {
             console.log("Status 200");
             return response;
@@ -252,6 +272,7 @@ const ProjectManager = (props) => {
     return (
         <ProjectContext.Provider value={{
             currentProjectData: currentProjectData,
+            reloadCurrentProjectDataFunc: reloadCurrentProjectDataFunc,
             setCurrentProjectDataFunc: setCurrentProjectDataFunc,
             getProjectDataFunc: getProjectDataFunc,
             createProjectFunc: createProjectFunc,

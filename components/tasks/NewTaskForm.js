@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link } from 'native-base';
+import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link, Checkbox, Input, IconButton } from 'native-base';
 import { LoggedUserContext } from '../../utils/UserManager';
 import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import { MaterialIcons } from "@native-base/icons";
@@ -27,7 +27,7 @@ const NewTaskForm = (props) => {
     const ViewFunctions = useContext(ViewManagerContext);
 
 
-    const [newTask, setNewTask] = useState({ name: "", description: "", status: "", completion: "", image: "" });
+    const [newTask, setNewTask] = useState({ name: "", description: "", active: true, completion: false, image: "" });
 
     const [alertMessages, setAlertMessages] = useState({
         name: {
@@ -38,7 +38,7 @@ const NewTaskForm = (props) => {
             show: false,
             content: "Alert goes here"
         },
-        status: {
+        active: {
             show: false,
             content: "Alert goes here"
         },
@@ -90,32 +90,24 @@ const NewTaskForm = (props) => {
         let toSetInAlertMessages = alertMessages;
         if (newTask.name.length >= inputRules.name.minLength) {
             if (newTask.description.length >= inputRules.description.minLength) {
-                if (newTask.image.length >= inputRules.image.minLength) {
-                    if (newTask.completion !== null) {
 
+                const response = await ProjectFunctions.createTaskInProjectFunc(ProjectFunctions.currentProjectData._id, newTask);
+                console.log(response);
 
-                        const response = await ProjectFunctions.createTaskInProjectFunc(ProjectFunctions.currentProjectData._id, newTask);
-                        console.log(response);
+                // TODO Redirect here to the ProjectView of new Project
 
-                        // TODO Redirect here to the ProjectView of new Project
-
-                        if (response.status !== 201) {
-                            console.log(response.data);
-                            toSetInAlertMessages.genericForm = { show: true, content: response.data }
-                        } else {
-                            ViewFunctions.changeCurrentViewTo('ViewProject');
-                        }
-                    } else {
-                        toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
-                    }
+                if (response.status !== 201) {
+                    console.log(response.data);
+                    toSetInAlertMessages.genericForm = { show: true, content: response.data.message }
                 } else {
-                    toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                    // SUCCESS HERE
+                    await ProjectFunctions.reloadCurrentProjectDataFunc();
                 }
             } else {
-                toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task description should be at least ${inputRules.description.minLength} characters long` };
             }
         } else {
-            toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+            toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task name should be at least ${inputRules.name.minLength} characters long` };
         }
         setAlertMessages(toSetInAlertMessages);
         checkFields();
@@ -123,14 +115,47 @@ const NewTaskForm = (props) => {
     }
 
     return (
-        <VStack w={"full"} minW={"full"} maxW={"768"} h={"100%"} justifyContent={"center"}>
+        <VStack w={"full"} minW={"full"} justifyContent={"center"} display={"block"}>
 
             <Heading mt="1" _dark={{
                 color: "warmGray.200"
             }} color="coolGray.600" fontWeight="medium" size="xs">
                 Add a new Task
             </Heading>
+            <Box size="lg" alignSelf={"auto"} w={"full"} h={"100%"}>
+                <HStack>
+                    <Center>
+                        <Checkbox w={"1/6"} colorScheme="orange" size="lg" p={0} m={0}
+                            icon={<Icon as={<MaterialIcons name="celebration" />} />} defaultIsChecked={false}
+                            isChecked={newTask.completion} onChange={(isChecked) => { handleChange(isChecked, "completion"); console.log(newTask.completion) }}
+                        />
+                    </Center>
+                    <VStack w={"5/6"} pl={9} >
+                        <Input placeholder="Task Name" onChangeText={(value) => { handleChange(value, "name") }} type="text" value={newTask.name} autocorrect={true}></Input>
+                        <Input placeholder="Task Description" onChangeText={(value) => { handleChange(value, "description") }} type="text" value={newTask.description} autocorrect={true}></Input>
 
+
+                        <FormControl isInvalid={alertMessages.genericForm.show} >
+                            <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
+                                {alertMessages.genericForm.content}
+                            </FormControl.ErrorMessage>
+                        </FormControl>
+
+                    </VStack>
+                    <IconButton icon={<Icon as={<MaterialIcons name="playlist-add" />} />}
+                        w={"1/6"} mt="2" colorScheme="indigo"
+                        onPress={handleSubmit} title={"Add task"} />
+
+                </HStack>
+            </Box>
+        </VStack >
+    )
+}
+
+export default NewTaskForm;
+
+
+{/*             
             <VStack space={3} mt="5">
                 <FormField
                     isInvalid={alertMessages.name.show} isRequired={alertMessages.name.show} value={newTask.name} type="text"
@@ -179,10 +204,4 @@ const NewTaskForm = (props) => {
                     onPress={handleSubmit} title={"Add task"}>
                     Add task
                 </Button>
-            </VStack>
-
-        </VStack >
-    )
-}
-
-export default NewTaskForm;
+            </VStack> */}

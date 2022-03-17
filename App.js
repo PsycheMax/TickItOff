@@ -12,7 +12,7 @@ export default function App() {
 
   return (
     <NativeBaseProvider>
-      <Center h={"100%"} w={"100%"} maxW={1024} mx={"auto"}>
+      <Center h={"100%"} w={"100%"} maxW={1024} mx={"auto"} overflowX={"none"}>
         <UserManagerContextProvider>
           <ViewManagerContextProvider>
             <ProjectManagerContextProvider>

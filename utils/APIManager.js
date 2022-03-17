@@ -63,7 +63,6 @@ export async function axiosDelete(pathDestination, accessToken) {
             headers: {
                 'x-access-token': accessToken
             },
-            data: objectToSend
         }
         const response = await axios(configuration);
         return response;
