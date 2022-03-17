@@ -164,8 +164,8 @@ const ProjectManager = (props) => {
      * @param {object} patchedProjectData is an object containing the project data {name: "", description:"", ...} that has to be sent to the API
      * @returns The API response
      */
-    async function patchProjectFunc(projectID, patchedProjectData) {
-        let response = await axiosPatch(`/project/${projectID}`, { patchedProjectData }, loggedUserData.token);
+    async function patchProjectFunc(projectID, patchedProject) {
+        let response = await axiosPatch(`/project/${projectID}`, { patchedProject }, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
             setCurrentProjectData(response.data);

@@ -6,6 +6,7 @@ import TaskSimple from '../tasks/TaskSimple';
 import { ProjectContext } from '../../utils/ProjectManager';
 import NewTaskForm from '../tasks/NewTaskForm';
 import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
+import EditProjectForm from './EditProjectForm';
 
 const ViewProject = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
@@ -14,10 +15,15 @@ const ViewProject = (props) => {
 
     const [showUserManagement, setShowUserManagement] = useState(false);
     const [showArchivedTasks, setShowArchivedTasks] = useState(false);
+    const [showProjectEditForm, setShowProjectEditForm] = useState(true)
 
     async function backToProjectSelector() {
         await ProjectFunctions.setCurrentProjectDataFunc(null);
         await ViewFunctions.changeCurrentViewTo("ProjectSelector");
+    }
+
+    async function toggleEditProjectForm() {
+        await setShowProjectEditForm(!showProjectEditForm);
     }
 
     async function toggleUserManagement() {
@@ -28,27 +34,38 @@ const ViewProject = (props) => {
         await setShowArchivedTasks(!showArchivedTasks);
     }
 
-    console.log("******************************")
-    console.log(ProjectData);
     return (
         <Center mawW={"full"} minW={"full"}>
             <VStack maxW={"full"} minW={"full"} px={"4"} mx={"auto"} mt={"10"}>
 
                 <HStack>
-                    <VStack w={"5/6"}>
-                        <Pressable onPress={toggleUserManagement}>
-                            <Heading size={"lg"} fontSize={"lg"}>{ProjectData.name}</Heading>
-                            <Text>{ProjectData.description}</Text>
+                    <VStack w={"5/6"} h={"3rem"}>
+                        <Box display={showProjectEditForm ? "none" : "block"}>
+                            <Pressable onPress={toggleUserManagement}>
+                                <Heading size={"lg"} fontSize={"lg"}>{ProjectData.name}</Heading>
+                                <Text>{ProjectData.description}</Text>
 
-                            <Text>{ProjectData.level}</Text>
-                        </Pressable>
+                                <Text>{ProjectData.level}</Text>
+                            </Pressable>
+                        </Box>
+                        <Box display={showProjectEditForm ? "block" : "none"}>
+                            <EditProjectForm toggleFormFunc={toggleEditProjectForm} />
+                        </Box>
                     </VStack>
-                    <Center w={"1/6"} >
-                        <IconButton
-                            icon={<Icon as={MaterialIcons} name="view-list" />} borderRadius="full" _icon={{ color: "primary.500", size: "sm" }}
-                            onPress={backToProjectSelector}
-                        />
-                    </Center>
+                    <HStack w={"1/6"}>
+                        <Center display={showProjectEditForm ? "none" : "block"}>
+                            <IconButton
+                                icon={<Icon as={MaterialIcons} name="edit" />} borderRadius="full" _icon={{ color: "primary.500", size: "sm" }}
+                                onPress={toggleEditProjectForm}
+                            />
+                        </Center>
+                        <Center>
+                            <IconButton
+                                icon={<Icon as={MaterialIcons} name="view-list" />} borderRadius="full" _icon={{ color: "primary.500", size: "sm" }}
+                                onPress={backToProjectSelector}
+                            />
+                        </Center>
+                    </HStack>
                 </HStack>
 
                 <Box display={showUserManagement ? "block" : "none"}>

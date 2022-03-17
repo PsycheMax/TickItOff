@@ -16,7 +16,6 @@ const TaskSimple = (props) => {
         await ProjectFunctions.reloadCurrentProjectDataFunc();
     }
 
-    console.log(props.task)
     return (
 
         <Box size="lg" alignSelf={"auto"} w={"full"} h={"100%"}>
