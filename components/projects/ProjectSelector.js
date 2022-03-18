@@ -1,26 +1,32 @@
-import React, { useContext } from 'react';
-import { IconButton, Center, Text, Checkbox, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, View, Container, Button, Spinner } from 'native-base';
-import { MaterialIcons } from "@native-base/icons";;
-import ProfilePicture from '../users/UserPanel/ProfilePicture';
-import TaskSimple from '../tasks/TaskSimple';
+import React, { useContext, useState, useEffect } from 'react';
+import { Heading, VStack, HStack, Box, FlatList, View, Button, Spinner, Pressable } from 'native-base';
 import { LoggedUserContext } from '../../utils/UserManager';
 import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import { ProjectContext } from '../../utils/ProjectManager';
 
 const ProjectSelector = (props) => {
 
-    const UserData = useContext(LoggedUserContext).userData;
+    const LoggedUserFunctions = useContext(LoggedUserContext);
+    const UserData = LoggedUserFunctions.userData;
     const ViewFunctions = useContext(ViewManagerContext);
     const ProjectFunctions = useContext(ProjectContext);
 
+    const [showArchivedProjects, setShowArchivedProjects] = useState(false);
+
     let projects = UserData.projects;
-    console.log(UserData);
-    console.log(projects);
 
     async function selectProject(targetID) {
         await ProjectFunctions.setCurrentProjectDataFunc(targetID);
         await ViewFunctions.changeCurrentViewTo("ViewProject");
     }
+
+    async function toggleShowArchivedProjects() {
+        setShowArchivedProjects(!showArchivedProjects);
+    }
+
+    useEffect(() => {
+        LoggedUserFunctions.updateLoggedUserDataFunc();
+    }, [])
 
     if (UserData._id !== undefined) {
         return (
@@ -32,6 +38,23 @@ const ProjectSelector = (props) => {
                     }} borderColor="coolGray.200" pl="4" pr="5" py="2">
                         <Button onPress={selectProject.bind(this, item._id)} >{item.name}</Button>
                     </Box>} keyExtractor={item => item._id} />
+
+                <View>
+                    <Pressable onPress={toggleShowArchivedProjects}>
+                        <Heading borderBottomStyle={"solid"} borderBottomColor={"primary.500"}
+                            borderBottomWidth={showArchivedProjects ? "0" : "1"}>
+                            Archived Projects
+                        </Heading>
+                    </Pressable>
+                    <View display={showArchivedProjects ? "block" : "none"}>
+                        <FlatList pt={"10"} data={projects.archived}
+                            renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
+                                borderColor: "gray.600"
+                            }} borderColor="coolGray.200" pl="4" pr="5" py="2">
+                                <Button onPress={selectProject.bind(this, item._id)} >{item.name}</Button>
+                            </Box>} keyExtractor={item => item._id} />
+                    </View>
+                </View>
 
             </VStack>
         )

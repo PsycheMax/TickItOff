@@ -92,12 +92,8 @@ const NewTaskForm = (props) => {
             if (newTask.description.length >= inputRules.description.minLength) {
 
                 const response = await ProjectFunctions.createTaskInProjectFunc(ProjectFunctions.currentProjectData._id, newTask);
-                console.log(response);
-
-                // TODO Redirect here to the ProjectView of new Project
 
                 if (response.status !== 201) {
-                    console.log(response.data);
                     toSetInAlertMessages.genericForm = { show: true, content: response.data.message }
                 } else {
                     // SUCCESS HERE
@@ -122,12 +118,12 @@ const NewTaskForm = (props) => {
             }} color="coolGray.600" fontWeight="medium" size="xs">
                 Add a new Task
             </Heading> */}
-            <Box size="lg" alignSelf={"auto"} w={"full"} h={"100%"} pt={"12"}>
+            <Box size="lg" alignSelf={"auto"} w={"full"} h={"100%"} py={"6"}>
                 <HStack>
                     <Center>
                         <Checkbox w={"1/6"} colorScheme="orange" size="lg" p={0} m={0}
                             icon={<Icon as={<MaterialIcons name="celebration" />} />} defaultIsChecked={false}
-                            isChecked={newTask.completion} onChange={(isChecked) => { handleChange(isChecked, "completion"); console.log(newTask.completion) }}
+                            isChecked={newTask.completion} onChange={(isChecked) => { handleChange(isChecked, "completion"); }}
                         />
                     </Center>
                     <VStack w={"5/6"} pl={9} >

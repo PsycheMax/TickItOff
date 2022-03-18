@@ -39,8 +39,6 @@ export async function axiosPost(pathDestination, objectToSend, accessToken) {
     }
 }
 export async function axiosPatch(pathDestination, objectToSend, accessToken) {
-    console.log("PROJECT PATCH");
-    console.log(APIDestination + pathDestination)
     try {
         const configuration = {
             method: 'patch',

@@ -6,7 +6,6 @@ const GenericIconButton = (props) => {
     // Context here is necessary to call the login and logout functions
 
     function handleAction() {
-        console.log("Pressed!")
         props.onPress();
     }
 

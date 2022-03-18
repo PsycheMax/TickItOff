@@ -54,13 +54,13 @@ const LoginForm = (props) => {
             content: `Passwords must be at least ${inputRules.password.minLength} characters long`
         } : toSetInAlertMessages.password = { show: false, content: "Alert goes here" };
         setAlertMessages(toSetInAlertMessages);
-        console.log(toSetInAlertMessages);
+
 
         if (loginUser.email.length >= inputRules.email.minLength && loginUser.password.length >= inputRules.password.minLength) {
-            console.log("LOGIN")
+
             const response = await userDataContext.loginUserFunc(loginUser.email, loginUser.password);
             if (response.status !== 200) {
-                console.log(response.data);
+
                 setAlertMessages({ ...toSetInAlertMessages, genericForm: { show: true, content: response.data } });
             }
         }

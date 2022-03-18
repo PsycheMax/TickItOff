@@ -107,7 +107,7 @@ const SignUpForm = (props) => {
 
                             const response = await userDataContext.registerNewUserFunc(newUser);
                             if (response.status !== 201) {
-                                console.log(response.data);
+
                                 toSetInAlertMessages.email = { show: true, content: response.data };
                                 toSetInAlertMessages.genericForm = { show: true, content: response.data }
                             }

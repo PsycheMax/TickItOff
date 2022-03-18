@@ -21,13 +21,21 @@ const inputRules = {
 }
 // Username, PW, EMAIL, IMAGE
 const EditUserForm = (props) => {
+
+    const userDataContext = useContext(LoggedUserContext);
+
     // The patchUserObj for the API is {patchedUser:{username:"",email:"", password:"", image:""}}
-    const [patchedUser, setPatchedUser] = useState({ email: "", oldPassword: "", password: "", passwordRepeat: "", username: "", image: "" });
+    const [patchedUser, setPatchedUser] = useState({
+        email: userDataContext.userData.email,
+        oldPassword: "",
+        password: "",
+        passwordRepeat: "",
+        username: userDataContext.userData.username,
+        image: userDataContext.userData.image
+    });
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [identicalPasswords, setIdenticalPasswords] = useState(false);
-
-    const [initialValueModified, setInitialValueModified] = useState(false);
 
     const [alertMessages, setAlertMessages] = useState({
         email: {
@@ -56,8 +64,6 @@ const EditUserForm = (props) => {
             success: false
         },
     })
-
-    const userDataContext = useContext(LoggedUserContext);
 
     function checkFields() {
         let toSetInAlertMessages = {};
@@ -96,10 +102,6 @@ const EditUserForm = (props) => {
     }
 
     useEffect(() => {
-        if (!initialValueModified) {
-            setInitialValues().then(() => { setInitialValueModified(true) });
-        }
-
         if (patchedUser.password !== null) {
             if (patchedUser.password === patchedUser.passwordRepeat) {
                 if (!identicalPasswords) {
@@ -126,7 +128,6 @@ const EditUserForm = (props) => {
                         if (patchedUser.image.length !== 0) {
                             const response = await userDataContext.patchUserFunc(patchedUser, userDataContext.userData._id);
                             if (response.status !== 200) {
-                                console.log(response.data);
                                 switch (response.status) {
                                     case 401:
                                         toSetInAlertMessages.oldPassword = { show: true, content: response.data, success: false };
@@ -163,17 +164,6 @@ const EditUserForm = (props) => {
         }
         setAlertMessages(toSetInAlertMessages);
         checkFields();
-    }
-
-    async function setInitialValues() {
-        if (userDataContext.userData._id !== undefined) {
-            let response = await userDataContext.getUserDataFunc(userDataContext.userData._id);
-            let toSetInState = response.data;
-            toSetInState.oldPassword = "";
-            toSetInState.password = "";
-            toSetInState.passwordRepeat = "";
-            setPatchedUser(toSetInState);
-        }
     }
 
     return (

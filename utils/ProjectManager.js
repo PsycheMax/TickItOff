@@ -18,67 +18,6 @@ export const ProjectContext = React.createContext({
     deleteTaskInProjectFunc: (projectID, taskID) => { },
 });
 
-const tempProjectData = {
-    "users": {
-        "creators": [
-            {
-                "_id": "620fd2edc7effb0abb07ccbf",
-                "username": "AdminMax",
-                "image": "https://randomuser.me/api/portraits/lego/6.jpg",
-                "status": "Active"
-            }
-        ],
-        "joiners": [],
-        "managers": [
-            {
-                "_id": "620fd2edc7effb0abb07ccbf",
-                "username": "AdminMax",
-                "image": "https://randomuser.me/api/portraits/lego/6.jpg",
-                "status": "Active"
-            }
-        ]
-    },
-    "settings": {
-        "colorScheme": "DefaultModified"
-    },
-    "_id": "620fd33cc7effb0abb07ccca",
-    "name": "PostMan name 1 - After MOD",
-    "description": "description - AFTER MOD -1",
-    "completion": true,
-    "image": "reqUser.image - after MOD -1",
-    "status": "Active",
-    "creationDate": "2022-02-18T17:11:24.637Z",
-    "modificationDate": "2022-02-28T10:12:03.650Z",
-    "tasks": [
-        {
-            "_id": "620fdc774c33628925c81365",
-            "name": "PostMan name 1",
-            "image": "req.image",
-            "status": "Active"
-        },
-        {
-            "_id": "620fdc8c0e1e0f5a3b71ae8a",
-            "name": "PostMan name 1",
-            "image": "req.image",
-            "status": "Active"
-        },
-        {
-            "_id": "620fdd072c14c2e8023aa11d",
-            "name": "PostMan UPDATE 1",
-            "image": "IMAGINE OLL THE PIPOL",
-            "status": "active"
-        },
-        {
-            "_id": "621c9ff3f3a9ca7ebd2e112c",
-            "name": "Uffa chge wall era",
-            "image": "req.image",
-            "status": "Active"
-        }
-    ],
-    "notifications": [],
-    "__v": 4
-}
-
 const ProjectManager = (props) => {
 
     const [currentProjectData, setCurrentProjectData] = useState({});
@@ -185,7 +124,7 @@ const ProjectManager = (props) => {
         let response = await axiosDelete(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
-            setCurrentProjectData(response.data);
+            // setCurrentProjectData(null);
             return response;
         } else {
             console.log("Status not 200");
@@ -250,10 +189,7 @@ const ProjectManager = (props) => {
      * @returns 
      */
     async function deleteTaskInProjectFunc(projectID, taskID) {
-        console.log(projectID)
-        console.log(taskID)
         let response = await axiosDelete(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
-        console.log(response);
         if (response.status === 200) {
             console.log("Status 200");
             return response;

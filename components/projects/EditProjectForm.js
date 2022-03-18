@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link, Input, IconButton } from 'native-base';
+import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link, Input, IconButton, AlertDialog, View } from 'native-base';
 import { LoggedUserContext } from '../../utils/UserManager';
 import { MaterialIcons } from "@native-base/icons";
 import FormField from '../users/UserForms/FormComponents/FormField';
 import { ProjectContext } from '../../utils/ProjectManager';
+import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 
 const inputRules = {
     name: {
@@ -25,9 +26,10 @@ const EditProjectForm = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
-
+    const ViewFunctions = useContext(ViewManagerContext);
 
     const [patchedProject, setPatchedProject] = useState({ name: ProjectData.name, description: ProjectData.description });
+    const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
     const [alertMessages, setAlertMessages] = useState({
         name: {
@@ -85,16 +87,11 @@ const EditProjectForm = (props) => {
     }
 
     async function handleSubmitEdit() {
-        console.log("MMOCCAMMAMMETA");
         let toSetInAlertMessages = alertMessages;
         if (patchedProject.name.length >= inputRules.name.minLength) {
             if (patchedProject.description.length >= inputRules.description.minLength) {
-                console.log(ProjectData._id);
-                console.log(patchedProject);
                 const response = await ProjectFunctions.patchProjectFunc(ProjectData._id, patchedProject);
-                console.log(response);
                 if (response.status !== 200) {
-                    console.log(response.data);
                     toSetInAlertMessages.genericForm = { show: true, content: response.data }
                 } else {
                     props.toggleFormFunc();
@@ -109,8 +106,40 @@ const EditProjectForm = (props) => {
         checkFields();
     }
 
+    function toggleDeletePrompt() {
+        setShowDeletePrompt(!showDeletePrompt);
+    }
+
+    async function handleDeleteProject() {
+        let toSetInAlertMessages = alertMessages;
+        const response = await ProjectFunctions.deleteProjectFunc(ProjectData._id);
+        if (response.status !== 200) {
+            if (response.status !== 204) {
+                // ERROR
+                toSetInAlertMessages.genericForm = { show: true, content: response.data };
+            } else {
+                // Code 204!
+                await ViewFunctions.changeCurrentViewTo("ProjectSelector");
+                await ViewFunctions.renderCurrentView();
+            }
+        } else {
+            // Code 200
+            await ViewFunctions.changeCurrentViewTo("ProjectSelector");
+            await ViewFunctions.renderCurrentView();
+        }
+        setAlertMessages(toSetInAlertMessages);
+    }
+
+
+
+    const cancelRef = React.useRef(null);
     return (
         <HStack>
+            <Center>
+                <IconButton icon={<Icon as={MaterialIcons} name="delete" />} borderRadius="full" _icon={{ color: "danger.500", size: "sm" }}
+                    onPress={toggleDeletePrompt}
+                />
+            </Center>
             <VStack w={"5/6"} h={"100%"}>
                 <Input placeholder="Edit Project Title"
                     fontSize={"lg"} fontWeight={"bold"}
@@ -128,6 +157,26 @@ const EditProjectForm = (props) => {
                     onPress={handleSubmitEdit}
                 />
             </Center>
+            <AlertDialog leastDestructiveRef={cancelRef} isOpen={showDeletePrompt} onClose={toggleDeletePrompt}>
+                <AlertDialog.Content>
+                    <AlertDialog.CloseButton />
+                    <AlertDialog.Header>Delete Project</AlertDialog.Header>
+                    <AlertDialog.Body>
+                        This will remove all data relating to the Project. This action cannot be
+                        reversed. Deleted data can not be recovered.
+                    </AlertDialog.Body>
+                    <AlertDialog.Footer>
+                        <Button.Group space={2}>
+                            <Button variant="unstyled" colorScheme="coolGray" onPress={toggleDeletePrompt} ref={cancelRef}>
+                                Cancel
+                            </Button>
+                            <Button colorScheme="danger" onPress={handleDeleteProject}>
+                                Delete
+                            </Button>
+                        </Button.Group>
+                    </AlertDialog.Footer>
+                </AlertDialog.Content>
+            </AlertDialog>
         </HStack>
     )
 }

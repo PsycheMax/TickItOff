@@ -99,12 +99,8 @@ const EditTaskForm = (props) => {
 
 
                         const response = await ProjectFunctions.patchTaskInProjectFunc(ProjectFunctions.currentProjectData._id, patchedTask);
-                        console.log(response);
-
-                        // TODO Redirect here to the ProjectView of new Project
 
                         if (response.status !== 201) {
-                            console.log(response.data);
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }
                         } else {
                             ViewFunctions.changeCurrentViewTo('ViewProject');

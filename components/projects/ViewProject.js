@@ -15,7 +15,7 @@ const ViewProject = (props) => {
 
     const [showUserManagement, setShowUserManagement] = useState(false);
     const [showArchivedTasks, setShowArchivedTasks] = useState(false);
-    const [showProjectEditForm, setShowProjectEditForm] = useState(true)
+    const [showProjectEditForm, setShowProjectEditForm] = useState(false);
 
     async function backToProjectSelector() {
         await ProjectFunctions.setCurrentProjectDataFunc(null);
@@ -38,7 +38,7 @@ const ViewProject = (props) => {
         <Center mawW={"full"} minW={"full"}>
             <VStack maxW={"full"} minW={"full"} px={"4"} mx={"auto"} mt={"10"}>
 
-                <HStack>
+                <HStack py={"12"}>
                     <VStack w={"5/6"} h={"3rem"}>
                         <Box display={showProjectEditForm ? "none" : "block"}>
                             <Pressable onPress={toggleUserManagement}>
@@ -94,19 +94,19 @@ const ViewProject = (props) => {
 
                 </Box>
 
-                <NewTaskForm />
 
                 {ProjectData.tasks ? <Box>
                     <Heading fontSize="xl" pb="3">
                         Tasks
                     </Heading>
+                    <NewTaskForm />
                     <FlatList data={ProjectData.tasks}
                         renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
                             borderColor: "gray.600"
                         }} borderColor="coolGray.200" py="2">
                             <TaskSimple task={item} />
                         </Box>} keyExtractor={item => item._id} />
-                </Box> : <Text>Niente tasks</Text>}
+                </Box> : <NewTaskForm />}
 
 
                 {ProjectData.archivedTasks ? <Box>

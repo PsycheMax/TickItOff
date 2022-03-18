@@ -37,7 +37,6 @@ const ViewManagerContextProvider = (props) => {
     const [propsForView, setPropsForView] = useState({});
 
     const userData = useContext(LoggedUserContext).userData;
-    const projectData = useContext(ProjectContext).currentProjectData;
 
     /**
      * This function takes the currentView from the state and, based upon it, renders different components. 
@@ -45,7 +44,7 @@ const ViewManagerContextProvider = (props) => {
      * @returns 
      */
     function renderCurrentView() {
-        if (userData.token !== "") {
+        if (userData && userData.token && userData.token !== "") {
             switch (currentView) {
                 case "LoginSignupPanel":
                     return <LoginSignupPanel />
@@ -80,6 +79,7 @@ const ViewManagerContextProvider = (props) => {
                 case "default":
                 default:
                     return <ProjectSelector />
+                    // return <LoginSignupPanel />;
                     break;
             }
         } else {

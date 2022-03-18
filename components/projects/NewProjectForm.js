@@ -94,12 +94,10 @@ const NewProjectForm = (props) => {
 
 
                         const response = await ProjectFunctions.createProjectFunc(newProject);
-                        console.log(response);
 
                         // TODO Redirect here to the ProjectView of new Project
 
                         if (response.status !== 201) {
-                            console.log(response.data);
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }
                         } else {
                             // The project has already been set by the Projectfunction CreateProjectFunc function
