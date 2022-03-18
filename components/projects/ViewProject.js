@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { IconButton, Center, Text, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, Pressable } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";;
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
 import TaskSimple from '../tasks/TaskSimple';
 import { ProjectContext } from '../../utils/ProjectManager';
 import NewTaskForm from '../tasks/NewTaskForm';
-import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import EditProjectForm from './EditProjectForm';
 
 const ViewProject = (props) => {

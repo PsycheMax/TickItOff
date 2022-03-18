@@ -4,6 +4,7 @@ import { LoggedUserContext } from '../../utils/UserManager';
 import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import { ProjectContext } from '../../utils/ProjectManager';
 import NewProjectForm from './NewProjectForm';
+import LoadingSpinner from '../LoadingSpinner';
 
 const ProjectSelector = (props) => {
 
@@ -63,12 +64,7 @@ const ProjectSelector = (props) => {
         )
     } else {
         return (
-            <HStack space={2} justifyContent="center">
-                <Spinner accessibilityLabel="Loading posts" />
-                <Heading color="primary.500" fontSize="md">
-                    Loading
-                </Heading>
-            </HStack>
+            <LoadingSpinner />
         );
     }
 

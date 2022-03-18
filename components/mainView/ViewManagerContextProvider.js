@@ -13,10 +13,12 @@ import UserPanel from '../users/UserPanel/UserPanel';
 import NewTaskForm from '../tasks/NewTaskForm';
 import EditTaskForm from '../tasks/EditTaskForm';
 import ProjectSelector from '../projects/ProjectSelector';
+import LoadingSpinner from '../LoadingSpinner';
 
 export const ViewManagerContext = React.createContext({
     changeCurrentViewTo: (targetView, propsForNewView) => { },
-    renderCurrentView: () => { }
+    renderCurrentView: () => { },
+    reloadCurrentView: () => { }
 })
 
 /**
@@ -56,23 +58,15 @@ const ViewManagerContextProvider = (props) => {
                 case "UserPanel":
                     return <UserPanel />
                     break;
-                case "NewProjectForm":
-                    return <NewProjectForm />
-                    break;
                 case "ViewProject":
                     return <ViewProject />
                     break;
                 case "EditProjectForm":
-                    return <EditProjectForm />
-                    break;
-                case "NewTaskForm":
-                    return <NewTaskForm />
-                    break;
                 case "ViewDetailedTask":
                     return <ViewDetailedTask />
                     break;
-                case "EditTaskForm":
-                    return <EditTaskForm taskID={propsForView.taskID} />
+                case "Reload":
+                    return <LoadingSpinner />
                     break;
                 case "default":
                 default:
@@ -106,10 +100,17 @@ const ViewManagerContextProvider = (props) => {
         }
     }
 
+    async function reloadCurrentView() {
+        let previousView = currentView;
+        await setCurrentView("Reload");
+        setTimeout(await setCurrentView(previousView), 150);
+    }
+
     return (
         <ViewManagerContext.Provider value={{
             renderCurrentView: renderCurrentView,
-            changeCurrentViewTo: changeCurrentViewTo
+            changeCurrentViewTo: changeCurrentViewTo,
+            reloadCurrentView: reloadCurrentView
         }} >
             {userData._id && userData._id.length !== 0 ? <UserMenu /> : <React.Fragment></React.Fragment>}
             {props.children}

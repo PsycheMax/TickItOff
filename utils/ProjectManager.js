@@ -39,6 +39,7 @@ const ProjectManager = (props) => {
         let response = await axiosGet(`/project/${currentProjectData._id}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("In status 200");
+            console.log(response.data);
             setCurrentProjectData(response.data);
             return response;
         } else {
