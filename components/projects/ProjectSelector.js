@@ -3,6 +3,7 @@ import { Heading, VStack, HStack, Box, FlatList, View, Button, Spinner, Pressabl
 import { LoggedUserContext } from '../../utils/UserManager';
 import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import { ProjectContext } from '../../utils/ProjectManager';
+import NewProjectForm from './NewProjectForm';
 
 const ProjectSelector = (props) => {
 
@@ -30,7 +31,9 @@ const ProjectSelector = (props) => {
 
     if (UserData._id !== undefined) {
         return (
-            <VStack maxW={"3/4"} minW={"3/4"} w={"3/4"}>
+            <VStack maxW={"3/4"} minW={"3/4"} w={"3/4"} pt={"12"}>
+                <Heading>Active Projects</Heading>
+                <NewProjectForm />
 
                 <FlatList data={projects.managed}
                     renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{

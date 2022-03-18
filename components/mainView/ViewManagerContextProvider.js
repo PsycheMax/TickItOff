@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { VStack, Button, Center, Flex, Box, Pressable, Text, ScrollView, useBreakpointValue, Container } from 'native-base';
+import React, { useState, useContext } from 'react';
 import EditUserForm from '../users/UserForms/EditUserForm';
 import LogoutView from '../users/UserForms/LogoutView';
 import ViewDetailedTask from '../tasks/ViewDetailedTask';
@@ -13,7 +12,6 @@ import LoginSignupPanel from '../users/LoginSignupPanel';
 import UserPanel from '../users/UserPanel/UserPanel';
 import NewTaskForm from '../tasks/NewTaskForm';
 import EditTaskForm from '../tasks/EditTaskForm';
-import { ProjectContext } from '../../utils/ProjectManager';
 import ProjectSelector from '../projects/ProjectSelector';
 
 export const ViewManagerContext = React.createContext({

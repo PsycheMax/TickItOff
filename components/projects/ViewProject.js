@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { IconButton, Center, Text, Checkbox, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, View, Container, Button, Pressable } from 'native-base';
+import { IconButton, Center, Text, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, Pressable } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";;
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
 import TaskSimple from '../tasks/TaskSimple';
@@ -11,16 +11,10 @@ import EditProjectForm from './EditProjectForm';
 const ViewProject = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
-    const ViewFunctions = useContext(ViewManagerContext);
 
     const [showUserManagement, setShowUserManagement] = useState(false);
     const [showArchivedTasks, setShowArchivedTasks] = useState(false);
     const [showProjectEditForm, setShowProjectEditForm] = useState(false);
-
-    async function backToProjectSelector() {
-        await ProjectFunctions.setCurrentProjectDataFunc(null);
-        await ViewFunctions.changeCurrentViewTo("ProjectSelector");
-    }
 
     async function toggleEditProjectForm() {
         await setShowProjectEditForm(!showProjectEditForm);
@@ -57,12 +51,6 @@ const ViewProject = (props) => {
                             <IconButton
                                 icon={<Icon as={MaterialIcons} name="edit" />} borderRadius="full" _icon={{ color: "primary.500", size: "sm" }}
                                 onPress={toggleEditProjectForm}
-                            />
-                        </Center>
-                        <Center>
-                            <IconButton
-                                icon={<Icon as={MaterialIcons} name="view-list" />} borderRadius="full" _icon={{ color: "primary.500", size: "sm" }}
-                                onPress={backToProjectSelector}
                             />
                         </Center>
                     </HStack>
@@ -136,69 +124,3 @@ const ViewProject = (props) => {
 }
 
 export default ViewProject;
-
-/*
-ViewProject.defaultProps = {
-    project: {
-        "users": {
-            "creators": [
-                {
-                    "_id": "620fd2edc7effb0abb07ccbf",
-                    "username": "AdminMax",
-                    "image": "https://randomuser.me/api/portraits/lego/6.jpg",
-                    "status": "Active"
-                }
-            ],
-            "joiners": [],
-            "managers": [
-                {
-                    "_id": "620fd2edc7effb0abb07ccbf",
-                    "username": "AdminMax",
-                    "image": "https://randomuser.me/api/portraits/lego/6.jpg",
-                    "status": "Active"
-                }
-            ]
-        },
-        "settings": {
-            "colorScheme": "DefaultModified"
-        },
-        "_id": "620fd33cc7effb0abb07ccca",
-        "name": "PostMan name 1 - After MOD",
-        "description": "description - AFTER MOD -1",
-        "completion": true,
-        "image": "reqUser.image - after MOD -1",
-        "status": "Active",
-        "creationDate": "2022-02-18T17:11:24.637Z",
-        "modificationDate": "2022-02-28T10:12:03.650Z",
-        "tasks": [
-            {
-                "_id": "620fdc774c33628925c81365",
-                "name": "PostMan name 1",
-                "image": "req.image",
-                "status": "Active"
-            },
-            {
-                "_id": "620fdc8c0e1e0f5a3b71ae8a",
-                "name": "PostMan name 1",
-                "image": "req.image",
-                "status": "Active"
-            },
-            {
-                "_id": "620fdd072c14c2e8023aa11d",
-                "name": "PostMan UPDATE 1",
-                "image": "IMAGINE OLL THE PIPOL",
-                "status": "active"
-            },
-            {
-                "_id": "621c9ff3f3a9ca7ebd2e112c",
-                "name": "Uffa chge wall era",
-                "image": "req.image",
-                "status": "Active"
-            }
-        ],
-        "notifications": [],
-        "__v": 4
-    }
-}
-
-*/

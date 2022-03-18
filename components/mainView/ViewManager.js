@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Box, ScrollView } from 'native-base';
+import React, { useContext } from 'react';
 
 import { ViewManagerContext } from './ViewManagerContextProvider';
 

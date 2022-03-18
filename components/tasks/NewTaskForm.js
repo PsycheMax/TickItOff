@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { HStack, VStack, Button, Icon, Text, Center, Box, Heading, FormControl, Link, Checkbox, Input, IconButton } from 'native-base';
+import React, { useState, useContext } from 'react';
+import { HStack, VStack, Icon, Center, Box, FormControl, Checkbox, Input, IconButton } from 'native-base';
 import { LoggedUserContext } from '../../utils/UserManager';
-import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import { MaterialIcons } from "@native-base/icons";
-import FormField from '../users/UserForms/FormComponents/FormField';
 import { ProjectContext } from '../../utils/ProjectManager';
 
 const inputRules = {
@@ -24,70 +22,23 @@ const inputRules = {
 const NewTaskForm = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
-    const ViewFunctions = useContext(ViewManagerContext);
-
 
     const [newTask, setNewTask] = useState({ name: "", description: "", active: true, completion: false, image: "" });
 
     const [alertMessages, setAlertMessages] = useState({
-        name: {
-            show: false,
-            content: "Alert goes here"
-        },
-        description: {
-            show: false,
-            content: "Alert goes here"
-        },
-        active: {
-            show: false,
-            content: "Alert goes here"
-        },
-        completion: {
-            show: false,
-            content: "Alert goes here"
-        },
-        image: {
-            show: false,
-            content: "Alert goes here"
-        },
         genericForm: {
             show: false,
             content: "Alert goes here"
-        },
+        }
     })
 
-    const userDataContext = useContext(LoggedUserContext);
-
-    function checkFields() {
-        let toSetInAlertMessages = {};
-        toSetInAlertMessages.genericForm = alertMessages.genericForm;
-        newTask.name.length < inputRules.name.minLength ? toSetInAlertMessages.name = {
-            show: true,
-            content: `Name must be at least ${inputRules.name.minLength} characters long`
-        } : toSetInAlertMessages.name = { show: false, content: "Alert goes here" };
-        newTask.description.length < inputRules.description.minLength ? toSetInAlertMessages.description = {
-            show: true,
-            content: `Descriptions must be at least ${inputRules.description.minLength} characters long`
-        } : toSetInAlertMessages.description = { show: false, content: "Alert goes here" };
-        newTask.image.length === 0 ? toSetInAlertMessages.image = {
-            show: true, content: "Image cannot be empty"
-        } : toSetInAlertMessages.image = { show: false, content: "Alert goes here" };
-        newTask.completion === null ? toSetInAlertMessages.completion = {
-            show: true,
-            content: `Completion must be set`
-        } : toSetInAlertMessages.completion = { show: false, content: "Alert goes here" };
-        setAlertMessages(toSetInAlertMessages);
-    }
-
     function handleChange(value, fieldName) {
-        if (alertMessages.genericForm.show) {
-            checkFields();
-        }
         setNewTask(prevState => { return { ...prevState, [fieldName]: value } });
     }
 
     async function handleSubmit() {
-        let toSetInAlertMessages = alertMessages;
+        let toSetInAlertMessages = {};
+        toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
         if (newTask.name.length >= inputRules.name.minLength) {
             if (newTask.description.length >= inputRules.description.minLength) {
 
@@ -106,18 +57,10 @@ const NewTaskForm = (props) => {
             toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task name should be at least ${inputRules.name.minLength} characters long` };
         }
         setAlertMessages(toSetInAlertMessages);
-        checkFields();
-
     }
 
     return (
         <VStack w={"full"} minW={"full"} justifyContent={"center"} display={"block"}>
-
-            {/* <Heading mt="1" _dark={{
-                color: "warmGray.200"
-            }} color="coolGray.600" fontWeight="medium" size="xs">
-                Add a new Task
-            </Heading> */}
             <Box size="lg" alignSelf={"auto"} w={"full"} h={"100%"} py={"6"}>
                 <HStack>
                     <Center>
@@ -130,9 +73,8 @@ const NewTaskForm = (props) => {
                         <Input placeholder="Add a new task" onChangeText={(value) => { handleChange(value, "name") }} type="text" value={newTask.name} autocorrect={true}></Input>
                         <Input placeholder="New Task Description" onChangeText={(value) => { handleChange(value, "description") }} type="text" value={newTask.description} autocorrect={true}></Input>
 
-
                         <FormControl isInvalid={alertMessages.genericForm.show} >
-                            <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
+                            <FormControl.ErrorMessage leftIcon={<Center><Icon as={MaterialIcons} name="error" size="xs" /></Center>}>
                                 {alertMessages.genericForm.content}
                             </FormControl.ErrorMessage>
                         </FormControl>
