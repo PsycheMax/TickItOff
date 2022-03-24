@@ -54,6 +54,9 @@ const ProjectManager = (props) => {
      * @returns the api response, in case it's necessary
      */
     async function setCurrentProjectDataFunc(projectID) {
+        // if (projectID === null) {
+        //     setCurrentProjectData({});
+        // }
         let response = await axiosGet(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("In status 200");

@@ -112,7 +112,6 @@ const ViewManagerContextProvider = (props) => {
             changeCurrentViewTo: changeCurrentViewTo,
             reloadCurrentView: reloadCurrentView
         }} >
-            {userData._id && userData._id.length !== 0 ? <UserMenu /> : <React.Fragment></React.Fragment>}
             {props.children}
         </ViewManagerContext.Provider>
     )
