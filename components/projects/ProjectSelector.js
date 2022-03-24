@@ -33,7 +33,7 @@ const ProjectSelector = (props) => {
     if (UserData._id !== undefined) {
         return (
             <VStack minW={"95%"} maxW={"95%"} w={"95%"} >
-                <Heading >Your Active Projects</Heading>
+                <Heading mb={"0.5rem"} >Your Active Projects</Heading>
                 <NewProjectForm />
 
                 <FlatList data={projects.managed}
