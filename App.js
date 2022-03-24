@@ -1,15 +1,50 @@
-import { NativeBaseProvider, Center, extendTheme } from "native-base";
+import { NativeBaseProvider, Center, extendTheme, Text, Heading } from "native-base";
 
 import UserManagerContextProvider from "./utils/UserManager";
 import ViewManagerContextProvider from "./components/mainView/ViewManagerContextProvider";
 import ProjectManagerContextProvider from "./utils/ProjectManager";
 
-import { MerriweatherSans_700Bold } from '@expo-google-fonts/merriweather-sans';
-import { Merriweather_300Light, Merriweather_400Regular, Merriweather_700Bold } from '@expo-google-fonts/merriweather'
+import AppLoading from "expo-app-loading";
+import { useFonts } from 'expo-font';
+
+import {
+  Halant_300Light,
+  Halant_400Regular,
+  Halant_500Medium,
+  Halant_600SemiBold,
+  Halant_700Bold
+} from '@expo-google-fonts/halant';
+
+import {
+  NunitoSans_200ExtraLight,
+  NunitoSans_200ExtraLight_Italic,
+  NunitoSans_300Light,
+  NunitoSans_300Light_Italic,
+  NunitoSans_400Regular,
+  NunitoSans_400Regular_Italic,
+  NunitoSans_600SemiBold,
+  NunitoSans_600SemiBold_Italic,
+  NunitoSans_700Bold,
+  NunitoSans_700Bold_Italic,
+  NunitoSans_800ExtraBold,
+  NunitoSans_800ExtraBold_Italic,
+  NunitoSans_900Black,
+  NunitoSans_900Black_Italic
+} from '@expo-google-fonts/nunito-sans'
+
 
 import ViewManager from "./components/mainView/ViewManager";
 
 export default function App() {
+
+  let [fontsLoaded] = useFonts({
+    'NunitoSans': NunitoSans_400Regular,
+    'Halant': Halant_400Regular
+  })
+
+  if (!fontsLoaded) {
+    return <AppLoading />
+  }
 
   const theme = extendTheme({
     colors: {
@@ -65,10 +100,59 @@ export default function App() {
         900: '#080e12',
       }
     },
+    fontConfig: {
+      NunitoSans: {
+        200: {
+          normal: NunitoSans_200ExtraLight,
+          italic: NunitoSans_200ExtraLight_Italic
+        },
+        300: {
+          normal: NunitoSans_300Light,
+          italic: NunitoSans_300Light_Italic
+        },
+        400: {
+          normal: NunitoSans_400Regular,
+          italic: NunitoSans_400Regular_Italic
+        },
+        600: {
+          normal: NunitoSans_600SemiBold,
+          italic: NunitoSans_600SemiBold_Italic
+        },
+        700: {
+          normal: NunitoSans_700Bold,
+          italic: NunitoSans_700Bold_Italic
+        },
+        800: {
+          normal: NunitoSans_800ExtraBold,
+          italic: NunitoSans_800ExtraBold_Italic
+        },
+        900: {
+          normal: NunitoSans_900Black,
+          italic: NunitoSans_900Black_Italic
+        },
+      },
+      Halant: {
+        300: {
+          normal: Halant_300Light
+        },
+        400: {
+          normal: Halant_400Regular
+        },
+        500: {
+          normal: Halant_500Medium
+        },
+        600: {
+          normal: Halant_600SemiBold
+        },
+        700: {
+          normal: Halant_700Bold
+        }
+      },
+    },
     fonts: {
-      heading: MerriweatherSans_700Bold,
-      body: Merriweather_400Regular,
-      mono: Merriweather_300Light
+      heading: Halant_500Medium,
+      body: NunitoSans_400Regular,
+      mono: 'NunitoSans'
     },
     config: {
       initialColorMode: 'light'
@@ -81,6 +165,8 @@ export default function App() {
         <UserManagerContextProvider>
           <ViewManagerContextProvider>
             <ProjectManagerContextProvider>
+              {/* <Text fontFamily="body" fontWeight={600}>Mammeto</Text>
+              <Heading fontFamily="heading" fontWeight={600} >CHITESTRAMUORT</Heading> */}
               <ViewManager />
             </ProjectManagerContextProvider>
           </ViewManagerContextProvider>

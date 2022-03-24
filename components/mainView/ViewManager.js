@@ -14,7 +14,7 @@ const ViewManager = (props) => {
         <React.Fragment>
             {/* <Image position={"absolute"} top={0} left={0} source={{ uri: bgpic }} w={"100%"} h={"20%"} resizeMode={"stretch"} zIndex={0} alt={"background image"} ></Image> */}
             <TopMenu />
-            <Center position={"absolute"} top={"20%"} zIndex={1}>
+            <Center position={"absolute"} top={"22%"} zIndex={1} maxW={976} w={"100%"}>
                 {ViewContext.renderCurrentView()}
             </Center>
         </React.Fragment>
