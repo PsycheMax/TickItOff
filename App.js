@@ -1,4 +1,4 @@
-import { NativeBaseProvider, Center, extendTheme, Text, Heading } from "native-base";
+import { NativeBaseProvider, Center, extendTheme, Text, Heading, ScrollView } from "native-base";
 
 import UserManagerContextProvider from "./utils/UserManager";
 import ViewManagerContextProvider from "./components/mainView/ViewManagerContextProvider";
@@ -161,17 +161,25 @@ export default function App() {
 
   return (
     <NativeBaseProvider theme={theme}>
-      <Center h={"full"} w={"100%"} maxW={1024} mx={"auto"} backgroundColor={"quartiary.50"}>
-        <UserManagerContextProvider>
-          <ViewManagerContextProvider>
-            <ProjectManagerContextProvider>
-              {/* <Text fontFamily="body" fontWeight={600}>Mammeto</Text>
-              <Heading fontFamily="heading" fontWeight={600} >CHITESTRAMUORT</Heading> */}
+
+      <UserManagerContextProvider>
+        <ViewManagerContextProvider>
+          <ProjectManagerContextProvider>
+
+            {/* <Center h={"auto"} minH={"100%"} w={"100%"} maxW={1024} mx={"auto"} backgroundColor={"quartiary.50"} > */}
+            <ScrollView h={"auto"} minH={"100%"} w={"100%"} maxW={1024} mx={"auto"} backgroundColor={"quartiary.50"}>
+
               <ViewManager />
-            </ProjectManagerContextProvider>
-          </ViewManagerContextProvider>
-        </UserManagerContextProvider>
-      </Center>
-    </NativeBaseProvider>
+
+            </ScrollView>
+            {/* </Center> */}
+
+          </ProjectManagerContextProvider>
+        </ViewManagerContextProvider>
+      </UserManagerContextProvider>
+
+
+
+    </NativeBaseProvider >
   );
 }

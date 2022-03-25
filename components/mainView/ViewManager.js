@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import { Center, Image, View } from 'native-base';
 
-const bgpic = require('../../img/header/mob_top-menu-bg.png');
-
 import { ViewManagerContext } from './ViewManagerContextProvider';
 import TopMenu from '../header/TopMenu';
 
@@ -12,9 +10,8 @@ const ViewManager = (props) => {
 
     return (
         <React.Fragment>
-            {/* <Image position={"absolute"} top={0} left={0} source={{ uri: bgpic }} w={"100%"} h={"20%"} resizeMode={"stretch"} zIndex={0} alt={"background image"} ></Image> */}
             <TopMenu />
-            <Center position={"absolute"} top={"22%"} zIndex={1} maxW={976} w={"100%"}>
+            <Center position={"absolute"} top={0.18 * screen.height} zIndex={1} maxW={976} w={"100%"} px={"0.5rem"}>
                 {ViewContext.renderCurrentView()}
             </Center>
         </React.Fragment>

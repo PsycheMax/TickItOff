@@ -60,7 +60,7 @@ const NewProjectForm = (props) => {
     }
 
     return (
-        <Flex direction='row' wrap='nowrap' justifyContent={"center"} backgroundColor={"primary.500"} borderRadius={"lg"} >
+        <Flex direction='row' wrap='nowrap' justifyContent={"center"} backgroundColor={"primary.500"} borderRadius={"lg"} minH={"6rem"} h={"6rem"} >
             <VStack flexGrow={7} w={"75%"} h={"100%"} ml={"0.7rem"} my={"0.7rem"}>
                 <Box backgroundColor={"secondary.50"} borderRadius={"lg"} mb={"0.5rem"}>
                     <Input placeholder="New Project Title" variant="unstyled" h={"2rem"}

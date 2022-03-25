@@ -44,7 +44,8 @@ const TopMenu = (props) => {
                 </Pressable>
             </Flex >
 
-            <Image position={"absolute"} top={0} left={0} source={{ uri: bgpic }} w={"100%"} h={"20%"} resizeMode={"stretch"} zIndex={0} alt={"background image"} ></Image>
+            <Image position={"absolute"} top={0} left={0} source={{ uri: bgpic }} w={"100%"} h={0.16 * screen.height} maxH={"200px"} resizeMode={"stretch"} zIndex={0} alt={"background image"} ></Image>
+
         </React.Fragment>
 
 
