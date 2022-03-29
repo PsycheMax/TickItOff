@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { HStack, VStack, IconButton, Icon, Center, Input, Text, Flex, Box } from 'native-base';
+import { VStack, IconButton, Icon, Center, Input, Text, Flex, Box } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";
 import { ProjectContext } from '../../utils/ProjectManager';
 import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
@@ -60,7 +60,8 @@ const NewProjectForm = (props) => {
     }
 
     return (
-        <Flex direction='row' wrap='nowrap' justifyContent={"center"} backgroundColor={"primary.500"} borderRadius={"lg"} minH={"6rem"} h={"6rem"} >
+        <Flex direction='row' wrap='nowrap' justifyContent={"center"} backgroundColor={"primary.500"} borderRadius={"lg"} minH={"6rem"} h={"6rem"}
+            mb={alertMessages.genericForm.show ? "2.5rem" : 0} >
             <VStack flexGrow={7} w={"75%"} h={"100%"} ml={"0.7rem"} my={"0.7rem"}>
                 <Box backgroundColor={"secondary.50"} borderRadius={"lg"} mb={"0.5rem"}>
                     <Input placeholder="New Project Title" variant="unstyled" h={"2rem"}
@@ -93,35 +94,3 @@ const NewProjectForm = (props) => {
 }
 
 export default NewProjectForm;
-
-
-//     return (
-//         <HStack>
-//             <VStack w={"5/6"} h={"100%"}>
-//                 <Input placeholder="New Project Title"
-//                     fontSize={"lg"} fontWeight={"bold"}
-//                     onChangeText={(value) => { handleChange(value, "name") }}
-//                     type="text" value={newProject.name} autocorrect={true}
-//                 />
-//                 <Input placeholder="New Project Description"
-//                     fontSize={"md"} fontWeight={"normal"}
-//                     onChangeText={(value) => { handleChange(value, "description") }}
-//                     type="text" value={newProject.description} autocorrect={true} />
-//                 <Center display={alertMessages.genericForm.show ? "block" : "none"}>
-//                     <Icon as={MaterialIcons} name="error" color={"danger.500"} size="sm" />
-//                     <Text pl={"4"} color={"danger.500"}>
-//                         {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
-//                     </Text>
-//                 </Center>
-//             </VStack >
-//             <Center w={"1/6"}>
-//                 <IconButton
-//                     icon={<Icon as={MaterialIcons} name="playlist-add" />} borderRadius="full" _icon={{ color: "primary.500", size: "md" }}
-//                     onPress={handleSubmit}
-//                 />
-//             </Center>
-//         </HStack >
-//     )
-// }
-
-// export default NewProjectForm;

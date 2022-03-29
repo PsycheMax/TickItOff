@@ -55,14 +55,14 @@ const ProjectSelector = (props) => {
                             borderBottomWidth={showArchivedProjects ? "0" : "1"}>
                             Archived Projects
                         </Heading>
+                        <ScrollView display={showArchivedProjects ? "block" : "none"}>
+                            <FlatList data={projects.archived}
+                                renderItem={({ item }) =>
+                                    <ProjectSelectionButton name={item.name} description={item.description}
+                                        selectProjectFunc={selectProject.bind(this, item._id)} bgColor={"secondary.300"} />
+                                } keyExtractor={item => item._id} />
+                        </ScrollView>
                     </Pressable>
-                    <ScrollView display={showArchivedProjects ? "block" : "none"}>
-                        <FlatList data={projects.archived}
-                            renderItem={({ item }) =>
-                                <ProjectSelectionButton name={item.name} description={item.description}
-                                    selectProjectFunc={selectProject.bind(this, item._id)} bgColor={"secondary.300"} />
-                            } keyExtractor={item => item._id} />
-                    </ScrollView>
                 </VStack>
 
             </VStack>

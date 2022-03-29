@@ -47,6 +47,13 @@ export default function App() {
   }
 
   const theme = extendTheme({
+    // components:{
+    //   Heading:{
+    //     sizes:{
+
+    //     }
+    //   }
+    // },
     colors: {
       primary: {
         50: '#def5ff',
