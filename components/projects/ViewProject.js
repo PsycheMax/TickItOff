@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { IconButton, Center, Text, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, Pressable, AlertDialog, Flex, Button } from 'native-base';
+import { IconButton, Center, Text, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, Pressable, AlertDialog, Flex, Button, ScrollView } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";;
 
 import { ProjectContext } from '../../utils/ProjectManager';
@@ -67,7 +67,7 @@ const ViewProject = (props) => {
                     <Box display={showProjectEditForm ? "none" : "block"}>
                         <Pressable onPress={toggleUserManagement}>
                             <HStack>
-                                <Heading w={"100%"} maxW={"100%"} overflow={"hidden"} whiteSpace={"normal"}>
+                                <Heading w={"100%"} maxW={"100%"} overflow={"hidden"} whiteSpace={"normal"} color={"primary.800"}>
                                     {ProjectData.name}
                                 </Heading>
                                 <Flex direction='row' display={showProjectEditForm ? "none" : "flex"} maxH={"2rem"}>
@@ -90,10 +90,10 @@ const ViewProject = (props) => {
 
 
                             <StandardDivider />
-                            <Text>{ProjectData.description}</Text>
+                            <Text color={"primary.800"}>{ProjectData.description}</Text>
                             <StandardDivider />
-                            <Text><Icon as={MaterialIcons} name="more-time" size={"xs"} />: {ProjectData.creationDate}</Text>
-                            <Text><Icon as={MaterialIcons} name="edit" size={"xs"} />: {ProjectData.modificationDate}</Text>
+                            <Text color={"primary.800"}><Icon as={MaterialIcons} name="more-time" size={"xs"} />: {ProjectData.creationDate}</Text>
+                            <Text color={"primary.800"}><Icon as={MaterialIcons} name="edit" size={"xs"} />: {ProjectData.modificationDate}</Text>
 
                         </Pressable>
                     </Box>
@@ -131,40 +131,47 @@ const ViewProject = (props) => {
                 </Box>
 
 
-                {ProjectData.tasks ? <Box mt={"1rem"}>
-                    <Heading fontSize="xl" pb="3">
-                        Tasks
-                    </Heading>
-                    <NewTaskForm />
-                    <FlatList data={ProjectData.tasks}
-                        renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
-                            borderColor: "gray.600"
-                        }} borderColor="coolGray.200" py="2">
-                            <TaskSimple task={item} />
-                        </Box>} keyExtractor={item => item._id} />
-                </Box> : <NewTaskForm />}
-
-
-                {ProjectData.archivedTasks ? <Box mt={"1rem"}>
-                    <Pressable onPress={toggleArchivedTasks}>
-                        <Heading fontSize="xl" pb="3" borderBottomStyle={"solid"} borderBottomColor={"primary.500"}
-                            borderBottomWidth={showArchivedTasks ? "0" : "1"}
-                        >
-                            Archived Tasks
-                        </Heading>
-                    </Pressable>
-                    <Box display={showArchivedTasks ? "block" : "none"}>
-                        <FlatList data={ProjectData.archivedTasks}
-                            renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
-                                borderColor: "gray.600"
-                            }} borderColor="coolGray.200" py="2">
+                {ProjectData.tasks ?
+                    <Box mt={"1rem"} maxW={"100%"} w={"100%"} minW={"100%"}>
+                        {/* <Heading fontSize="xl" pb="3">
+                            Tasks
+                        </Heading> */}
+                        <NewTaskForm />
+                        <FlatList data={ProjectData.tasks}
+                            renderItem={({ item }) =>
                                 <TaskSimple task={item} />
-                            </Box>} keyExtractor={item => item._id} />
+                            } keyExtractor={item => item._id}
+                        />
                     </Box>
-                </Box> : <Text>Niente archived tasks</Text>}
+                    :
+                    <NewTaskForm />
+                }
 
-                <Text>Created on {ProjectData.creationDate}</Text>
-                <Text>Modificated on {ProjectData.modificationDate}</Text>
+
+                {ProjectData.archivedTasks ?
+                    <VStack w={"110%"} ml={"-1rem"}
+                        pl={"1rem"} pr={"1rem"} pb={"1rem"} pt={"1rem"}
+                        bg={"primary.500"}
+                    >
+                        <Pressable onPress={toggleArchivedTasks}>
+                            <Box>
+
+                                <Heading pb={"1rem"} color={"tertiary.50"}
+                                    borderBottomStyle={"solid"} borderBottomColor={"primary.500"}
+                                    borderBottomWidth={showArchivedTasks ? "0" : "1"}
+                                >
+                                    Archived Tasks
+                                </Heading>
+
+                                <ScrollView display={showArchivedTasks ? "block" : "none"}>
+                                    <FlatList data={ProjectData.archivedTasks}
+                                        renderItem={({ item }) => <TaskSimple task={item} />}
+                                        keyExtractor={item => item._id} />
+                                </ScrollView>
+                            </Box>
+                        </Pressable>
+                    </VStack>
+                    : <React.Fragment></React.Fragment>}
 
             </VStack>
 

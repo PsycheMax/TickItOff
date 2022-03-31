@@ -105,6 +105,9 @@ export default function App() {
         700: '#324f57',
         800: '#1e2d34',
         900: '#080e12',
+      },
+      transparent: {
+        50: '#1a78cc00'
       }
     },
     fontConfig: {

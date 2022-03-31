@@ -1,15 +1,16 @@
 import React, { useState, useContext } from 'react';
-import { VStack, Icon, FormControl, Box, HStack, Input, Center, IconButton } from 'native-base';
+import { VStack, Icon, FormControl, Box, HStack, Input, Center, IconButton, Text } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";
 import { ProjectContext } from '../../utils/ProjectManager';
+import StandardDivider from '../StandardDivider';
 
 const inputRules = {
     name: {
-        minLength: 8,
+        minLength: 4,
         regEx: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
     },
     description: {
-        minLength: 8,
+        minLength: 0,
         regEx: `^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$`
     },
     image: {
@@ -19,7 +20,7 @@ const inputRules = {
 }
 
 /**
- * This has to be given a taskid props, otherwise it won't be autofilled.
+ * This has to be given a taskid prop, otherwise it won't be autofilled.
  * @param {*} props 
  * @returns 
  */
@@ -50,7 +51,8 @@ const EditTaskForm = (props) => {
                 if (response.status !== 200) {
                     toSetInAlertMessages.genericForm = { show: true, content: response.data }
                 } else {
-                    props.updateTaskFunc();
+                    toSetInAlertMessages.genericForm = { show: false, content: "Alert goes here" };
+                    await props.updateTaskFunc();
                 }
             } else {
                 toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task description should be at least ${inputRules.description.minLength} characters long` };
@@ -61,96 +63,48 @@ const EditTaskForm = (props) => {
         setAlertMessages(toSetInAlertMessages);
     }
 
+    console.log(props.task)
+
     return (
-        <VStack w={"full"} minW={"full"} justifyContent={"center"} display={"block"}>
-            <Box size="lg" alignSelf={"auto"} w={"full"} h={"100%"} py={"6"}>
-                <HStack>
-                    <VStack w={"5/6"} pl={9} >
-                        <Input placeholder="Edit task name" onChangeText={(value) => { handleChange(value, "name") }} type="text" value={patchedTask.name} autocorrect={true} />
-                        <Input placeholder="Edit task Description" onChangeText={(value) => { handleChange(value, "description") }} type="text" value={patchedTask.description} autocorrect={true} />
+        <VStack w={"100%"} minW={"100%"}>
+            <HStack maxW={"100%"} minW={"100%"} >
 
-                        <FormControl isInvalid={alertMessages.genericForm.show} >
-                            <FormControl.ErrorMessage leftIcon={<Center><Icon as={MaterialIcons} name="error" size="xs" /></Center>}>
-                                {alertMessages.genericForm.content}
-                            </FormControl.ErrorMessage>
-                        </FormControl>
+                <Box w={"85%"} my={"1rem"} mx={"0.2rem"}>
+                    <Input placeholder="Edit task name" fontSize={"lg"} color={props.task.completion ? "primary.50" : "primary.500"}
+                        onChangeText={(value) => { handleChange(value, "name") }} type="text" value={patchedTask.name} autocorrect={true} />
 
-                    </VStack>
-                    <Center>
-                        <IconButton icon={<Icon as={<MaterialIcons name="done" size="sm" />} />}
-                            mt="2" colorScheme="indigo"
-                            onPress={handleSubmit} title={"Edit task"} />
-                    </Center>
-                </HStack>
-            </Box>
+                    <StandardDivider color={"tertiary.500"} />
+
+                    <Input placeholder="Edit task Description" fontSize={"md"} color={props.task.completion ? "primary.50" : "primary.500"}
+                        onChangeText={(value) => { handleChange(value, "description") }} type="text" value={patchedTask.description} autocorrect={true} />
+
+
+                    <StandardDivider color={"tertiary.500"} />
+                    <Text fontSize={"0.6rem"} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
+                        <Icon as={MaterialIcons} name="more-time" size={"2xs"} color={props.task.completion ? "primary.50" : "primary.500"}
+                        />: {Date(props.task.creationDate)}
+                    </Text>
+                    <Text fontSize={"0.6rem"} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
+                        <Icon as={MaterialIcons} name="edit" size={"2xs"} color={props.task.completion ? "primary.50" : "primary.500"}
+                        />: {Date(props.task.modificationDate)}
+                    </Text>
+                </Box>
+                <Center w={"10%"} maxW={"10%"} minW={"10%"} >
+                    <IconButton icon={<Icon as={<MaterialIcons name="done" size="sm" />} />}
+                        mt="2" colorScheme="primary"
+                        onPress={handleSubmit} title={"Edit task"} />
+                </Center>
+            </HStack>
+
+            <FormControl isInvalid={alertMessages.genericForm.show} >
+                <FormControl.ErrorMessage leftIcon={<Center><Icon as={MaterialIcons} name="error" size="xs" /></Center>}>
+                    {alertMessages.genericForm.content}
+                </FormControl.ErrorMessage>
+            </FormControl>
+
         </VStack>
+
     )
 }
 
 export default EditTaskForm;
-
-
-//     return (
-//         <VStack w={"full"} minW={"full"} maxW={"768"} h={"100%"} justifyContent={"center"}>
-
-//             <Heading mt="1" _dark={{
-//                 color: "warmGray.200"
-//             }} color="coolGray.600" fontWeight="medium" size="xs">
-//                 Edit the task
-//             </Heading>
-
-//             <VStack space={3} mt="5">
-//                 <FormField
-//                     isInvalid={alertMessages.name.show} isRequired={alertMessages.name.show} value={patchedTask.name} type="text"
-//                     autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "name") }}
-//                     inputRightElement={false}
-//                     text={{
-//                         label: "name", name: "name", placeholder: "name", alertMessage: alertMessages.name.content,
-//                         iconName: "error"
-//                     }} >
-//                 </FormField>
-//                 <FormField
-//                     isInvalid={alertMessages.description.show} isRequired={alertMessages.description.show} value={patchedTask.description} type="text"
-//                     autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "description") }}
-//                     inputRightElement={false}
-//                     text={{
-//                         label: "Description", name: "description", autocomplete: "description", placeholder: "Description", alertMessage: alertMessages.description.content,
-//                         iconName: "error"
-//                     }} >
-//                 </FormField>
-//                 <FormField
-//                     isInvalid={alertMessages.image.show} isRequired={alertMessages.image.show} value={patchedTask.image} type="text"
-//                     autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "image") }}
-//                     inputRightElement={false}
-//                     text={{
-//                         label: "image", name: "image", autocomplete: "image", placeholder: "image", alertMessage: alertMessages.image.content,
-//                         iconName: "error"
-//                     }} >
-//                 </FormField>
-//                 <FormField
-//                     isInvalid={alertMessages.completion.show} isRequired={alertMessages.completion.show} value={patchedTask.completion} type="text"
-//                     autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "completion") }}
-//                     inputRightElement={false}
-//                     text={{
-//                         label: "completion", name: "completion", autocomplete: "completion", placeholder: "completion", alertMessage: alertMessages.completion.content,
-//                         iconName: "error"
-//                     }} >
-//                 </FormField>
-
-//                 <FormControl isInvalid={alertMessages.genericForm.show} >
-//                     <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
-//                         {alertMessages.genericForm.content}
-//                     </FormControl.ErrorMessage>
-//                 </FormControl>
-
-//                 <Button mt="2" colorScheme="indigo"
-//                     onPress={handleSubmit} title={"EditTask"}>
-//                     Submit edits
-//                 </Button>
-//             </VStack>
-
-//         </VStack >
-//     )
-// }
-
-// export default EditTaskForm;
