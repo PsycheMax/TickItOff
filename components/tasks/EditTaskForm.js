@@ -4,6 +4,8 @@ import { MaterialIcons } from "@native-base/icons";
 import { ProjectContext } from '../../utils/ProjectManager';
 import StandardDivider from '../StandardDivider';
 
+import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+
 const inputRules = {
     name: {
         minLength: 4,
@@ -69,7 +71,7 @@ const EditTaskForm = (props) => {
         <VStack w={"100%"} minW={"100%"}>
             <HStack maxW={"100%"} minW={"100%"} >
 
-                <Box w={"85%"} my={"1rem"} mx={"0.2rem"}>
+                <Box w={"85%"} my={scale(16)} mx={scale(3.2)}>
                     <Input placeholder="Edit task name" fontSize={"lg"} color={props.task.completion ? "primary.50" : "primary.500"}
                         onChangeText={(value) => { handleChange(value, "name") }} type="text" value={patchedTask.name} autocorrect={true} />
 
@@ -80,11 +82,11 @@ const EditTaskForm = (props) => {
 
 
                     <StandardDivider color={"tertiary.500"} />
-                    <Text fontSize={"0.6rem"} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
+                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
                         <Icon as={MaterialIcons} name="more-time" size={"2xs"} color={props.task.completion ? "primary.50" : "primary.500"}
                         />: {Date(props.task.creationDate)}
                     </Text>
-                    <Text fontSize={"0.6rem"} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
+                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
                         <Icon as={MaterialIcons} name="edit" size={"2xs"} color={props.task.completion ? "primary.50" : "primary.500"}
                         />: {Date(props.task.modificationDate)}
                     </Text>

@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 
-import { Center } from 'native-base';
+import { Center, View } from 'native-base';
 
 import { ViewManagerContext } from './ViewManagerContextProvider';
 import TopMenu from '../header/TopMenu';
 import LoadingSpinner from '../LoadingSpinner';
 
+import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+
 const ViewManager = (props) => {
 
-    const { height } = useWindowDimensions();
+    const screenHeight = Dimensions.get('window').height;
 
     const [Loaded, setLoaded] = useState(false)
 
@@ -22,13 +24,14 @@ const ViewManager = (props) => {
 
 
     return (
-        <React.Fragment>
+        <View h={scale(screenHeight - (screenHeight * 0.18))} backgroundColor="secondary.50">
+
 
             <TopMenu />
-            <Center position={"absolute"} top={0.18 * height} zIndex={1} maxW={976} w={"100%"} px={"0.5rem"}>
+            <Center position={"absolute"} top={scale(screenHeight * 0.18)} zIndex={1} maxW={scale(976)} w={"100%"} px={scale(8)}>
                 {Loaded ? ViewContext.renderCurrentView() : <LoadingSpinner />}
             </Center>
-        </React.Fragment>
+        </View>
     )
 }
 

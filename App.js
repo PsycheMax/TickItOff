@@ -31,9 +31,8 @@ import {
   NunitoSans_900Black,
   NunitoSans_900Black_Italic
 } from '@expo-google-fonts/nunito-sans'
-
-
 import ViewManager from "./components/mainView/ViewManager";
+
 
 export default function App() {
 
@@ -175,20 +174,14 @@ export default function App() {
       <UserManagerContextProvider>
         <ViewManagerContextProvider>
           <ProjectManagerContextProvider>
-
-            {/* <Center h={"auto"} minH={"100%"} w={"100%"} maxW={1024} mx={"auto"} backgroundColor={"quartiary.50"} > */}
-            <ScrollView h={"auto"} minH={"100%"} w={"100%"} maxW={1024} mx={"auto"} backgroundColor={"quartiary.50"}>
+            <ScrollView h={"100%"} minH={"100%"} w={"100%"} maxW={1024} mx={"auto"} backgroundColor={"quartiary.50"}>
 
               <ViewManager />
 
             </ScrollView>
-            {/* </Center> */}
-
           </ProjectManagerContextProvider>
         </ViewManagerContextProvider>
       </UserManagerContextProvider>
-
-
 
     </NativeBaseProvider >
   );

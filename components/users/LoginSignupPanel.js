@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { Box } from 'native-base';
 
 import { LoggedUserContext } from '../../utils/UserManager';
 import LoginForm from './UserForms/LoginForm';
@@ -15,13 +14,11 @@ const LoginSignupPanel = (props) => {
     }
 
     return (
-        // <Box w="100%" h="100%">
         <React.Fragment>
             {loggedUser._id && loggedUser._id !== "" ? props.children
                 : showLogin ? <LoginForm showOtherFormFunc={showOtherForm} /> : <SignUpForm showOtherFormFunc={showOtherForm} />}
-        </React.Fragment>
 
-        // </Box>
+        </React.Fragment>
     )
 }
 

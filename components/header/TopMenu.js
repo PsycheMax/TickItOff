@@ -8,8 +8,10 @@ import { ProjectContext } from '../../utils/ProjectManager';
 
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
 import Logo from '../logo/Logo';
+import TopBackground from './TopBackground';
 
 const bgpic = require('../../img/header/mob_top-menu-bg.png');
+import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
 
 const TopMenu = (props) => {
 
@@ -49,7 +51,12 @@ const TopMenu = (props) => {
                     : <React.Fragment></React.Fragment>}
             </Flex >
 
-            <Image position={"absolute"} top={0} left={0} source={{ uri: bgpic }} w={"100%"} h={0.16 * height} maxH={"200px"} resizeMode={"stretch"} zIndex={0} alt={"background image"} ></Image>
+            {/* <Image position={"absolute"} top={0} left={0}
+                source={{ uri: bgpic }} w={"100%"} h={0.16 * height} maxH={"200px"}
+                resizeMode={"stretch"} zIndex={0} alt={"Background image"}
+            /> */}
+            {/* <Box h={scale(150)} w={"100%"} zIndex={0} position={"absolute"} top={0} left={0} borderBottomRadius={scale(110)} backgroundColor={"primary.500"}></Box> */}
+            <TopBackground />
 
         </React.Fragment>
 

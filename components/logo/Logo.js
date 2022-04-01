@@ -5,18 +5,18 @@
 import { Image } from 'native-base';
 import React, { useEffect } from 'react';
 
-let whiteLogoFull;
-let whiteLogoSmall;
-let colorLogoFull;
-let colorLogoSmall;
+import { scale } from 'react-native-size-matters';
+
+let whiteLogoFull = require('./logo-full-white.png');
+let whiteLogoSmall = require('./logo-small-white.png');
+let colorLogoFull = require('./logo-full-color.png');
+let colorLogoSmall = require('./logo-small-color.png');
 
 const Logo = function (props) {
 
     useEffect(() => {
-        whiteLogoFull = require('../../img/logo/logo-full-white.png');
-        whiteLogoSmall = require('../../img/logo/logo-small-white.png');
-        colorLogoFull = require('../../img/logo/logo-full-color.png');
-        colorLogoSmall = require('../../img/logo/logo-small-color.png');
+
+
     }, [])
 
     function chooseSize() {
@@ -47,9 +47,12 @@ const Logo = function (props) {
         }
     }
 
-    console.log(chooseSize());
+    var imageSource = { uri: chooseSize(), width: scale(100), height: scale(100) };
+
     return (
-        <Image alt={"Tick it off logo"} source={{ uri: require('../../img/logo/logo-small-white.png') }} w="6rem" h="6rem" />
+        <Image alt={"Tick it off logo"} source={imageSource} width={scale(100)} height={scale(100)}
+            _android={{ source: whiteLogoSmall, style: { width: scale(100), height: scale(120), minWidth: scale(100), minHeight: scale(100), zIndex: 15, display: "flex" } }}
+        />
     )
 }
 

@@ -6,6 +6,8 @@ import EditTaskForm from './EditTaskForm';
 import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import StandardDivider from '../StandardDivider';
 
+import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+
 const TaskSimple = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
     const ViewManagementFunctions = useContext(ViewManagerContext);
@@ -124,7 +126,7 @@ const TaskSimple = (props) => {
         if (!showEditTaskForm) {
             return <HStack maxW={"100%"} minW={"100%"} >
 
-                <Box w={"85%"} my={"1rem"} mx={"0.2rem"}>
+                <Box w={"85%"} my={scale(16)} mx={scale(3.2)}>
                     <Heading size="sm" lineBreakMode={"head"} color={decideColor("text")} >
                         {props.task.name}
                     </Heading>
@@ -136,21 +138,21 @@ const TaskSimple = (props) => {
                     </Text>
 
                     <StandardDivider display={showTaskMenu ? "block" : "none"} color={"tertiary.500"} />
-                    <Text fontSize={"0.6rem"} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "block" : "none"}>
+                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "block" : "none"}>
                         <Icon as={MaterialIcons} name="more-time" size={"2xs"} color={decideColor("text")}
                         />: {Date(props.task.creationDate)}
                     </Text>
-                    <Text fontSize={"0.6rem"} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "block" : "none"}>
+                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "block" : "none"}>
                         <Icon as={MaterialIcons} name="edit" size={"2xs"} color={decideColor("text")}
                         />: {Date(props.task.modificationDate)}
                     </Text>
                 </Box>
-                <Center my={"auto"} h={"100%"} w={"10%"} mx={"0.1rem"} display={showTaskMenu ? "none" : "block"}>
+                <Center my={"auto"} h={"100%"} w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "none" : "block"}>
                     <IconButton icon={<Icon as={MaterialIcons} name="menu-open" />} borderRadius="full"
                         _icon={{ color: decideColor("text"), size: "md" }}
                         onPress={toggleTaskMenu} />
                 </Center>
-                <VStack h={"100%"} w={"10%"} mx={"0.1rem"} display={showTaskMenu ? "block" : "none"}>
+                <VStack h={"100%"} w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "block" : "none"}>
                     <IconButton w={"100%"} icon={<Icon as={MaterialIcons} name="zoom-out" />} borderRadius="full"
                         _icon={{ color: checkState ? "tertiary.400" : "tertiary.500", size: "md" }}
                         onPress={toggleTaskMenu} />
@@ -172,7 +174,7 @@ const TaskSimple = (props) => {
         <React.Fragment>
 
             <Pressable onPress={toggleCompletion}>
-                <Flex direction={"row"} maxW={"100%"} w={"100%"} minW={"100%"} justifyItems={"start"} my={"0.3rem"}>
+                <Flex direction={"row"} maxW={"100%"} w={"100%"} minW={"100%"} justifyItems={"start"} my={scale(4.8)}>
                     <Square w={"16%"} borderRadius={"lg"} borderWidth={"2"} borderColor={decideColor("border")} backgroundColor={decideColor("background")}>
                         <Checkbox colorScheme="primary" size="lg" p={0} m={0} borderRadius={"lg"} backgroundColor={"transparent.50"} borderWidth={0}
                             icon={<Icon as={<MaterialIcons name="check" />} />} defaultIsChecked={props.task.completion}
@@ -180,7 +182,7 @@ const TaskSimple = (props) => {
                         />
                     </Square>
                     <Spacer w={"1%"}></Spacer>
-                    <Box w={"83%"} maxW={"82%"} minW={"82%"} minH={"2.5rem"} h={"full"} borderRadius={"lg"} px={"1rem"}
+                    <Box w={"83%"} maxW={"82%"} minW={"82%"} minH={scale(40)} h={"full"} borderRadius={"lg"} px={scale(16)}
                         borderColor={decideColor("border")} borderWidth={"2"} backgroundColor={decideColor("background")} >
 
                         {/* If showEditTaskForm is true, the following HStack is not displayed */}

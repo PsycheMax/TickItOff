@@ -11,6 +11,8 @@ import NewTaskForm from '../tasks/NewTaskForm';
 import EditProjectForm from './EditProjectForm';
 import StandardDivider from '../StandardDivider';
 
+import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+
 const ViewProject = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
@@ -63,14 +65,14 @@ const ViewProject = (props) => {
     return (
         <Center w={"95%"} maxW={"95%"} >
             <VStack w={"100%"}>
-                <VStack minH={"3rem"} maxW={"95%"} minW={"95%"}>
+                <VStack minH={scale(48)} maxW={"95%"} minW={"95%"}>
                     <Box display={showProjectEditForm ? "none" : "block"}>
                         <Pressable onPress={toggleUserManagement}>
                             <HStack>
                                 <Heading w={"100%"} maxW={"100%"} overflow={"hidden"} whiteSpace={"normal"} color={"primary.800"}>
                                     {ProjectData.name}
                                 </Heading>
-                                <Flex direction='row' display={showProjectEditForm ? "none" : "flex"} maxH={"2rem"}>
+                                <Flex direction='row' display={showProjectEditForm ? "none" : "flex"} maxH={scale(32)}>
                                     <Center px={0} mx={0}>
                                         <IconButton
                                             px={0} mx={0}
@@ -132,7 +134,7 @@ const ViewProject = (props) => {
 
 
                 {ProjectData.tasks ?
-                    <Box mt={"1rem"} maxW={"100%"} w={"100%"} minW={"100%"}>
+                    <Box mt={scale(16)} maxW={"100%"} w={"100%"} minW={"100%"}>
                         {/* <Heading fontSize="xl" pb="3">
                             Tasks
                         </Heading> */}
@@ -149,14 +151,14 @@ const ViewProject = (props) => {
 
 
                 {ProjectData.archivedTasks ?
-                    <VStack w={"110%"} ml={"-1rem"}
-                        pl={"1rem"} pr={"1rem"} pb={"1rem"} pt={"1rem"}
+                    <VStack w={"110%"} ml={-scale(16)}
+                        pl={scale(16)} pr={scale(16)} pb={scale(16)} pt={scale(16)}
                         bg={"primary.500"}
                     >
                         <Pressable onPress={toggleArchivedTasks}>
                             <Box>
 
-                                <Heading pb={"1rem"} color={"tertiary.50"}
+                                <Heading pb={scale(16)} color={"tertiary.50"}
                                     borderBottomStyle={"solid"} borderBottomColor={"primary.500"}
                                     borderBottomWidth={showArchivedTasks ? "0" : "1"}
                                 >
@@ -206,7 +208,7 @@ export default ViewProject;
 //             <VStack maxW={"full"} minW={"full"} px={"4"} mx={"auto"} mt={"10"}>
 
 //                 <HStack py={"12"}>
-//                     <VStack w={"5/6"} h={"3rem"}>
+//                     <VStack w={"5/6"} h={scale(48)}>
 //                         <Box display={showProjectEditForm ? "none" : "block"}>
 //                             <Pressable onPress={toggleUserManagement}>
 //                                 <Heading size={"lg"} fontSize={"lg"}>{ProjectData.name}</Heading>

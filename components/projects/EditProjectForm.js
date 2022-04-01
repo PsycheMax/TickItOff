@@ -4,6 +4,8 @@ import { MaterialIcons } from "@native-base/icons";
 import { ProjectContext } from '../../utils/ProjectManager';
 import StandardDivider from '../StandardDivider';
 
+import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+
 const inputRules = {
     name: {
         minLength: 8,
@@ -82,7 +84,7 @@ const EditProjectForm = (props) => {
                     fontSize={"md"} fontWeight={"normal"}
                     onChangeText={(value) => { handleChange(value, "description") }}
                     type="text" value={patchedProject.description} autocorrect={true}
-                    h={"6rem"} multiline={true} />
+                    h={scale(96)} multiline={true} />
 
                 <StandardDivider />
 
@@ -90,7 +92,7 @@ const EditProjectForm = (props) => {
                     {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
                 </Text>
             </Box>
-            <Center ml={"0.5rem"} w={"5%"} >
+            <Center ml={scale(8)} w={"5%"} >
                 <IconButton
                     icon={<Icon as={MaterialIcons} name="done" />} borderRadius="full" _icon={{ color: "primary.500", size: "md" }}
                     onPress={handleSubmitEdit}
