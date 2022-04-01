@@ -71,11 +71,10 @@ const ViewManagerContextProvider = (props) => {
                 case "default":
                 default:
                     return <ProjectSelector />
-                    // return <LoginSignupPanel />;
                     break;
             }
         } else {
-            setCurrentView("default");
+            // setCurrentView("default");
             return <LoginSignupPanel />;
         }
     }

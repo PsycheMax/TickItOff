@@ -3,14 +3,21 @@
 // native-base\img\logo\logo-small-color.png
 // native-base\img\logo\logo-small-white.png
 import { Image } from 'native-base';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const whiteLogoFull = require('../../img/logo/logo-full-white.png');
-const whiteLogoSmall = require('../../img/logo/logo-small-white.png');
-const colorLogoFull = require('../../img/logo/logo-full-color.png');
-const colorLogoSmall = require('../../img/logo/logo-small-color.png');
+let whiteLogoFull;
+let whiteLogoSmall;
+let colorLogoFull;
+let colorLogoSmall;
 
 const Logo = function (props) {
+
+    useEffect(() => {
+        whiteLogoFull = require('../../img/logo/logo-full-white.png');
+        whiteLogoSmall = require('../../img/logo/logo-small-white.png');
+        colorLogoFull = require('../../img/logo/logo-full-color.png');
+        colorLogoSmall = require('../../img/logo/logo-small-color.png');
+    }, [])
 
     function chooseSize() {
         switch (props.size) {
@@ -21,7 +28,7 @@ const Logo = function (props) {
                         break;
                     case "white":
                     default:
-                        return colorLogoSmall;
+                        return whiteLogoFull;
                         break;
                 }
                 break;
@@ -40,9 +47,15 @@ const Logo = function (props) {
         }
     }
 
+    console.log(chooseSize());
     return (
-        <Image alt={"Tick it off logo"} source={{ uri: chooseSize() }} w="6rem" h="6rem" />
+        <Image alt={"Tick it off logo"} source={{ uri: require('../../img/logo/logo-small-white.png') }} w="6rem" h="6rem" />
     )
+}
+
+Logo.defaultProps = {
+    color: "color",
+    size: "small"
 }
 
 export default Logo;

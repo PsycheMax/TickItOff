@@ -110,60 +110,60 @@ export default function App() {
         50: '#1a78cc00'
       }
     },
-    fontConfig: {
-      NunitoSans: {
-        200: {
-          normal: NunitoSans_200ExtraLight,
-          italic: NunitoSans_200ExtraLight_Italic
-        },
-        300: {
-          normal: NunitoSans_300Light,
-          italic: NunitoSans_300Light_Italic
-        },
-        400: {
-          normal: NunitoSans_400Regular,
-          italic: NunitoSans_400Regular_Italic
-        },
-        600: {
-          normal: NunitoSans_600SemiBold,
-          italic: NunitoSans_600SemiBold_Italic
-        },
-        700: {
-          normal: NunitoSans_700Bold,
-          italic: NunitoSans_700Bold_Italic
-        },
-        800: {
-          normal: NunitoSans_800ExtraBold,
-          italic: NunitoSans_800ExtraBold_Italic
-        },
-        900: {
-          normal: NunitoSans_900Black,
-          italic: NunitoSans_900Black_Italic
-        },
-      },
-      Halant: {
-        300: {
-          normal: Halant_300Light
-        },
-        400: {
-          normal: Halant_400Regular
-        },
-        500: {
-          normal: Halant_500Medium
-        },
-        600: {
-          normal: Halant_600SemiBold
-        },
-        700: {
-          normal: Halant_700Bold
-        }
-      },
-    },
-    fonts: {
-      heading: Halant_500Medium,
-      body: NunitoSans_400Regular,
-      mono: 'NunitoSans'
-    },
+    // fontConfig: {
+    //   NunitoSans: {
+    //     200: {
+    //       normal: NunitoSans_200ExtraLight,
+    //       italic: NunitoSans_200ExtraLight_Italic
+    //     },
+    //     300: {
+    //       normal: NunitoSans_300Light,
+    //       italic: NunitoSans_300Light_Italic
+    //     },
+    //     400: {
+    //       normal: NunitoSans_400Regular,
+    //       italic: NunitoSans_400Regular_Italic
+    //     },
+    //     600: {
+    //       normal: NunitoSans_600SemiBold,
+    //       italic: NunitoSans_600SemiBold_Italic
+    //     },
+    //     700: {
+    //       normal: NunitoSans_700Bold,
+    //       italic: NunitoSans_700Bold_Italic
+    //     },
+    //     800: {
+    //       normal: NunitoSans_800ExtraBold,
+    //       italic: NunitoSans_800ExtraBold_Italic
+    //     },
+    //     900: {
+    //       normal: NunitoSans_900Black,
+    //       italic: NunitoSans_900Black_Italic
+    //     },
+    //   },
+    //   Halant: {
+    //     300: {
+    //       normal: Halant_300Light
+    //     },
+    //     400: {
+    //       normal: Halant_400Regular
+    //     },
+    //     500: {
+    //       normal: Halant_500Medium
+    //     },
+    //     600: {
+    //       normal: Halant_600SemiBold
+    //     },
+    //     700: {
+    //       normal: Halant_700Bold
+    //     }
+    //   },
+    // },
+    // fonts: {
+    //   heading: Halant_500Medium,
+    //   body: NunitoSans_400Regular,
+    //   mono: 'NunitoSans'
+    // },
     config: {
       initialColorMode: 'light'
     }
