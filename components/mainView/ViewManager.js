@@ -24,11 +24,14 @@ const ViewManager = (props) => {
 
 
     return (
-        <View h={scale(screenHeight - (screenHeight * 0.18))} backgroundColor="secondary.50">
+        <View h={screenHeight - (screenHeight * 0.18)} backgroundColor="secondary.50">
 
 
             <TopMenu />
-            <Center position={"absolute"} top={scale(screenHeight * 0.18)} zIndex={1} maxW={scale(976)} w={"100%"} px={scale(8)}>
+            <Center position={"absolute"} top={(screenHeight * 0.18)} zIndex={1} maxW={scale(976)} w={"100%"} px={scale(8)}
+                h={screenHeight - (screenHeight * 0.18)}
+                _web={{ style: { top: screenHeight * 0.22 } }}
+            >
                 {Loaded ? ViewContext.renderCurrentView() : <LoadingSpinner />}
             </Center>
         </View>

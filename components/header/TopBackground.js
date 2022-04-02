@@ -23,7 +23,8 @@ const TopBackground = (props) => {
                 resizeMode={"stretch"} zIndex={0} alt={"Background image"}
             /> */}
 
-            <Box h={scale(150)} w={"100%"} zIndex={0} borderBottomRadius={scale(110)} backgroundColor={"primary.500"}>
+            <Box
+                h={height * 0.18} w={"100%"} zIndex={0} borderBottomRadius={scale(110)} backgroundColor={"primary.500"}>
 
             </Box>
 

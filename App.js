@@ -4,55 +4,19 @@ import UserManagerContextProvider from "./utils/UserManager";
 import ViewManagerContextProvider from "./components/mainView/ViewManagerContextProvider";
 import ProjectManagerContextProvider from "./utils/ProjectManager";
 
-import AppLoading from "expo-app-loading";
-import { useFonts } from 'expo-font';
-
-import {
-  Halant_300Light,
-  Halant_400Regular,
-  Halant_500Medium,
-  Halant_600SemiBold,
-  Halant_700Bold
-} from '@expo-google-fonts/halant';
-
-import {
-  NunitoSans_200ExtraLight,
-  NunitoSans_200ExtraLight_Italic,
-  NunitoSans_300Light,
-  NunitoSans_300Light_Italic,
-  NunitoSans_400Regular,
-  NunitoSans_400Regular_Italic,
-  NunitoSans_600SemiBold,
-  NunitoSans_600SemiBold_Italic,
-  NunitoSans_700Bold,
-  NunitoSans_700Bold_Italic,
-  NunitoSans_800ExtraBold,
-  NunitoSans_800ExtraBold_Italic,
-  NunitoSans_900Black,
-  NunitoSans_900Black_Italic
-} from '@expo-google-fonts/nunito-sans'
 import ViewManager from "./components/mainView/ViewManager";
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginSignupPanel from "./components/users/LoginSignupPanel";
+import LoadingSpinner from "./components/LoadingSpinner";
+import ProjectSelector from "./components/projects/ProjectSelector";
+import ViewProject from "./components/projects/ViewProject";
+import UserPanel from "./components/users/UserPanel/UserPanel";
 
 export default function App() {
 
-  let [fontsLoaded] = useFonts({
-    'NunitoSans': NunitoSans_400Regular,
-    'Halant': Halant_400Regular
-  })
-
-  if (!fontsLoaded) {
-    return <AppLoading />
-  }
-
   const theme = extendTheme({
-    // components:{
-    //   Heading:{
-    //     sizes:{
-
-    //     }
-    //   }
-    // },
     colors: {
       primary: {
         50: '#def5ff',
@@ -109,78 +73,31 @@ export default function App() {
         50: '#1a78cc00'
       }
     },
-    // fontConfig: {
-    //   NunitoSans: {
-    //     200: {
-    //       normal: NunitoSans_200ExtraLight,
-    //       italic: NunitoSans_200ExtraLight_Italic
-    //     },
-    //     300: {
-    //       normal: NunitoSans_300Light,
-    //       italic: NunitoSans_300Light_Italic
-    //     },
-    //     400: {
-    //       normal: NunitoSans_400Regular,
-    //       italic: NunitoSans_400Regular_Italic
-    //     },
-    //     600: {
-    //       normal: NunitoSans_600SemiBold,
-    //       italic: NunitoSans_600SemiBold_Italic
-    //     },
-    //     700: {
-    //       normal: NunitoSans_700Bold,
-    //       italic: NunitoSans_700Bold_Italic
-    //     },
-    //     800: {
-    //       normal: NunitoSans_800ExtraBold,
-    //       italic: NunitoSans_800ExtraBold_Italic
-    //     },
-    //     900: {
-    //       normal: NunitoSans_900Black,
-    //       italic: NunitoSans_900Black_Italic
-    //     },
-    //   },
-    //   Halant: {
-    //     300: {
-    //       normal: Halant_300Light
-    //     },
-    //     400: {
-    //       normal: Halant_400Regular
-    //     },
-    //     500: {
-    //       normal: Halant_500Medium
-    //     },
-    //     600: {
-    //       normal: Halant_600SemiBold
-    //     },
-    //     700: {
-    //       normal: Halant_700Bold
-    //     }
-    //   },
-    // },
-    // fonts: {
-    //   heading: Halant_500Medium,
-    //   body: NunitoSans_400Regular,
-    //   mono: 'NunitoSans'
-    // },
     config: {
       initialColorMode: 'light'
     }
   })
 
+  const Stack = createNativeStackNavigator();
+
   return (
     <NativeBaseProvider theme={theme}>
 
       <UserManagerContextProvider>
-        <ViewManagerContextProvider>
-          <ProjectManagerContextProvider>
-            <ScrollView h={"100%"} minH={"100%"} w={"100%"} maxW={1024} mx={"auto"} backgroundColor={"quartiary.50"}>
+        <ProjectManagerContextProvider>
 
-              <ViewManager />
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="LoginSignupPanel">
+              <Stack.Screen name="LoginSignupPanel" component={LoginSignupPanel} options={{ title: "Tick It Off" }} />
+              <Stack.Screen name="UserPanel" component={UserPanel} options={{ title: "Profile" }} />
+              <Stack.Screen name="ProjectSelector" component={ProjectSelector} options={{ title: "Select your project" }} />
+              <Stack.Screen name="ViewProject" component={ViewProject} options={{ title: "Project Details" }} />
+              <Stack.Screen name="LoadingSpinner" component={LoadingSpinner} options={{ title: "Loading..." }} />
+            </Stack.Navigator>
+          </NavigationContainer>
 
-            </ScrollView>
-          </ProjectManagerContextProvider>
-        </ViewManagerContextProvider>
+
+        </ProjectManagerContextProvider>
       </UserManagerContextProvider>
 
     </NativeBaseProvider >

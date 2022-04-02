@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useWindowDimensions } from 'react-native';
 import { Center, Pressable, Flex, Box, Image } from 'native-base';
 
 import { LoggedUserContext } from '../../utils/UserManager';
@@ -14,8 +13,6 @@ const bgpic = require('../../img/header/mob_top-menu-bg.png');
 import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
 
 const TopMenu = (props) => {
-
-    const { height } = useWindowDimensions();
 
     const ProjectFunctions = useContext(ProjectContext);
     const ViewFunctions = useContext(ViewManagerContext);

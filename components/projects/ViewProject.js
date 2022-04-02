@@ -66,10 +66,10 @@ const ViewProject = (props) => {
         <Center w={"95%"} maxW={"95%"} >
             <VStack w={"100%"}>
                 <VStack minH={scale(48)} maxW={"95%"} minW={"95%"}>
-                    <Box display={showProjectEditForm ? "none" : "block"}>
+                    <Box display={showProjectEditForm ? "none" : "flex"}>
                         <Pressable onPress={toggleUserManagement}>
                             <HStack>
-                                <Heading w={"100%"} maxW={"100%"} overflow={"hidden"} whiteSpace={"normal"} color={"primary.800"}>
+                                <Heading w={"100%"} maxW={"100%"} overflow={"hidden"} color={"primary.800"} _web={{ style: { whiteSpace: "normal" } }}>
                                     {ProjectData.name}
                                 </Heading>
                                 <Flex direction='row' display={showProjectEditForm ? "none" : "flex"} maxH={scale(32)}>
@@ -99,14 +99,14 @@ const ViewProject = (props) => {
 
                         </Pressable>
                     </Box>
-                    <VStack display={showProjectEditForm ? "block" : "none"}>
+                    <VStack display={showProjectEditForm ? "flex" : "none"}>
                         <EditProjectForm toggleFormFunc={toggleEditProjectForm} />
                         <Text><Icon as={MaterialIcons} name="more-time" size={"xs"} />: {ProjectData.creationDate}</Text>
                         <Text><Icon as={MaterialIcons} name="edit" size={"xs"} />: {ProjectData.modificationDate}</Text>
                     </VStack>
                 </VStack>
 
-                <Box display={showUserManagement ? "block" : "none"}>
+                <Box display={showUserManagement ? "flex" : "none"}>
                     <HStack alignItems={"center"}>
                         <Text>Created by: </Text>
                         <Avatar.Group size={"sm"} max={4}>
@@ -165,7 +165,7 @@ const ViewProject = (props) => {
                                     Archived Tasks
                                 </Heading>
 
-                                <ScrollView display={showArchivedTasks ? "block" : "none"}>
+                                <ScrollView display={showArchivedTasks ? "flex" : "none"}>
                                     <FlatList data={ProjectData.archivedTasks}
                                         renderItem={({ item }) => <TaskSimple task={item} />}
                                         keyExtractor={item => item._id} />
@@ -209,7 +209,7 @@ export default ViewProject;
 
 //                 <HStack py={"12"}>
 //                     <VStack w={"5/6"} h={scale(48)}>
-//                         <Box display={showProjectEditForm ? "none" : "block"}>
+//                         <Box display={showProjectEditForm ? "none" : "flex"}>
 //                             <Pressable onPress={toggleUserManagement}>
 //                                 <Heading size={"lg"} fontSize={"lg"}>{ProjectData.name}</Heading>
 //                                 <Text>{ProjectData.description}</Text>
@@ -217,12 +217,12 @@ export default ViewProject;
 //                                 <Text>{ProjectData.level}</Text>
 //                             </Pressable>
 //                         </Box>
-//                         <Box display={showProjectEditForm ? "block" : "none"}>
+//                         <Box display={showProjectEditForm ? "flex" : "none"}>
 //                             <EditProjectForm toggleFormFunc={toggleEditProjectForm} />
 //                         </Box>
 //                     </VStack>
 //                     <HStack w={"1/6"}>
-//                         <Center display={showProjectEditForm ? "none" : "block"}>
+//                         <Center display={showProjectEditForm ? "none" : "flex"}>
 //                             <IconButton
 //                                 icon={<Icon as={MaterialIcons} name="edit" />} borderRadius="full" _icon={{ color: "primary.500", size: "sm" }}
 //                                 onPress={toggleEditProjectForm}
@@ -231,7 +231,7 @@ export default ViewProject;
 //                     </HStack>
 //                 </HStack>
 
-//                 <Box display={showUserManagement ? "block" : "none"}>
+//                 <Box display={showUserManagement ? "flex" : "none"}>
 //                     <HStack alignItems={"center"}>
 //                         <Text>Created by: </Text>
 //                         <Avatar.Group size={"sm"} max={4}>
@@ -280,7 +280,7 @@ export default ViewProject;
 //                             Archived Tasks
 //                         </Heading>
 //                     </Pressable>
-//                     <Box display={showArchivedTasks ? "block" : "none"}>
+//                     <Box display={showArchivedTasks ? "flex" : "none"}>
 //                         <FlatList data={ProjectData.archivedTasks}
 //                             renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{
 //                                 borderColor: "gray.600"

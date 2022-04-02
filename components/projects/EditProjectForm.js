@@ -69,7 +69,7 @@ const EditProjectForm = (props) => {
     }
 
     return (
-        <Flex direction={"row"} justifyItems={"justify"}>
+        <Flex direction={"row"}>
             <Box w={"95%"}>
 
                 <Input placeholder="Edit Project Title"

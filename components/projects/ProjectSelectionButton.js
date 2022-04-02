@@ -12,9 +12,9 @@ const ProjectSelectionButton = (props) => {
                 borderRadius={"lg"} h={scale(96)} maxH={scale(96)} mt={scale(16)}
                 px={scale(16)} pt={scale(8)}
             >
-                <Heading color={"secondary.50"} overflowWrap={"nowrap"} noOfLines={1} isTruncated >{props.name}</Heading>
+                <Heading color={"secondary.50"} noOfLines={1} isTruncated _web={{ style: { overflowWrap: "nowrap" } }} >{props.name}</Heading>
                 <StandardDivider color={"tertiary.500"} />
-                <Text color={"secondary.50"} noOfLines={1} overflowWrap={"nowrap"}
+                <Text color={"secondary.50"} noOfLines={1} _web={{ style: { overflowWrap: "nowrap" } }}
                     display={props.description ? "flex" : "none"}>{props.description ? props.description : null}</Text>
             </Flex>
         </Pressable>)

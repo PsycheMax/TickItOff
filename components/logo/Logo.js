@@ -51,6 +51,7 @@ const Logo = function (props) {
 
     return (
         <Image alt={"Tick it off logo"} source={imageSource} width={scale(100)} height={scale(100)}
+            _web={{ style: { width: scale(100), height: scale(100), maxHeight: "8rem", maxWidth: "8rem" } }}
             _android={{ source: whiteLogoSmall, style: { width: scale(100), height: scale(120), minWidth: scale(100), minHeight: scale(100), zIndex: 15, display: "flex" } }}
         />
     )

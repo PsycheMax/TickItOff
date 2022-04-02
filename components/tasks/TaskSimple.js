@@ -131,28 +131,28 @@ const TaskSimple = (props) => {
                         {props.task.name}
                     </Heading>
 
-                    <StandardDivider display={showTaskMenu ? "block" : "none"} color={"tertiary.500"} />
+                    <StandardDivider display={showTaskMenu ? "flex" : "none"} color={"tertiary.500"} />
 
-                    <Text lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "block" : "none"}>
+                    <Text lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "flex" : "none"}>
                         {props.task.description.length > 0 ? props.task.description : "If you want to add a description, edit this task to do so"}
                     </Text>
 
-                    <StandardDivider display={showTaskMenu ? "block" : "none"} color={"tertiary.500"} />
-                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "block" : "none"}>
+                    <StandardDivider display={showTaskMenu ? "flex" : "none"} color={"tertiary.500"} />
+                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "flex" : "none"}>
                         <Icon as={MaterialIcons} name="more-time" size={"2xs"} color={decideColor("text")}
                         />: {Date(props.task.creationDate)}
                     </Text>
-                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "block" : "none"}>
+                    <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "flex" : "none"}>
                         <Icon as={MaterialIcons} name="edit" size={"2xs"} color={decideColor("text")}
                         />: {Date(props.task.modificationDate)}
                     </Text>
                 </Box>
-                <Center my={"auto"} h={"100%"} w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "none" : "block"}>
+                <Center my={"auto"} w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "none" : "flex"}>
                     <IconButton icon={<Icon as={MaterialIcons} name="menu-open" />} borderRadius="full"
                         _icon={{ color: decideColor("text"), size: "md" }}
                         onPress={toggleTaskMenu} />
                 </Center>
-                <VStack h={"100%"} w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "block" : "none"}>
+                <VStack w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "block" : "none"}>
                     <IconButton w={"100%"} icon={<Icon as={MaterialIcons} name="zoom-out" />} borderRadius="full"
                         _icon={{ color: checkState ? "tertiary.400" : "tertiary.500", size: "md" }}
                         onPress={toggleTaskMenu} />
@@ -174,7 +174,7 @@ const TaskSimple = (props) => {
         <React.Fragment>
 
             <Pressable onPress={toggleCompletion}>
-                <Flex direction={"row"} maxW={"100%"} w={"100%"} minW={"100%"} justifyItems={"start"} my={scale(4.8)}>
+                <Flex direction={"row"} maxW={"100%"} w={"100%"} minW={"100%"} my={scale(4.8)}>
                     <Square w={"16%"} borderRadius={"lg"} borderWidth={"2"} borderColor={decideColor("border")} backgroundColor={decideColor("background")}>
                         <Checkbox colorScheme="primary" size="lg" p={0} m={0} borderRadius={"lg"} backgroundColor={"transparent.50"} borderWidth={0}
                             icon={<Icon as={<MaterialIcons name="check" />} />} defaultIsChecked={props.task.completion}

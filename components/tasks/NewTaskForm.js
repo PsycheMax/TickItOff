@@ -64,7 +64,7 @@ const NewTaskForm = (props) => {
     }
 
     return (
-        <VStack w={"full"} minW={"full"} display={"block"} minH={scale(32)} borderWidth={2} borderColor={"primary.500"} backgroundColor={"primary.50"} borderRadius={"lg"}>
+        <VStack w={"full"} minW={"full"} display={"flex"} minH={scale(32)} borderWidth={2} borderColor={"primary.500"} backgroundColor={"primary.50"} borderRadius={"lg"}>
             <HStack w={"full"} minW={"full"}>
                 <Input placeholder="Add a new task" w={"90%"} borderWidth={0} fontSize={"lg"} color={"primary.800"}
                     onChangeText={(value) => { handleChange(value, "name") }} type="text" value={newTask.name} autocorrect={true} />
@@ -87,7 +87,7 @@ const NewTaskForm = (props) => {
 
 export default NewTaskForm;
 //     return (
-//         <VStack w={"full"} minW={"full"} justifyContent={"center"} display={"block"}>
+//         <VStack w={"full"} minW={"full"} justifyContent={"center"} display={"flex"}>
 //             <Box size="lg" alignSelf={"auto"} w={"full"} h={"100%"} py={"6"}>
 //                 <HStack>
 //                     <Center>

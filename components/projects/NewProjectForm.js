@@ -78,7 +78,7 @@ const NewProjectForm = (props) => {
                         onChangeText={(value) => { handleChange(value, "description") }}
                         type="text" value={newProject.description} autocorrect={true} />
                 </Box>
-                <Center display={alertMessages.genericForm.show ? "block" : "none"} mt={scale(11.2)}>
+                <Center display={alertMessages.genericForm.show ? "flex" : "none"} mt={scale(11.2)}>
                     <Icon as={MaterialIcons} name="error" color={"tertiary.500"} size="sm" />
                     <Text color={"tertiary.500"}>
                         {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
