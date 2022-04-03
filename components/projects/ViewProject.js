@@ -3,7 +3,6 @@ import { IconButton, Center, Text, Heading, Icon, VStack, HStack, Avatar, Box, F
 import { MaterialIcons } from "@native-base/icons";;
 
 import { ProjectContext } from '../../utils/ProjectManager';
-import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
 import TaskSimple from '../tasks/TaskSimple';
@@ -16,7 +15,6 @@ import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'reac
 const ViewProject = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
-    const ViewFunctions = useContext(ViewManagerContext);
 
     const [showUserManagement, setShowUserManagement] = useState(false);
     const [showArchivedTasks, setShowArchivedTasks] = useState(false);
@@ -46,17 +44,15 @@ const ViewProject = (props) => {
             if (response.status !== 204) {
                 // ERROR
                 // toSetInAlertMessages.genericForm = { show: true, content: response.data };
-                await ViewFunctions.changeCurrentViewTo("ProjectSelector");
-                await ViewFunctions.renderCurrentView();
+                props.navigation.push('ProjectSelector');
             } else {
                 // Code 204!
-                await ViewFunctions.changeCurrentViewTo("ProjectSelector");
-                await ViewFunctions.renderCurrentView();
+                props.navigation.push('ProjectSelector');
+
             }
         } else {
             // Code 200
-            await ViewFunctions.changeCurrentViewTo("ProjectSelector");
-            await ViewFunctions.renderCurrentView();
+            props.navigation.push('ProjectSelector');
         }
     }
 

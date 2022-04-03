@@ -1,5 +1,4 @@
 import React from 'react';
-import { HStack, Heading, Spinner } from 'native-base';
 
 const LoadingSpinner = (props) => {
 

@@ -1,5 +1,3 @@
-import { NativeBaseProvider, Center, extendTheme, Text, Heading, ScrollView } from "native-base";
-
 import UserManagerContextProvider from "./utils/UserManager";
 import ViewManagerContextProvider from "./components/mainView/ViewManagerContextProvider";
 import ProjectManagerContextProvider from "./utils/ProjectManager";

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Icon, Center, Input, IconButton, Box, Flex, Text } from 'native-base';
+// import { Icon, Center, Input, IconButton, Box, Flex, Text } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";
 import { ProjectContext } from '../../utils/ProjectManager';
 import StandardDivider from '../StandardDivider';
@@ -69,36 +69,37 @@ const EditProjectForm = (props) => {
     }
 
     return (
-        <Flex direction={"row"}>
-            <Box w={"95%"}>
+        // <Flex direction={"row"}>
+        //     <Box w={"95%"}>
 
-                <Input placeholder="Edit Project Title"
-                    fontSize={"lg"} fontWeight={"bold"}
-                    onChangeText={(value) => { handleChange(value, "name") }}
-                    type="text" value={patchedProject.name} autocorrect={true}
-                />
+        //         <Input placeholder="Edit Project Title"
+        //             fontSize={"lg"} fontWeight={"bold"}
+        //             onChangeText={(value) => { handleChange(value, "name") }}
+        //             type="text" value={patchedProject.name} autocorrect={true}
+        //         />
 
-                <StandardDivider />
+        //         <StandardDivider />
 
-                <Input placeholder="Edit Project Description"
-                    fontSize={"md"} fontWeight={"normal"}
-                    onChangeText={(value) => { handleChange(value, "description") }}
-                    type="text" value={patchedProject.description} autocorrect={true}
-                    h={scale(96)} multiline={true} />
+        //         <Input placeholder="Edit Project Description"
+        //             fontSize={"md"} fontWeight={"normal"}
+        //             onChangeText={(value) => { handleChange(value, "description") }}
+        //             type="text" value={patchedProject.description} autocorrect={true}
+        //             h={scale(96)} multiline={true} />
 
-                <StandardDivider />
+        //         <StandardDivider />
 
-                <Text color={"tertiary.500"}>
-                    {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
-                </Text>
-            </Box>
-            <Center ml={scale(8)} w={"5%"} >
-                <IconButton
-                    icon={<Icon as={MaterialIcons} name="done" />} borderRadius="full" _icon={{ color: "primary.500", size: "md" }}
-                    onPress={handleSubmitEdit}
-                />
-            </Center>
-        </Flex>
+        //         <Text color={"tertiary.500"}>
+        //             {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
+        //         </Text>
+        //     </Box>
+        //     <Center ml={scale(8)} w={"5%"} >
+        //         <IconButton
+        //             icon={<Icon as={MaterialIcons} name="done" />} borderRadius="full" _icon={{ color: "primary.500", size: "md" }}
+        //             onPress={handleSubmitEdit}
+        //         />
+        //     </Center>
+        // </Flex>
+        <></>
     )
 }
 

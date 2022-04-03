@@ -3,14 +3,12 @@ import { IconButton, Center, Text, Checkbox, Heading, Icon, VStack, HStack, Box,
 import { MaterialIcons } from "@native-base/icons";
 import { ProjectContext } from '../../utils/ProjectManager';
 import EditTaskForm from './EditTaskForm';
-import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 import StandardDivider from '../StandardDivider';
 
 import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
 
 const TaskSimple = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
-    const ViewManagementFunctions = useContext(ViewManagerContext);
 
     const [showEditTaskForm, setShowEditTaskForm] = useState(false);
     const [showTaskMenu, setShowTaskMenu] = useState(false);
@@ -31,9 +29,8 @@ const TaskSimple = (props) => {
 
     async function updateTaskFunc() {
         toggleEditTaskForm();
-        // await ProjectFunctions.setCurrentProjectDataFunc("");
         await ProjectFunctions.reloadCurrentProjectDataFunc();
-        await ViewManagementFunctions.reloadCurrentView();
+
     }
 
     function toggleTaskMenu() {

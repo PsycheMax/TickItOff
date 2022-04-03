@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { VStack, IconButton, Icon, Center, Input, Text, Flex, Box } from 'native-base';
+// import { VStack, IconButton, Icon, Center, Input, Text, Flex, Box } from 'native-base';
 import { MaterialIcons } from "@native-base/icons";
 import { ProjectContext } from '../../utils/ProjectManager';
-import { ViewManagerContext } from '../mainView/ViewManagerContextProvider';
 
 import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
 
@@ -24,7 +23,6 @@ const inputRules = {
 const NewProjectForm = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
-    const ViewFunctions = useContext(ViewManagerContext);
 
     const [newProject, setNewProject] = useState({ name: "", description: "" });
 
@@ -50,7 +48,7 @@ const NewProjectForm = (props) => {
                     toSetInAlertMessages.genericForm = { show: true, content: response.data }
                 } else {
                     // The project has already been set by the Projectfunction CreateProjectFunc function
-                    ViewFunctions.changeCurrentViewTo('ViewProject');
+                    props.navigation.navigate('ViewProject');
                 }
             } else {
                 toSetInAlertMessages.genericForm = { show: true, content: `Descriptions must be at least ${inputRules.description.minLength} characters long` };
@@ -62,36 +60,37 @@ const NewProjectForm = (props) => {
     }
 
     return (
-        <Flex direction='row' wrap='nowrap' justifyContent={"center"} backgroundColor={"primary.500"} borderRadius={"lg"} minH={scale(96)} h={scale(96)}
-            mb={alertMessages.genericForm.show ? scale(40) : 0} >
-            <VStack flexGrow={7} w={"75%"} h={"100%"} ml={scale(11.2)} my={scale(11.2)}>
-                <Box backgroundColor={"secondary.50"} borderRadius={"lg"} mb={scale(8)}>
-                    <Input placeholder="New Project Title" variant="unstyled" h={scale(32)}
-                        fontSize={"lg"} fontWeight={"bold"}
-                        onChangeText={(value) => { handleChange(value, "name") }}
-                        type="text" value={newProject.name} autocorrect={true}
-                    />
-                </Box>
-                <Box backgroundColor={"secondary.50"} borderRadius={"lg"}>
-                    <Input placeholder="New Project Description" variant="unstyled" h={scale(32)}
-                        fontSize={"md"} fontWeight={"normal"}
-                        onChangeText={(value) => { handleChange(value, "description") }}
-                        type="text" value={newProject.description} autocorrect={true} />
-                </Box>
-                <Center display={alertMessages.genericForm.show ? "flex" : "none"} mt={scale(11.2)}>
-                    <Icon as={MaterialIcons} name="error" color={"tertiary.500"} size="sm" />
-                    <Text color={"tertiary.500"}>
-                        {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
-                    </Text>
-                </Center>
-            </VStack >
-            <Center flexGrow={1} w={"11%"} maxW={"36px"} backgroundColor="tertiary.500" borderRadius={"lg"} mx={scale(4.8)} my={scale(11.2)} px={scale(4.8)}>
-                <IconButton
-                    icon={<Icon as={MaterialIcons} name="playlist-add" />} borderRadius="full" _icon={{ color: "primary.50", size: "md" }}
-                    onPress={handleSubmit}
-                />
-            </Center>
-        </Flex>
+        <></>
+        // <Flex direction='row' wrap='nowrap' justifyContent={"center"} backgroundColor={"primary.500"} borderRadius={"lg"} minH={scale(96)} h={scale(96)}
+        //     mb={alertMessages.genericForm.show ? scale(40) : 0} >
+        //     <VStack flexGrow={7} w={"75%"} h={"100%"} ml={scale(11.2)} my={scale(11.2)}>
+        //         <Box backgroundColor={"secondary.50"} borderRadius={"lg"} mb={scale(8)}>
+        //             <Input placeholder="New Project Title" variant="unstyled" h={scale(32)}
+        //                 fontSize={"lg"} fontWeight={"bold"}
+        //                 onChangeText={(value) => { handleChange(value, "name") }}
+        //                 type="text" value={newProject.name} autocorrect={true}
+        //             />
+        //         </Box>
+        //         <Box backgroundColor={"secondary.50"} borderRadius={"lg"}>
+        //             <Input placeholder="New Project Description" variant="unstyled" h={scale(32)}
+        //                 fontSize={"md"} fontWeight={"normal"}
+        //                 onChangeText={(value) => { handleChange(value, "description") }}
+        //                 type="text" value={newProject.description} autocorrect={true} />
+        //         </Box>
+        //         <Center display={alertMessages.genericForm.show ? "flex" : "none"} mt={scale(11.2)}>
+        //             <Icon as={MaterialIcons} name="error" color={"tertiary.500"} size="sm" />
+        //             <Text color={"tertiary.500"}>
+        //                 {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
+        //             </Text>
+        //         </Center>
+        //     </VStack >
+        //     <Center flexGrow={1} w={"11%"} maxW={"36px"} backgroundColor="tertiary.500" borderRadius={"lg"} mx={scale(4.8)} my={scale(11.2)} px={scale(4.8)}>
+        //         <IconButton
+        //             icon={<Icon as={MaterialIcons} name="playlist-add" />} borderRadius="full" _icon={{ color: "primary.50", size: "md" }}
+        //             onPress={handleSubmit}
+        //         />
+        //     </Center>
+        // </Flex>
     )
 }
 

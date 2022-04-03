@@ -13,10 +13,12 @@ const LoginSignupPanel = (props) => {
         useShowLogin(!showLogin);
     }
 
+    console.log(props);
+    console.log(props.navigation.navigate)
     return (
         <React.Fragment>
             {loggedUser._id && loggedUser._id !== "" ? props.children
-                : showLogin ? <LoginForm showOtherFormFunc={showOtherForm} /> : <SignUpForm showOtherFormFunc={showOtherForm} />}
+                : showLogin ? <LoginForm navigation={props.navigation} showOtherFormFunc={showOtherForm} /> : <SignUpForm navigation={props.navigation} showOtherFormFunc={showOtherForm} />}
 
         </React.Fragment>
     )

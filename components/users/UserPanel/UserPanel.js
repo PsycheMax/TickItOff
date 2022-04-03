@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
 import { Center, Text } from 'native-base';
 
-import { ViewManagerContext } from '../../mainView/ViewManagerContextProvider';
-
 import EditUserForm from '../UserForms/EditUserForm';
 import GenericIconButton from '../UserForms/FormComponents/GenericIconButton';
 
 const UserPanel = (props) => {
-    const ViewFunctions = useContext(ViewManagerContext);
 
     return (
         <React.Fragment>
@@ -18,7 +15,7 @@ const UserPanel = (props) => {
             <Center>
                 <Text>Logout</Text>
                 <GenericIconButton
-                    onPress={ViewFunctions.changeCurrentViewTo.bind(this, "LogoutView")}
+                    onPress={props.navigate("LogoutView")}
                     iconName={"logout"} iconSize={"6"} iconButtonSize={"sm"} centerSize={"sm"}
                     colorScheme={"amber"} key={"Logout"} title={"Logout"} />
             </Center >
