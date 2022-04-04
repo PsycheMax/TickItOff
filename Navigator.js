@@ -17,6 +17,7 @@ import LoginForm from './components/users/UserForms/LoginForm';
 import SignUpForm from './components/users/UserForms/SignUpForm';
 import EditUserForm from './components/users/UserForms/EditUserForm';
 import StandardDivider from './components/StandardDivider';
+import ProjectSelectionButton from './components/projects/ProjectSelectionButton';
 
 
 
@@ -65,6 +66,11 @@ export default function Navigator(props) {
     const theme = useContext(ThemeContext);
 
     const styles = StyleSheet.create({
+        appContainer: {
+            backgroundColor: theme.colors.secondary[50],
+            minWidth: theme.dimensions.screenWidth,
+            minHeight: theme.dimensions.screenHeight
+        },
         header: {
             minHeight: 108,
             height: theme.dimensions.screenHeight * 0.18,
@@ -112,28 +118,29 @@ export default function Navigator(props) {
 
     return (
 
-        <NavigationContainer>
+        <View style={styles.appContainer}>
+            <NavigationContainer>
 
-            {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
-                <Stack.Navigator initialRouteName={'Home'}
-                // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
-                >
+                {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
+                    <Stack.Navigator initialRouteName={'Home'}
+                    // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
+                    >
 
-                    <Stack.Screen name="Home" component={UserPanel} />
-
-
-                </Stack.Navigator>
-                :
-                <Stack.Navigator initialRouteName={'Login'}
-                // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
-                >
-                    <Stack.Screen name="Login" component={LoginForm} />
-                    <Stack.Screen name="SignUp" component={SignUpForm} />
-                </Stack.Navigator>
-            }
+                        <Stack.Screen name="Home" component={ProjectSelector} />
 
 
-        </NavigationContainer >
+                    </Stack.Navigator>
+                    :
+                    <Stack.Navigator initialRouteName={'Login'}
+                    // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
+                    >
+                        <Stack.Screen name="Login" component={LoginForm} />
+                        <Stack.Screen name="SignUp" component={SignUpForm} />
+                    </Stack.Navigator>
+                }
+            </NavigationContainer >
+        </View>
+
 
     );
 }

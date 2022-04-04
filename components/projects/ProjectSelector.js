@@ -6,9 +6,46 @@ import NewProjectForm from './NewProjectForm';
 import LoadingSpinner from '../LoadingSpinner';
 import ProjectSelectionButton from './ProjectSelectionButton';
 
-import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+import { ThemeContext } from '../../utils/ThemeManager';
+import { StyleSheet, View, FlatList, TouchableOpacity, Text } from 'react-native';
 
 const ProjectSelector = (props) => {
+
+    const theme = useContext(ThemeContext);
+
+    const styles = StyleSheet.create({
+        container: {
+
+            alignSelf: "center",
+            minWidth: theme.dimensions.screenWidth,
+            width: theme.dimensions.screenWidth,
+            maxWidth: theme.dimensions.screenWidth,
+        },
+        listContainer: {
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+            paddingBottom: 32,
+            paddingHorizontal: "3.5%"
+        },
+        activeListContainer: {
+            backgroundColor: theme.colors.secondary[50],
+
+        },
+        archivedListContainer: {
+            backgroundColor: theme.colors.primary[800]
+        },
+        darkText: {
+            color: theme.colors.primary[900]
+        },
+        whiteText: {
+            color: theme.colors.secondary[50]
+        },
+        title: {
+            fontSize: 24,
+            fontWeight: "700"
+        }
+
+    });
 
     const LoggedUserFunctions = useContext(LoggedUserContext);
     const UserData = LoggedUserFunctions.userData;
@@ -37,7 +74,27 @@ const ProjectSelector = (props) => {
 
     if (UserData._id !== undefined) {
         return (
-            <></>
+            <View style={styles.container}>
+                <View style={[styles.listContainer, styles.activeListContainer]}>
+                    <FlatList data={projects.managed}
+                        renderItem={({ item }) =>
+                            <ProjectSelectionButton name={item.name} description={item.description}
+                                selectProjectFunc={selectProject.bind(this, item._id)} bgColor={theme.colors.primary[500]}
+                            />}
+                        keyExtractor={(item => item._id)}
+                        ListHeaderComponent={
+                            <>
+                                <Text style={[styles.darkText, styles.title]}>Your active projects</Text>
+                                <NewProjectForm />
+                            </>
+                        } />
+                </View>
+                <View style={[styles.listContainer, styles.archivedListContainer]}>
+                    <ProjectSelectionButton />
+                </View>
+
+
+            </View>
             // <View minW={"95%"} maxW={"95%"} w={"95%"} >
             //     <View pb={scale(32)} borderRadius={"2xl"}>
             //         <FlatList data={projects.managed}
