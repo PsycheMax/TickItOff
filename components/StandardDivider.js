@@ -1,17 +1,28 @@
-import React from 'react';
-// import { Divider } from 'native-base';
+import React, { useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+import { ThemeContext } from '../utils/ThemeManager';
 
 const StandardDivider = (props) => {
+
+    const theme = useContext(ThemeContext);
+    const { scale } = theme.dimensions.methods;
+
+    const styles = StyleSheet.create({
+        standardDivider: {
+            backgroundColor: props.color ? props.color : theme.colors.primary[500],
+            display: props.display ? props.display : "flex",
+            width: scale(48),
+            maxWidth: scale(48),
+            height: scale(8),
+            marginVertical: scale(6.4)
+        }
+    })
+
     return (
-        <></>
-        // <Divider bg={props.color} w={scale(48)} maxW={scale(48)} h={scale(8)} my={scale(6.4)} display={props.display} />
+        <View style={styles.standardDivider} ></View>
+
     )
 }
 
-StandardDivider.defaultProps = {
-    color: "primary.500",
-    display: "flex"
-}
 export default StandardDivider;

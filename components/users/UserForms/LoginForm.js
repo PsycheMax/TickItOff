@@ -1,12 +1,11 @@
 import React, { useState, useContext } from 'react';
-
-import { LoggedUserContext } from '../../../utils/UserManager';
-// import { MaterialIcons } from "@native-base/icons";
-import FormField from './FormComponents/FormField';
-import { ThemeContext } from '../../../utils/ThemeManager';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 
+import { LoggedUserContext } from '../../../utils/UserManager';
+import { ThemeContext } from '../../../utils/ThemeManager';
+
 import { MaterialIcons } from '@expo/vector-icons';
+import Logo from '../../logo/Logo';
 
 // MoveThis into some UserManagemetn Context, - same in SIGNUPFORM
 const inputRules = {
@@ -32,23 +31,26 @@ const LoginForm = (props) => {
             alignItems: "center"
         },
         loginFormBackground: {
-            height: "75%",
+            height: "85%",
+            minHeight: 750,
             width: theme.dimensions.screenWidth,
             backgroundColor: theme.colors.primary[500],
             borderBottomLeftRadius: theme.dimensions.screenWidth,
             borderBottomRightRadius: theme.dimensions.screenWidth,
             alignItems: "center"
         },
+        logoContainer: {
+            paddingTop: 16
+        },
         formBox: {
-            paddingTop: "5%",
+
         },
         heading: {
             color: theme.colors.secondary[50],
-            fontSize: theme.dimensions.methods.scale(18),
-            paddingTop: theme.dimensions.methods.scale(16),
-            paddingBottom: theme.dimensions.methods.scale(8),
-            minWidth: theme.dimensions.methods.scale(275)
-
+            fontSize: theme.dimensions.methods.moderateScale(16),
+            paddingTop: theme.dimensions.methods.moderateScale(16),
+            paddingBottom: theme.dimensions.methods.moderateScale(8),
+            minWidth: theme.dimensions.methods.moderateScale(275)
         },
         inputField: {
             maxWidth: theme.dimensions.windowWidth * 0.80,
@@ -56,34 +58,44 @@ const LoginForm = (props) => {
             borderColor: theme.colors.secondary[300],
             backgroundColor: theme.colors.primary[600],
             borderWidth: 2,
-            fontSize: theme.dimensions.methods.scale(18),
-            height: theme.dimensions.methods.scale(48),
-            minHeight: theme.dimensions.methods.scale(48),
-            marginTop: theme.dimensions.methods.scale(12),
-            marginBottom: theme.dimensions.methods.scale(12),
-            padding: theme.dimensions.methods.scale(10)
+            fontSize: 18,
+            height: theme.dimensions.methods.moderateVerticalScale(48),
+            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
+            marginTop: theme.dimensions.methods.moderateVerticalScale(12),
+            marginBottom: theme.dimensions.methods.moderateVerticalScale(12),
+            padding: 16
         },
         passwordContainer: {
             display: "flex",
             flexDirection: "row",
-            alignContent: "space-between",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: 16
         },
         passwordInput: {
             // minWidth: theme.dimensions.screenWidth * 0.70,
             maxWidth: theme.dimensions.screenWidth * 0.70,
-            fontSize: theme.dimensions.methods.scale(18),
-            color: theme.colors.secondary[50]
+            fontSize: 18,
+            color: theme.colors.secondary[50],
+            height: "100%",
+            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
+            width: "100%"
+        },
+        showPasswordButtonContainer: {
+
         },
         errorMessage: {
             color: theme.colors.tertiary[300],
             textAlignVertical: "center"
         },
         buttonContainer: {
-
+            paddingTop: theme.dimensions.methods.moderateScale(16)
         },
         linkContainer: {
-
+            paddingTop: theme.dimensions.methods.moderateVerticalScale(24)
+        },
+        link: {
+            color: theme.colors.tertiary[300]
         }
     })
 
@@ -145,12 +157,16 @@ const LoginForm = (props) => {
     }
 
     function handleLinkClick() {
-        props.showOtherFormFunc();
+        props.navigation.navigate('SignUp');
     }
 
     return (
         <View style={styles.loginFormContainer}>
             <View style={styles.loginFormBackground}>
+                <View style={styles.logoContainer}>
+                    <Logo size="full" color="white" />
+                </View>
+
                 <View style={styles.formBox}>
                     <Text style={styles.heading}>
                         Insert your email address
@@ -178,8 +194,9 @@ const LoginForm = (props) => {
                             value={loginUser.password}
                             onChangeText={(value) => { handleChange(value, "password") }}
                         />
-                        <MaterialIcons
-                            name="remove-red-eye" size={theme.dimensions.methods.scale(16)} color={theme.colors.primary[100]}
+                        {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
+                        <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
+                            name="remove-red-eye" color={theme.colors.primary[100]}
                             onPress={() => { setShowPassword(!showPassword) }}
                         />
                     </View>
@@ -187,6 +204,10 @@ const LoginForm = (props) => {
                     {alertMessages.password.show ? <Text style={styles.errorMessage}>
                         <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
                         {alertMessages.password.content ? alertMessages.password.content : undefined}
+                    </Text> : undefined}
+                    {alertMessages.genericForm.show ? <Text style={styles.errorMessage}>
+                        <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
+                        {alertMessages.genericForm.content ? alertMessages.genericForm.content : undefined}
                     </Text> : undefined}
 
                     <View style={styles.buttonContainer}>
@@ -198,55 +219,22 @@ const LoginForm = (props) => {
                     </View>
 
                     <View style={styles.linkContainer}>
-                        <Text style={styles.link}>
+                        <Text style={styles.link} onPress={handleLinkClick}>
                             Don't have an account? Click here!
                         </Text>
                     </View>
+
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            title='AdminLogin' color={theme.colors.tertiary[600]}
+                            accessibilityLabel="Submit Form for user creation"
+                            onPress={handleAdminLogin}
+                        />
+                    </View>
+
                 </View>
 
             </View>
-            {/* <Button onPress={handleAdminLogin} title={"AdminLogin"} mt="2" colorScheme='indigo'>Admin Login</Button>
-            <FormField
-                isInvalid={alertMessages.email.show} isRequired={alertMessages.email.show} value={loginUser.email} type="text"
-                autocorrect={false} autofocus={true} onChangeText={(value) => { handleChange(value, "email") }}
-                inputRightElement={false}
-                text={{
-                    label: "Email", name: "email", autocomplete: "email", placeholder: "Email address", alertMessage: alertMessages.email.content,
-                    iconName: "error"
-                }} >
-            </FormField>
-            <FormField
-                isInvalid={alertMessages.password.show} isRequired={alertMessages.password.show} value={loginUser.password}
-                autocorrect={false} autofocus={true} type={showPassword ? "text" : "password"}
-                onChangeText={(value) => { handleChange(value, "password") }} showPasswordCommand={() => { setShowPassword(!showPassword) }}
-                inputRightElement={true} text={{
-                    label: "Password", name: "password", autocomplete: "password", placeholder: "Password", alertMessage: alertMessages.password.content,
-                    iconName: "error"
-                }} >
-
-                <FormControl isInvalid={alertMessages.genericForm.show} >
-                    <FormControl.ErrorMessage leftIcon={<Icon as={MaterialIcons} name="error" size="xs" />}>
-                        {alertMessages.genericForm.content}
-                    </FormControl.ErrorMessage>
-                </FormControl>
-                <Button mt="2" colorScheme="indigo"
-                    onPress={handleLogin} title={"Login"}>
-                    Sign in
-                </Button>
-                <HStack mt="6" justifyContent="center">
-                    <Text fontSize="sm" color="coolGray.600" _dark={{
-                        color: "warmGray.200"
-                    }}>
-                        I'm a new user.{" "}
-                    </Text>
-                    <Link _text={{
-                        color: "indigo.500",
-                        fontWeight: "medium",
-                        fontSize: "sm"
-                    }} onPress={handleLinkClick}>
-                        Sign Up
-                    </Link>
-                </HStack> */}
         </View>
 
     )

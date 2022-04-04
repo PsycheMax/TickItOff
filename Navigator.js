@@ -2,12 +2,10 @@ import { LoggedUserContext } from './utils/UserManager';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginSignupPanel from "./components/users/LoginSignupPanel";
 import LoadingSpinner from "./components/LoadingSpinner";
 import ProjectSelector from "./components/projects/ProjectSelector";
 import ViewProject from "./components/projects/ViewProject";
 import UserPanel from "./components/users/UserPanel/UserPanel";
-import LogoutView from "./components/users/UserForms/LogoutView";
 import React, { useContext } from 'react';
 
 import { StyleSheet, Text, View } from 'react-native';
@@ -16,6 +14,9 @@ import { ThemeContext } from './utils/ThemeManager';
 import Logo from './components/logo/Logo';
 import ProfilePicture from './components/users/UserPanel/ProfilePicture';
 import LoginForm from './components/users/UserForms/LoginForm';
+import SignUpForm from './components/users/UserForms/SignUpForm';
+import EditUserForm from './components/users/UserForms/EditUserForm';
+import StandardDivider from './components/StandardDivider';
 
 
 
@@ -50,6 +51,7 @@ function HomeTabs() {
         <Tab.Screen name="Home" component={HomeScreen} options={{ title: "Projects" }} />
         <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: "Settings" }} />
 
+
     </Tab.Navigator>
     )
 }
@@ -75,8 +77,9 @@ export default function Navigator(props) {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            width: theme.dimensions.screenWidth,
-            minWidth: theme.dimensions.screenWidth
+            width: theme.dimensions.screenWidth - theme.dimensions.screenWidth * 0.20,
+            minWidth: theme.dimensions.screenWidth,
+            position: "absolute"
         },
         logoContainer: {
             flex: 1,
@@ -110,12 +113,24 @@ export default function Navigator(props) {
     return (
 
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ? 'Home' : 'Login'}
-                screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
-            >
-                <Stack.Screen name="Login" component={LoginForm} />
-                <Stack.Screen name="Home" component={HomeTabs} />
-            </Stack.Navigator>
+
+            {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
+                <Stack.Navigator initialRouteName={'Home'}
+                // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
+                >
+
+                    <Stack.Screen name="Home" component={UserPanel} />
+
+
+                </Stack.Navigator>
+                :
+                <Stack.Navigator initialRouteName={'Login'}
+                // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
+                >
+                    <Stack.Screen name="Login" component={LoginForm} />
+                    <Stack.Screen name="SignUp" component={SignUpForm} />
+                </Stack.Navigator>
+            }
 
 
         </NavigationContainer >
