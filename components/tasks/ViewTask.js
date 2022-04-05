@@ -285,11 +285,10 @@ const ViewTask = (props) => {
                     </View>
                 </Pressable>
 
-                <View style={[styles.rightColumn, styles.toggledEditTaskForm]} onLayout={(event) => {
-                    !showEditTaskForm ? heightForEditForm = event.nativeEvent.layout.height : null;
-                    console.log("heightForEditForm");
-                    console.log(heightForEditForm);
-                }} >
+                <Pressable onPress={toggleCompletion}
+                    style={[styles.rightColumn, styles.toggledEditTaskForm]} onLayout={(event) => {
+                        !showEditTaskForm ? heightForEditForm = event.nativeEvent.layout.height : null;
+                    }} >
                     {showEditTaskForm ? <EditTaskForm task={props.task} updateTaskFunc={updateTaskFunc} maxHeight={heightForEditForm} /> :
                         <>
                             <View style={styles.rightColumnTextContainer}>
@@ -339,7 +338,8 @@ const ViewTask = (props) => {
                             </View>
                         </>}
 
-                </View>
+                </Pressable>
+
 
             </View>
 

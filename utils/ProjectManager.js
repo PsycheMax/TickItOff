@@ -23,7 +23,6 @@ const ProjectManager = (props) => {
     const [currentProjectData, setCurrentProjectData] = useState({});
 
     const loggedUserData = useContext(LoggedUserContext).userData;
-    //TODO Possibly add a "Add project" function to the user context? And maybe an "Add task" function to the user context?
 
     // // The following functions are to be passed down as context.functions()
     // async function getProjectListForLoggedUser() {
