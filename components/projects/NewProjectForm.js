@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
-// import { VStack, IconButton, Icon, Center, Input, Text, Flex, Box } from 'native-base';
-import { MaterialIcons } from '@expo/vector-icons';
-import { ProjectContext } from '../../utils/ProjectManager';
 import { Pressable, StyleSheet, TextInput, TouchableOpacity, View, Text, Alert } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+
+import { ProjectContext } from '../../utils/ProjectManager';
 import { ThemeContext } from '../../utils/ThemeManager';
 
 const inputRules = {
@@ -43,7 +43,6 @@ const NewProjectForm = (props) => {
             borderRadius: 16,
             minHeight: theme.dimensions.methods.moderateScale(96),
             height: theme.dimensions.methods.moderateScale(96),
-            // paddingBottom: alertMessages.genericForm.show ? theme.dimensions.methods.moderateScale(8) : 0,
             alignItems: "center"
         },
         leftColumn: {
@@ -98,10 +97,14 @@ const NewProjectForm = (props) => {
             width: 28 - 1,
             height: 28 - 1
         },
-        errorMessage: {
-            color: theme.colors.tertiary[300],
-            textAlignVertical: "center"
+        errorMessageContainer: {
+            display: alertMessages.genericForm.show ? "flex" : "none",
+            marginTop: 12
         },
+        errorMessage: {
+            color: theme.colors.tertiary[500],
+            fontSize: 18
+        }
     });
 
     function handleChange(value, fieldName) {
@@ -131,34 +134,35 @@ const NewProjectForm = (props) => {
     }
 
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.leftColumn}>
-                <TextInput
-                    placeholder="New Project Title"
-                    onChangeText={(value) => { handleChange(value, "name") }}
-                    value={newProject.name} autocorrect={true}
-                    style={styles.inputField} />
-                <TextInput
-                    placeholder="New Project Description"
-                    onChangeText={(value) => { handleChange(value, "description") }}
-                    value={newProject.description} autocorrect={true}
-                    style={styles.inputField} />
-            </View>
-            <View style={styles.rightColumn}>
-                <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} >
+        <>
+            <View style={styles.mainContainer}>
+                <View style={styles.leftColumn}>
+                    <TextInput
+                        placeholder="New Project Title"
+                        onChangeText={(value) => { handleChange(value, "name") }}
+                        value={newProject.name} autocorrect={true}
+                        style={styles.inputField} />
+                    <TextInput
+                        placeholder="New Project Description"
+                        onChangeText={(value) => { handleChange(value, "description") }}
+                        value={newProject.description} autocorrect={true}
+                        style={styles.inputField} />
+                </View>
+                <View style={styles.rightColumn}>
+                    <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} >
 
-                    <MaterialIcons style={styles.submitLogo}
-                        name="playlist-add" size={28} />
+                        <MaterialIcons style={styles.submitLogo}
+                            name="playlist-add" size={28} />
 
-                </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
             </View>
-            {/* //TODO Add a modal for the error message or something  */}
-            {/* </View>
-            {alertMessages.genericForm.show ? <Text style={styles.errorMessage}>
-                <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
-                {alertMessages.genericForm.content ? alertMessages.genericForm.content : undefined}
-            </Text> : undefined} */}
-        </View>
+            <View style={styles.errorMessageContainer}>
+                <Text style={styles.errorMessage}>
+                    {alertMessages.genericForm.content}
+                </Text>
+            </View>
+        </>
     )
 }
 

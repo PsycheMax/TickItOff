@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-// import { Heading, VStack, FlatList, Pressable, View, ScrollView } from 'native-base';
+import { StyleSheet, View, Text, SectionList } from 'react-native';
+
 import { LoggedUserContext } from '../../utils/UserManager';
 import { ProjectContext } from '../../utils/ProjectManager';
+import { ThemeContext } from '../../utils/ThemeManager';
 import NewProjectForm from './NewProjectForm';
 import LoadingSpinner from '../LoadingSpinner';
 import ProjectSelectionButton from './ProjectSelectionButton';
-
-import { ThemeContext } from '../../utils/ThemeManager';
-import { StyleSheet, View, FlatList, TouchableOpacity, Text, SectionList } from 'react-native';
 
 const ProjectSelector = (props) => {
 
@@ -97,7 +96,6 @@ const ProjectSelector = (props) => {
         return [active, archived];
     }
 
-
     async function selectProject(targetID) {
         await ProjectFunctions.setCurrentProjectDataFunc(targetID);
         props.navigation.navigate('ViewProject');
@@ -159,46 +157,3 @@ const ProjectSelector = (props) => {
 }
 
 export default ProjectSelector;
-//     if (UserData._id !== undefined) {
-//         return (
-//             <View style={styles.container}>
-//                 <View style={[styles.listContainer, styles.activeListContainer]}>
-//                     <FlatList data={projects.managed}
-//                         renderItem={({ item }) =>
-//                             <ProjectSelectionButton name={item.name} description={item.description}
-//                                 selectProjectFunc={selectProject.bind(this, item._id)} bgColor={theme.colors.primary[500]}
-//                             />}
-//                         keyExtractor={(item => item._id)}
-//                         ListHeaderComponent={
-//                             <>
-//                                 <Text style={[styles.darkText, styles.title]}>Your active projects</Text>
-//                                 <NewProjectForm />
-//                             </>
-//                         } />
-//                 </View>
-//                 <View style={[styles.listContainer, styles.archivedListContainer]}>
-//                     <FlatList data={projects.archived}
-//                         renderItem={({ item }) =>
-//                             <ProjectSelectionButton name={item.name} description={item.description}
-//                                 selectProjectFunc={selectProject.bind(this, item._id)} bgColor={theme.colors.primary[500]}
-//                             />}
-//                         keyExtractor={(item => item._id)}
-//                         ListHeaderComponent={
-//                             <>
-//                                 <Text style={[styles.whiteText, styles.title]}>Your archived projects</Text>
-//                             </>
-//                         } />
-//                 </View>
-
-
-//             </View>
-//         )
-//     } else {
-//         return (
-//             <LoadingSpinner />
-//         );
-//     }
-
-// }
-
-// export default ProjectSelector;

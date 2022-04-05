@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-// import { HStack, VStack, Icon, Center, Box, FormControl, Checkbox, Input, IconButton } from 'native-base';
-import { LoggedUserContext } from '../../utils/UserManager';
-import { MaterialIcons } from '@expo/vector-icons';
-import { ProjectContext } from '../../utils/ProjectManager';
-
-import { ThemeContext } from '../../utils/ThemeManager';
 import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+
+import { MaterialIcons } from '@expo/vector-icons';
+
+import { ProjectContext } from '../../utils/ProjectManager';
+import { ThemeContext } from '../../utils/ThemeManager';
+
 
 const inputRules = {
     name: {
@@ -78,9 +78,6 @@ const NewTaskForm = (props) => {
             fontWeight: "400",
             paddingHorizontal: 12,
             paddingVertical: 4,
-            // marginTop: theme.dimensions.methods.moderateScale(8),
-            // height: theme.dimensions.methods.moderateScale(32),
-            // minHeight: 48,
             height: "100%",
             minHeight: "100%",
             borderRadius: theme.dimensions.methods.moderateScale(16),
@@ -94,10 +91,9 @@ const NewTaskForm = (props) => {
             justifyContent: "center"
         },
         button: {
-            // backgroundColor: "red",
+
         },
         buttonIcon: {
-            // backgroundColor: "pink",
             width: 32 - 1,
             height: 32 - 1,
             color: theme.colors.primary[700]
@@ -169,26 +165,3 @@ const NewTaskForm = (props) => {
 }
 
 export default NewTaskForm;
-//     return (
-//         <VStack w={"full"} minW={"full"} display={"flex"} minH={scale(32)} borderWidth={2} borderColor={"primary.500"} backgroundColor={"primary.50"} borderRadius={"lg"}>
-//             <HStack w={"full"} minW={"full"}>
-//                 <Input placeholder="Add a new task" w={"90%"} borderWidth={0} fontSize={"lg"} color={"primary.800"}
-//                     onChangeText={(value) => { handleChange(value, "name") }} type="text" value={newTask.name} autocorrect={true} />
-//                 {/* <Input placeholder="New Task Description" onChangeText={(value) => { handleChange(value, "description") }} type="text" value={newTask.description} autocorrect={true}></Input> */}
-//                 <Center w={"10%"}>
-//                     <IconButton icon={<Icon color={"primary.500"} as={<MaterialIcons name="playlist-add" size="sm" />} />}
-//                         mt="2" colorScheme="primary"
-//                         onPress={handleSubmit} title={"Add task"} />
-//                 </Center>
-//             </HStack>
-//             <FormControl isInvalid={alertMessages.genericForm.show} >
-//                 <FormControl.ErrorMessage leftIcon={<Center><Icon as={MaterialIcons} name="error" size="xs" /></Center>}>
-//                     {alertMessages.genericForm.content}
-//                 </FormControl.ErrorMessage>
-//             </FormControl>
-
-//         </VStack >
-//     )
-// }
-
-// export default NewTaskForm;

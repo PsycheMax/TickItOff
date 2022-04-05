@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { LoggedUserContext } from '../../../utils/UserManager';
+import { StyleSheet, View, TextInput, Button, Text, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { LoggedUserContext } from '../../../utils/UserManager';
 import { ThemeContext } from '../../../utils/ThemeManager';
-import { StyleSheet, View, TextInput, Button, Text, ScrollView } from 'react-native';
 import Logo from '../../logo/Logo';
 
 // Move this into some UserAction or UserManagement Context
@@ -21,7 +21,7 @@ const inputRules = {
         regEx: ``
     }
 }
-// Username, PW, EMAIL, IMAGE
+
 const SignUpForm = (props) => {
 
     const theme = useContext(ThemeContext);

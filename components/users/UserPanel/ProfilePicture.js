@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { Platform, StyleSheet, View, Image } from 'react-native';
-import { ThemeContext } from '../../../utils/ThemeManager';
-// import { Avatar, PresenceTransition, Text } from 'native-base';
 
+import { ThemeContext } from '../../../utils/ThemeManager';
 
 const ProfilePicture = (props) => {
 

@@ -1,12 +1,10 @@
 import React, { useState, useContext } from 'react';
-// import { Icon, Center, Input, IconButton, Box, Flex, Text } from 'native-base';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { ProjectContext } from '../../utils/ProjectManager';
-import StandardDivider from '../StandardDivider';
 
-import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
+import { ProjectContext } from '../../utils/ProjectManager';
 import { ThemeContext } from '../../utils/ThemeManager';
-import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import StandardDivider from '../StandardDivider';
 
 const inputRules = {
     name: {
@@ -179,37 +177,6 @@ const EditProjectForm = (props) => {
                 </TouchableOpacity>
             </View>
         </View>
-        // <Flex direction={"row"}>
-        //     <Box w={"95%"}>
-
-        //         <Input placeholder="Edit Project Title"
-        //             fontSize={"lg"} fontWeight={"bold"}
-        //             onChangeText={(value) => { handleChange(value, "name") }}
-        //             type="text" value={patchedProject.name} autocorrect={true}
-        //         />
-
-        //         <StandardDivider />
-
-        //         <Input placeholder="Edit Project Description"
-        //             fontSize={"md"} fontWeight={"normal"}
-        //             onChangeText={(value) => { handleChange(value, "description") }}
-        //             type="text" value={patchedProject.description} autocorrect={true}
-        //             h={scale(96)} multiline={true} />
-
-        //         <StandardDivider />
-
-        //         <Text color={"tertiary.500"}>
-        //             {alertMessages.genericForm.show ? alertMessages.genericForm.content : ""}
-        //         </Text>
-        //     </Box>
-        //     <Center ml={scale(8)} w={"5%"} >
-        //         <IconButton
-        //             icon={<Icon as={MaterialIcons} name="done" />} borderRadius="full" _icon={{ color: "primary.500", size: "md" }}
-        //             onPress={handleSubmitEdit}
-        //         />
-        //     </Center>
-        // </Flex>
-
     )
 }
 

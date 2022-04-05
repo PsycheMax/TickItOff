@@ -1,16 +1,13 @@
 import React, { useContext, useState } from 'react';
-// import { IconButton, Center, Text, Checkbox, Heading, Icon, VStack, HStack, Box, Pressable, Flex, Spacer, Square, AlertDialog, Button } from 'native-base';
+import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ProjectContext } from '../../utils/ProjectManager';
+import { ThemeContext } from '../../utils/ThemeManager';
 import EditTaskForm from './EditTaskForm';
 import StandardDivider from '../StandardDivider';
 
-import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
-import { ThemeContext } from '../../utils/ThemeManager';
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-
+//This var has to be passed to the editform to keep it look consistent
 var heightForEditForm;
 
 const ViewTask = (props) => {
@@ -43,8 +40,6 @@ const ViewTask = (props) => {
         leftColumn: {
             flexGrow: 1,
             borderRadius: 16,
-            // width: "16%",
-            // minWidth: "16%",
             borderWidth: 2,
             marginRight: theme.dimensions.methods.moderateScale(8),
             borderColor: decideColor("border"),

@@ -1,12 +1,10 @@
 import React, { useState, useContext } from 'react';
-// import { VStack, Icon, FormControl, Box, HStack, Input, Center, IconButton, Text } from 'native-base';
+import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ProjectContext } from '../../utils/ProjectManager';
-import StandardDivider from '../StandardDivider';
-
 import { ThemeContext } from '../../utils/ThemeManager';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+import StandardDivider from '../StandardDivider';
 
 const inputRules = {
     name: {
@@ -157,7 +155,6 @@ const EditTaskForm = (props) => {
                 toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task description should be at least ${inputRules.description.minLength} characters long` };
             }
         } else {
-            console.log("NAME SHORT!")
             toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task name should be at least ${inputRules.name.minLength} characters long` };
         }
         setAlertMessages(toSetInAlertMessages);
@@ -195,7 +192,6 @@ const EditTaskForm = (props) => {
                 </View>
             </View>
             <View style={styles.errorMessageContainer}>
-                {console.log("error message container")}
                 <Text style={styles.errorMessage}>
                     {alertMessages.genericForm.content}
                 </Text>
@@ -205,46 +201,3 @@ const EditTaskForm = (props) => {
 }
 
 export default EditTaskForm;
-//     return (
-//         <VStack w={"100%"} minW={"100%"}>
-//             <HStack maxW={"100%"} minW={"100%"} >
-
-//                 <Box w={"85%"} my={scale(16)} mx={scale(3.2)}>
-//                     <Input placeholder="Edit task name" fontSize={"lg"} color={props.task.completion ? "primary.50" : "primary.500"}
-//                         onChangeText={(value) => { handleChange(value, "name") }} type="text" value={patchedTask.name} autocorrect={true} />
-
-//                     <StandardDivider color={"tertiary.500"} />
-
-//                     <Input placeholder="Edit task Description" fontSize={"md"} color={props.task.completion ? "primary.50" : "primary.500"}
-//                         onChangeText={(value) => { handleChange(value, "description") }} type="text" value={patchedTask.description} autocorrect={true} />
-
-
-//                     <StandardDivider color={"tertiary.500"} />
-//                     <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
-//                         <Icon as={MaterialIcons} name="more-time" size={"2xs"} color={props.task.completion ? "primary.50" : "primary.500"}
-//                         />: {Date(props.task.creationDate)}
-//                     </Text>
-//                     <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={props.task.completion ? "primary.50" : "primary.500"} >
-//                         <Icon as={MaterialIcons} name="edit" size={"2xs"} color={props.task.completion ? "primary.50" : "primary.500"}
-//                         />: {Date(props.task.modificationDate)}
-//                     </Text>
-//                 </Box>
-//                 <Center w={"10%"} maxW={"10%"} minW={"10%"} >
-//                     <IconButton icon={<Icon as={<MaterialIcons name="done" size="sm" />} />}
-//                         mt="2" colorScheme="primary"
-//                         onPress={handleSubmit} title={"Edit task"} />
-//                 </Center>
-//             </HStack>
-
-//             <FormControl isInvalid={alertMessages.genericForm.show} >
-//                 <FormControl.ErrorMessage leftIcon={<Center><Icon as={MaterialIcons} name="error" size="xs" /></Center>}>
-//                     {alertMessages.genericForm.content}
-//                 </FormControl.ErrorMessage>
-//             </FormControl>
-
-//         </VStack>
-
-//     )
-// }
-
-// export default EditTaskForm;

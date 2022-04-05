@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 import { ThemeContext } from '../../utils/ThemeManager';
-// import { Heading, Pressable, Flex, Divider, Text } from 'native-base';
 import StandardDivider from '../StandardDivider';
-
-
 
 const ProjectSelectionButton = (props) => {
 

@@ -18,7 +18,6 @@ const UserPanel = (props) => {
 
     const styles = StyleSheet.create({
         pageContainer: {
-            // height: "100%",
             width: "100%",
             backgroundColor: theme.colors.primary[700],
             alignItems: "center"
@@ -101,7 +100,6 @@ const UserPanel = (props) => {
     return (
         <ScrollView contentContainerStyle={styles.pageContainer}>
 
-
             <EditUserForm />
 
             <View style={styles.logoutContainer}>
@@ -134,9 +132,7 @@ const UserPanel = (props) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-
                     </View>
-
                 </Modal>
 
             </View>

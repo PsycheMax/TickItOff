@@ -1,10 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { ThemeContext } from '../../../utils/ThemeManager';
-
-import { MaterialIcons } from '@expo/vector-icons';
 import Logo from '../../logo/Logo';
 
 // MoveThis into some UserManagemetn Context, - same in SIGNUPFORM
