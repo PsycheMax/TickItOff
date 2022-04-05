@@ -8,9 +8,12 @@ import StandardDivider from '../StandardDivider';
 
 import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
 import { ThemeContext } from '../../utils/ThemeManager';
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const TaskSimple = (props) => {
+
+var heightForEditForm;
+
+const ViewTask = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
 
     const [showEditTaskForm, setShowEditTaskForm] = useState(false);
@@ -18,16 +21,17 @@ const TaskSimple = (props) => {
     const [checkState, setCheckState] = useState(props.task.completion);
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
-    console.log(checkState)
-
     const theme = useContext(ThemeContext);
 
     const styles = StyleSheet.create({
         rowContainer: {
             flexDirection: "row"
         },
-        classContainer: {
+        columnContainer: {
             flexDirection: "column"
+        },
+        toggledEditTaskForm: {
+            flexDirection: showEditTaskForm ? "column" : "row"
         },
         taskContainer: {
             maxWidth: "100%",
@@ -205,10 +209,12 @@ const TaskSimple = (props) => {
             } else {
                 // Code 204!
                 await ProjectFunctions.reloadCurrentProjectDataFunc();
+                toggleDeletePrompt();
             }
         } else {
             // Code 200
             await ProjectFunctions.reloadCurrentProjectDataFunc();
+            toggleDeletePrompt();
         }
     }
 
@@ -271,59 +277,67 @@ const TaskSimple = (props) => {
         <React.Fragment>
 
             <View style={[styles.rowContainer, styles.taskContainer]}>
-
-                <View style={[styles.leftColumn, styles.checkboxContainer]} >
-                    <View style={styles.checkboxContainer}>
-                        <MaterialIcons name="done" size={32} style={styles.checkboxIcon} />
-                    </View>
-                </View>
-
-                <View style={[styles.rightColumn]} >
-                    <View style={styles.rightColumnTextContainer}>
-                        <Text style={styles.rightColumnTextName}
-                            lineBreakMode="head" numberOfLines={1}>
-                            {props.task.name}
-                        </Text>
-                        <View style={styles.detailedTaskContainer}>
-                            <StandardDivider color={theme.colors.tertiary[300]} />
-                            <Text style={styles.rightColumnTextDescription}
-                                lineBreakMode="head" numberOfLines={1}>
-                                {props.task.description}
-                            </Text>
-                            <StandardDivider color={theme.colors.tertiary[300]} />
-                            <Text style={[styles.rightColumnTextDescription]}>
-                                <MaterialIcons name="more-time" size={18} />:{props.task.creationDate}
-                            </Text>
-                            <Text style={[styles.rightColumnTextDescription]}>
-                                <MaterialIcons name="edit" size={18} />: {props.task.modificationDate}
-                            </Text>
+                <Pressable onPress={toggleCompletion}>
+                    <View style={[styles.leftColumn, styles.checkboxContainer]} >
+                        <View style={styles.checkboxContainer}>
+                            <MaterialIcons name="done" size={32} style={styles.checkboxIcon} />
                         </View>
                     </View>
-                    <View style={styles.oneButtonContainer}>
-                        <TouchableOpacity style={styles.rightColumnButtonContainer} onPress={toggleTaskMenu}>
-                            <View style={styles.rightColumnButton}>
-                                <MaterialIcons name="menu" size={32} style={styles.rightColumnButtonIcon} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                </Pressable>
 
-                    <View style={styles.additionalButtonsContainer}>
-                        <TouchableOpacity onPress={toggleTaskMenu}>
-                            <View style={styles.rightColumnButton}>
-                                <MaterialIcons name="menu-open" size={32} style={styles.rightColumnButtonIcon} />
+                <View style={[styles.rightColumn, styles.toggledEditTaskForm]} onLayout={(event) => {
+                    !showEditTaskForm ? heightForEditForm = event.nativeEvent.layout.height : null;
+                    console.log("heightForEditForm");
+                    console.log(heightForEditForm);
+                }} >
+                    {showEditTaskForm ? <EditTaskForm task={props.task} updateTaskFunc={updateTaskFunc} maxHeight={heightForEditForm} /> :
+                        <>
+                            <View style={styles.rightColumnTextContainer}>
+                                <Text style={styles.rightColumnTextName}
+                                    lineBreakMode="head" numberOfLines={1}>
+                                    {props.task.name}
+                                </Text>
+                                <View style={styles.detailedTaskContainer}>
+                                    <StandardDivider color={theme.colors.tertiary[300]} />
+                                    <Text style={styles.rightColumnTextDescription}
+                                        lineBreakMode="head" numberOfLines={1}>
+                                        {props.task.description && props.task.description.length > 0 ? props.task.description : "Add description"}
+                                    </Text>
+                                    <StandardDivider color={theme.colors.tertiary[300]} />
+                                    <Text style={[styles.rightColumnTextDescription]}>
+                                        <MaterialIcons name="more-time" size={18} />:{props.task.creationDate}
+                                    </Text>
+                                    <Text style={[styles.rightColumnTextDescription]}>
+                                        <MaterialIcons name="edit" size={18} />: {props.task.modificationDate}
+                                    </Text>
+                                </View>
                             </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.marginVertical} onPress={toggleEditTaskForm}>
-                            <View style={styles.rightColumnButton}>
-                                <MaterialIcons name="edit" size={32} style={styles.rightColumnButtonIcon} />
+                            <View style={styles.oneButtonContainer}>
+                                <TouchableOpacity style={styles.rightColumnButtonContainer} onPress={toggleTaskMenu}>
+                                    <View style={styles.rightColumnButton}>
+                                        <MaterialIcons name="menu" size={32} style={styles.rightColumnButtonIcon} />
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={props.task.active ? archiveTask : toggleDeletePrompt}>
-                            <View style={styles.rightColumnButton}>
-                                <MaterialIcons name="delete" size={32} style={styles.rightColumnButtonIcon} />
+
+                            <View style={styles.additionalButtonsContainer}>
+                                <TouchableOpacity onPress={toggleTaskMenu}>
+                                    <View style={styles.rightColumnButton}>
+                                        <MaterialIcons name="menu-open" size={32} style={styles.rightColumnButtonIcon} />
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.marginVertical} onPress={toggleEditTaskForm}>
+                                    <View style={styles.rightColumnButton}>
+                                        <MaterialIcons name="edit" size={32} style={styles.rightColumnButtonIcon} />
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={props.task.active ? archiveTask : toggleDeletePrompt}>
+                                    <View style={styles.rightColumnButton}>
+                                        <MaterialIcons name="delete" size={32} style={styles.rightColumnButtonIcon} />
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
-                    </View>
+                        </>}
 
                 </View>
 
@@ -404,7 +418,7 @@ const TaskSimple = (props) => {
     )
 }
 
-export default TaskSimple;
+export default ViewTask;
 //     function renderFormOrContent() {
 //         if (showEditTaskForm) {
 //             return <EditTaskForm task={props.task} updateTaskFunc={updateTaskFunc} />

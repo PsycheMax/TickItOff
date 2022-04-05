@@ -2,12 +2,12 @@ import React, { useContext, useState } from 'react';
 // import { IconButton, Center, Text, Heading, Icon, VStack, HStack, Avatar, Box, FlatList, Pressable, AlertDialog, Flex, Button, ScrollView } from 'native-base';
 // import { MaterialIcons } from "@native-base/icons";
 import { MaterialIcons } from '@expo/vector-icons';
-import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ProjectContext } from '../../utils/ProjectManager';
 
 import ProfilePicture from '../users/UserPanel/ProfilePicture';
-import TaskSimple from '../tasks/TaskSimple';
+import ViewTask from '../tasks/ViewTask';
 import NewTaskForm from '../tasks/NewTaskForm';
 import EditProjectForm from './EditProjectForm';
 import StandardDivider from '../StandardDivider';
@@ -91,13 +91,15 @@ const ViewProject = (props) => {
         archivedTasksList: {
             borderRadius: 32,
             paddingHorizontal: 18,
+            paddingVertical: 18,
             backgroundColor: theme.colors.secondary[500]
         },
-
+        showOnArchivedTasks: {
+            display: showArchivedTasks ? "flex" : "none"
+        }
     })
 
     async function toggleEditProjectForm() {
-        console.log("TOGGLE EDIT FORM")
         await setShowProjectEditForm(!showProjectEditForm);
     }
 
@@ -181,68 +183,46 @@ const ViewProject = (props) => {
 
                 {ProjectData.tasks ?
                     <View style={styles.projectListContainer}>
-                        {/* <Heading fontSize="xl" pb="3">
-            Tasks
-        </Heading> */}
-                        {/* <NewTaskForm /> */}
-                        {/* <Text style={[styles.name, styles.darkText]}>
-                            NewTaskForm
-                        </Text> */}
                         <Text style={[styles.name, styles.darkText]}>
-                            TaskList
+                            Active Tasks
                         </Text>
+                        <NewTaskForm />
                         <FlatList data={ProjectData.tasks}
                             renderItem={({ item }) => {
-                                return <TaskSimple task={item} />
+                                return <ViewTask task={item} />
                             }}
                             keyExtractor={item => item._id}
                         />
-
-                        {/* <FlatList data={ProjectData.tasks}
-                            renderItem={({ item }) =>
-                                <TaskSimple task={item} />
-                            } keyExtractor={item => item._id}
-                        /> */}
                     </View>
                     :
-                    <></>
-                    // <NewTaskForm />
+                    <NewTaskForm />
                 }
 
             </View>
 
             {ProjectData.archivedTasks ?
-                <ScrollView style={[styles.projectListContainer, styles.archivedTasksList]}>
-                    {/* <Heading fontSize="xl" pb="3">
-            Tasks
-        </Heading> */}
-                    {/* <NewTaskForm /> */}
-                    {/* <Text style={[styles.name, styles.darkText]}>
-                            NewTaskForm
-                        </Text> */}
-                    <Text style={[styles.name, styles.darkText]}>
-                        Archived Tasks
-                    </Text>
-                    <FlatList data={ProjectData.archivedTasks}
-                        renderItem={({ item }) => {
-                            return <TaskSimple task={item} />
-                        }}
-                        keyExtractor={item => item._id}
-                    />
-
-                    {/* <FlatList data={ProjectData.tasks}
-                            renderItem={({ item }) =>
-                                <TaskSimple task={item} />
-                            } keyExtractor={item => item._id}
-                        /> */}
-                </ScrollView>
+                <View style={[styles.projectListContainer, styles.archivedTasksList]}>
+                    <TouchableOpacity onPress={toggleArchivedTasks} >
+                        <Text style={[styles.name, styles.whiteText]}>
+                            Archived Tasks
+                        </Text>
+                    </TouchableOpacity>
+                    <View style={styles.showOnArchivedTasks}>
+                        <FlatList data={ProjectData.archivedTasks}
+                            renderItem={({ item }) => {
+                                return <ViewTask task={item} />
+                            }}
+                            keyExtractor={item => item._id}
+                        />
+                    </View>
+                </View>
                 :
-                <></>
-                // <NewTaskForm />
-            }
+                <></>}
         </ScrollView>
     )
 }
+
+// TODO MAKE THIS WHOLE COMPONENT A HUGE SECTION LIST MAYBE
 
 // {/* <Center w={"95%"} maxW={"95%"} > .
 //     <VStack w={"100%"}>
