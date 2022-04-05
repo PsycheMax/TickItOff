@@ -68,8 +68,8 @@ export default function Navigator(props) {
     const styles = StyleSheet.create({
         appContainer: {
             backgroundColor: theme.colors.secondary[50],
-            minWidth: theme.dimensions.screenWidth,
-            minHeight: theme.dimensions.screenHeight
+            minWidth: theme.dimensions.windowWidth,
+            minHeight: theme.dimensions.windowHeight
         },
         header: {
             minHeight: 108,
@@ -83,8 +83,8 @@ export default function Navigator(props) {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            width: theme.dimensions.screenWidth - theme.dimensions.screenWidth * 0.20,
-            minWidth: theme.dimensions.screenWidth,
+            width: theme.dimensions.windowWidth - theme.dimensions.windowWidth * 0.20,
+            minWidth: theme.dimensions.windowWidth,
             position: "absolute"
         },
         logoContainer: {
@@ -127,6 +127,7 @@ export default function Navigator(props) {
                     >
 
                         <Stack.Screen name="Home" component={ProjectSelector} />
+                        <Stack.Screen name="ViewProject" component={ViewProject} />
 
 
                     </Stack.Navigator>

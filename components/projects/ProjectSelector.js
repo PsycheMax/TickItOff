@@ -17,9 +17,9 @@ const ProjectSelector = (props) => {
         container: {
 
             alignSelf: "center",
-            minWidth: theme.dimensions.screenWidth,
-            width: theme.dimensions.screenWidth,
-            maxWidth: theme.dimensions.screenWidth,
+            minWidth: theme.dimensions.windowWidth,
+            width: theme.dimensions.windowWidth,
+            maxWidth: theme.dimensions.windowWidth,
         },
         listContainer: {
             borderBottomLeftRadius: 25,
@@ -95,41 +95,6 @@ const ProjectSelector = (props) => {
 
 
             </View>
-            // <View minW={"95%"} maxW={"95%"} w={"95%"} >
-            //     <View pb={scale(32)} borderRadius={"2xl"}>
-            //         <FlatList data={projects.managed}
-            //             renderItem={({ item }) =>
-            //                 <ProjectSelectionButton name={item.name} description={item.description}
-            //                     selectProjectFunc={selectProject.bind(this, item._id)} bgColor={"primary.500"} />
-            //             } keyExtractor={item => item._id}
-            //             ListHeaderComponent={<>
-            //                 <Heading mb={scale(8)} >Your Active Projects</Heading>
-            //                 <NewProjectForm /></>}
-            //         />
-            //     </View>
-            //     <VStack w={"110%"} ml={-scale(16)}
-            //         p={scale(16)}
-            //         bg={"primary.500"}
-            //     >
-            //         <Pressable onPress={toggleShowArchivedProjects}>
-            //             <FlatList data={projects.archived}
-            //                 renderItem={({ item }) =>
-            //                     <ProjectSelectionButton name={item.name} description={item.description}
-            //                         selectProjectFunc={selectProject.bind(this, item._id)} bgColor={"secondary.300"} />
-            //                 } keyExtractor={item => item._id}
-            //                 ListHeaderComponent={<>
-            //                     <Heading
-            //                         pb={scale(16)} color={"tertiary.50"}
-            //                         borderBottomColor={"primary.500"}
-            //                         borderBottomWidth={showArchivedProjects ? "0" : "1"}>
-            //                         Archived Projects
-            //                     </Heading>
-            //                 </>}
-            //             />
-            //         </Pressable>
-            //     </VStack>
-
-            // </View>
         )
     } else {
         return (
