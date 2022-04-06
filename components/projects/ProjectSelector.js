@@ -73,24 +73,32 @@ const ProjectSelector = (props) => {
         // Writing this in a verbose way: declared two local arrays
         let archivedArray = [];
         let activeArray = [];
-        // For each project in the UserData.projects.archived, add a key and push it in the previously created array
-        projects.archived.forEach(archivedProject => {
-            archivedProject.key = archivedProject._id;
-            archivedArray.push(archivedProject);
-        });
-        // For each project in the UserData.projects.active, add a key and push it in the previously created array
-        projects.managed.forEach(activeProject => {
-            activeProject.key = activeProject._id;
-            activeArray.push(activeProject);
-        });
+        // For each project in the UserData.projects.archived, add a key to it, and push it in the previously created array
+        if (projects && projects.archived && projects.archived.length !== 0) {
+            projects.archived.forEach(archivedProject => {
+                let projectWithKey = { ...archivedProject, key: archivedProject._id };
+                archivedArray.push(projectWithKey);
+            });
+        }
+        // For each project in the UserData.projects.active, add a key to it, and push it in the previously created array
+        if (projects && projects.managed && projects.managed.length !== 0) {
+            projects.managed.forEach(activeProject => {
+                let projectWithKey = { ...activeProject, key: activeProject._id };
+                activeArray.push(projectWithKey);
+            });
+        }
         // Create an object containing a section title, and an array at the key "data", for each category/section.
         let active = {
             data: activeArray,
-            title: "Your active Projects"
+            title: "Your active Projects",
+            tag: "activeProjects",
+            requiresFullHeader: true
         };
         let archived = {
             data: archivedArray,
-            title: "Your archived Projects"
+            title: "Your archived Projects",
+            tag: "archivedProjects",
+            requiresFullHeader: false
         };
         // Return the newly created objects in an array;
         return [active, archived];
@@ -125,16 +133,21 @@ const ProjectSelector = (props) => {
                                 selectProjectFunc={selectProject.bind(this, item._id)} bgColor={theme.colors.primary[500]}
                             />
                         </View>}
-                    renderSectionHeader={({ section: { title, data } }) => {
+
+                    renderSectionHeader={({ section: { title, data, tag, requiresFullHeader } }) => {
                         return <View
                             style={[
                                 styles.listContainerStandardPadding, styles.topListContainer,
-                                data[0] && data[0].active ? styles.activeListContainerBG : styles.archivedListContainerBG
+                                tag === "activeProjects" ? styles.activeListContainerBG : styles.archivedListContainerBG
                             ]} >
-                            <Text style={[styles.title, data[0] && data[0].active ? styles.darkText : styles.whiteText]}>{title}</Text>
-                            {title === "Your active Projects" ? <NewProjectForm /> : <></>}
+                            <Text style={[
+                                styles.title,
+                                tag === "activeProjects" ? styles.darkText : styles.whiteText
+                            ]}>{title}</Text>
+                            {requiresFullHeader ? <NewProjectForm updateProjectSelectorFunc={LoggedUserFunctions.updateLoggedUserDataFunc} /> : <></>}
                         </View>
                     }}
+
                     renderSectionFooter={({ section: { title, data } }) => {
                         return <View style={[
                             styles.listContainerStandardPadding, styles.bottomListContainer,

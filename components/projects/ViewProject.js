@@ -24,6 +24,12 @@ const ViewProject = (props) => {
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
     const styles = StyleSheet.create({
+        maxWidth: {
+            maxWidth: theme.dimensions.screenWidth,
+            width: theme.dimensions.screenWidth,
+            minWidth: theme.dimensions.screenWidth,
+            alignSelf: "center"
+        },
         columnContainer: {
             flexDirection: "column"
         },
@@ -174,24 +180,35 @@ const ViewProject = (props) => {
  * [{ data: [{project}], title:"Section Title"},...{}]
  */
     function processProjectDataForSectionList() {
-        // Writing this in a verbose way: copied the two arrays of tasks
-        let activeArray = ProjectData.tasks;
-        let archivedArray = ProjectData.archivedTasks;
-        // For each task in the two arrays, add a key.
-        activeArray.forEach(task => {
-            task.key = task._id;
-        });
-        archivedArray.forEach(task => {
-            task.key = task._id;
-        });
-        // Create an object containing a section title, and an array at the key "data", for each category/section.
+        // Writing this in a verbose way: declared two arrays
+        let activeArray = [];
+        let archivedArray = [];
+        // Copied the existing tasks into these arrays
+
+        if (ProjectData.tasks && ProjectData.tasks.length > 0) {
+            activeArray = [...ProjectData.tasks];
+            activeArray.forEach(task => {
+                task.key = task._id;
+            });
+        }
+        if (ProjectData.archivedTasks && ProjectData.archivedTasks.length > 0) {
+            archivedArray = [...ProjectData.archivedTasks];
+            archivedArray.forEach(task => {
+                task.key = task._id;
+            });
+        }
+        // Create an object containing a section title, and an array at the key "data", a tag and a boolean requiring the "NewTaskForm" for each category/section.
         let active = {
             data: activeArray,
-            title: "Active Tasks"
+            title: "Active Tasks",
+            tag: "activeTasks",
+            requiresFullHeader: true
         };
         let archived = {
             data: archivedArray,
-            title: "Archived Tasks"
+            title: "Archived Tasks",
+            tag: "archivedTasks",
+            requiresFullHeader: false
         }
         // Return the newly created objects in an array;
         return [active, archived];
@@ -213,59 +230,81 @@ const ViewProject = (props) => {
         setShowDeletePrompt(!showDeletePrompt);
     }
 
-    async function handleDeleteProject() {
-        if (ProjectData.active) {
-            const response = await ProjectFunctions.deleteProjectFunc(ProjectData._id);
-            if (response.status !== 200) {
-                if (response.status !== 204) {
-                    // ERROR
-                    // toSetInAlertMessages.genericForm = { show: true, content: response.data };
-                    props.navigation.push('Home');
-                } else {
-                    // Code 204!
-                    props.navigation.push('Home');
-
-                }
-            } else {
-                // Code 200
+    async function handleProjectDeactivation() {
+        const response = await ProjectFunctions.deactivateProjectFunc(ProjectData._id);
+        if (response.status !== 200) {
+            if (response.status !== 204) {
+                // ERROR
+                // toSetInAlertMessages.genericForm = { show: true, content: response.data };
                 props.navigation.push('Home');
+            } else {
+                // Code 204!
+                props.navigation.push('Home');
+
             }
         } else {
-            const toSend = ProjectData;
-            toSend.active = true;
-            const response = await ProjectFunctions.patchProjectFunc(ProjectData._id, toSend);
-            if (response.status !== 200) {
-                if (response.status !== 204) {
-                    // ERROR
-                    // toSetInAlertMessages.genericForm = { show: true, content: response.data };
-                    console.log(response)
-                    props.navigation.push('Home');
-                } else {
-                    // Code 204!
-                    console.log(response)
-                    props.navigation.push('Home');
+            // Code 200
+            props.navigation.push('Home');
+        }
+        setShowDeletePrompt(false);
+    }
 
-                }
+    async function handleProjectReactivation() {
+        const toSend = ProjectData;
+        toSend.active = true;
+        const response = await ProjectFunctions.patchProjectFunc(ProjectData._id, toSend);
+        if (response.status !== 200) {
+            if (response.status !== 204) {
+                // ERROR
+                // toSetInAlertMessages.genericForm = { show: true, content: response.data };
+                console.log(response)
+                props.navigation.push('Home');
             } else {
-                // Code 200
+                // Code 204!
+                console.log(response)
+                props.navigation.push('Home');
+
+            }
+        } else {
+            // Code 200
+            console.log(response)
+            props.navigation.push('Home');
+        }
+        setShowDeletePrompt(false);
+    }
+
+    async function handleProjectPermanentDeletion() {
+        const response = await ProjectFunctions.permanentlyDeleteProjectFunc(ProjectData._id);
+        if (response.status !== 200) {
+            if (response.status !== 204) {
+                // ERROR
+                // toSetInAlertMessages.genericForm = { show: true, content: response.data };
+                console.log(response)
+                props.navigation.push('Home');
+            } else {
+                // Code 204!
                 console.log(response)
                 props.navigation.push('Home');
             }
+        } else {
+            // Code 200
+            console.log(response)
+            props.navigation.push('Home');
         }
-
+        setShowDeletePrompt(false);
     }
 
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
-        <>
+        <View style={styles.maxWidth}>
             <SectionList
                 //The data is obtained by a method that parses the ProjectData in a SectionList readable form
                 sections={processProjectDataForSectionList()}
 
                 // This is the header of this whole component
-                renderSectionHeader={({ section: { title, data } }) => {
+                renderSectionHeader={({ section: { title, data, tag, requiresFullHeader } }) => {
                     // The following if statement creates the header only if the data array being represented is the first one, the "active" array
-                    if (data[0] && data[0].active) {
+                    if (requiresFullHeader) {
                         return <>
                             <View style={[styles.columnContainer, styles.mainHMarginSize]}>
                                 <View style={[styles.columnContainer, styles.topSection, styles.hideOnProjectEditForm]}>
@@ -276,15 +315,19 @@ const ViewProject = (props) => {
                                             </Text>
                                         </View>
                                         <View style={[styles.rowContainer, styles.buttonsContainer]}>
-                                            <View style={styles.centered}>
-                                                <Pressable onPress={toggleEditProjectForm} >
-                                                    <MaterialIcons name="edit" size={32} color={theme.colors.primary[500]} />
-                                                </Pressable>
+                                            <View style={[styles.centered]}>
+                                                {ProjectData.active ?
+                                                    <Pressable onPress={toggleEditProjectForm} >
+                                                        <MaterialIcons name="edit" size={32} color={theme.colors.primary[500]} />
+                                                    </Pressable>
+                                                    : <Pressable onPress={handleProjectReactivation}>
+                                                        <MaterialIcons name="power" size={32} color={theme.colors.primary[500]} />
+                                                    </Pressable>
+                                                }
                                             </View>
                                             <View style={styles.centered}>
                                                 <Pressable onPress={toggleDeletePrompt} >
-                                                    {ProjectData.active ? <MaterialIcons name="delete-outline" size={32} color={theme.colors.primary[500]} /> :
-                                                        <MaterialIcons name="power" size={32} color={theme.colors.primary[500]} />}
+                                                    <MaterialIcons name="delete-outline" size={32} color={theme.colors.primary[500]} />
                                                 </Pressable>
                                             </View>
                                         </View>
@@ -315,27 +358,29 @@ const ViewProject = (props) => {
                             </View>
                             <View style={[
                                 styles.projectListContainer, styles.topListContainer,
-                                data[0] && data[0].active ? styles.activeListContainerBG : styles.archivedListContainerBG
+                                tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                             ]}>
                                 <Text style={[
                                     styles.name,
-                                    data[0] && data[0].active ? styles.darkText : styles.whiteText]}>{title}
+                                    tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}
                                 </Text>
                                 {/* Considering it's the header, the NewTaskForm goes here */}
-                                <View style={styles.mainHPaddingSize}>
-                                    <NewTaskForm />
-                                </View>
+                                {ProjectData.active ?
+                                    <View style={styles.mainHPaddingSize}>
+                                        <NewTaskForm />
+                                    </View>
+                                    : <></>}
 
                             </View>
                         </>
                         // For every other category, create a regular heading (after checking what color should be used)
                     } else return <View style={[
                         styles.projectListContainer, styles.topListContainer,
-                        data[0] && data[0].active ? styles.activeListContainerBG : styles.archivedListContainerBG
+                        tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                     ]}>
                         <Text style={[
                             styles.name,
-                            data[0] && data[0].active ? styles.darkText : styles.whiteText]}>{title}</Text>
+                            tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}</Text>
                     </View>
                 }}
 
@@ -351,12 +396,11 @@ const ViewProject = (props) => {
                 }}
 
                 // This renders a simple rounded footer for each section
-                renderSectionFooter={({ section: { title, data } }) => {
+                renderSectionFooter={({ section: { tag } }) => {
                     return <View style={[
                         styles.bottomListContainer,
-                        data[0] && data[0].active ? styles.activeListContainerBG : styles.archivedListContainerBG
+                        tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                     ]}>
-                        <Text >{title} END</Text>
                     </View>
                 }}
             />
@@ -368,13 +412,14 @@ const ViewProject = (props) => {
                     </View>
                     <View style={styles.modalWindow}>
 
-                        {/* If the project is active, it asks "want to archive it" otherwise "want to reactivate it?" */}
+                        {/* If the project is active, it asks "want to archive it" otherwise "want to permanently delete it?" */}
                         {ProjectData.active ? <Text style={styles.modalText} >Want to archive this project?</Text> :
-                            <Text style={styles.modalText} >Want to reactivate this project?</Text>}
+                            <Text style={styles.modalText} >Want to permanently delete this project? PLEASE note this process is not revertible</Text>}
 
                         <View style={styles.modalButtonsContainer}>
                             <TouchableOpacity
-                                onPress={handleDeleteProject}
+                                // Based on the activation status, it handles the deletion in different ways
+                                onPress={ProjectData.active ? handleProjectDeactivation : handleProjectPermanentDeletion}
                             >
                                 <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
                                     <Text style={styles.modalText} >Yes</Text>
@@ -393,7 +438,7 @@ const ViewProject = (props) => {
                 </View>
 
             </Modal>
-        </>
+        </View>
     )
 }
 

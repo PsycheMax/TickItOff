@@ -11,11 +11,13 @@ export const ProjectContext = React.createContext({
     getProjectDataFunc: (projectID) => { },
     createProjectFunc: (projectData) => { },
     patchProjectFunc: (projectID, projectData) => { },
-    deleteProjectFunc: (projectID) => { },
+    deactivateProjectFunc: (projectID) => { },
+    permanentlyDeleteProjectFunc: (projectID) => { },
     getTaskInProjectFunc: (projectID, taskID) => { },
     createTaskInProjectFunc: (projectID, taskData) => { },
     patchTaskInProjectFunc: (projectID, taskID, taskData) => { },
-    deleteTaskInProjectFunc: (projectID, taskID) => { },
+    deactivateTaskInProjectFunc: (projectID, taskID) => { },
+    permanentlyDeleteTaskInProjectFunc: (projectID, taskID) => { }
 });
 
 const ProjectManager = (props) => {
@@ -119,12 +121,28 @@ const ProjectManager = (props) => {
     }
 
     /**
-     * This function "deletes" a project from the API - the deletion is not absolute, the intent is to keep track of every project.
+     * This function deactivates a project from the API - the deletion is not absolute, the intent is to keep track of every project.
      * @param {string} projectID the project to delete 
      * @returns The API response
      */
-    async function deleteProjectFunc(projectID) {
+    async function deactivateProjectFunc(projectID) {
         let response = await axiosDelete(`/project/${projectID}`, loggedUserData.token);
+        if (response.status === 200) {
+            console.log("Status 200");
+            // setCurrentProjectData(null);
+            return response;
+        } else {
+            console.log("Status not 200");
+            return response;
+        }
+    }
+    /**
+     * This function completely deletes a project from the API - the deletion IS absolute.
+     * @param {string} projectID the project to delete 
+     * @returns The API response
+     */
+    async function permanentlyDeleteProjectFunc(projectID) {
+        let response = await axiosDelete(`/project/permanentDelete/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
             // setCurrentProjectData(null);
@@ -186,13 +204,29 @@ const ProjectManager = (props) => {
         }
     }
     /**
-     * This function "deletes" an existing task from an existing Project. The deletion is not definitive, the intent is to keep track of everything
+     * This function deactivates an existing task from an existing Project. The deletion is not definitive, the intent is to keep track of everything
      * @param {string} projectID 
      * @param {string} taskID 
      * @returns 
      */
-    async function deleteTaskInProjectFunc(projectID, taskID) {
+    async function deactivateTaskInProjectFunc(projectID, taskID) {
         let response = await axiosDelete(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
+        if (response.status === 200) {
+            console.log("Status 200");
+            return response;
+        } else {
+            console.log("Status not 200");
+            return response;
+        }
+    }
+    /**
+     * This function permanently deletes an existing task from an existing Project. The deletion IS definitive.
+     * @param {string} projectID 
+     * @param {string} taskID 
+     * @returns 
+     */
+    async function permanentlyDeleteTaskInProjectFunc(projectID, taskID) {
+        let response = await axiosDelete(`/project/${projectID}/task/permanentlyDelete/${taskID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
             return response;
@@ -216,11 +250,13 @@ const ProjectManager = (props) => {
             getProjectDataFunc: getProjectDataFunc,
             createProjectFunc: createProjectFunc,
             patchProjectFunc: patchProjectFunc,
-            deleteProjectFunc: deleteProjectFunc,
+            deactivateProjectFunc: deactivateProjectFunc,
+            permanentlyDeleteProjectFunc: permanentlyDeleteProjectFunc,
             getTaskInProjectFunc: getTaskInProjectFunc,
             createTaskInProjectFunc: createTaskInProjectFunc,
             patchTaskInProjectFunc: patchTaskInProjectFunc,
-            deleteTaskInProjectFunc: deleteTaskInProjectFunc
+            deactivateTaskInProjectFunc: deactivateTaskInProjectFunc,
+            permanentlyDeleteTaskInProjectFunc: permanentlyDeleteTaskInProjectFunc
         }} >
             {props.children}
         </ProjectContext.Provider>

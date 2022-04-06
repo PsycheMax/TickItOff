@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, TextPropTypes, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ProjectContext } from '../../utils/ProjectManager';
@@ -172,11 +172,6 @@ const ViewTask = (props) => {
         }
     }
 
-    async function archiveTask() {
-        await ProjectFunctions.deleteTaskInProjectFunc(ProjectFunctions.currentProjectData._id, props.task._id);
-        await ProjectFunctions.reloadCurrentProjectDataFunc();
-    }
-
     async function updateTaskFunc() {
         toggleEditTaskForm();
         await ProjectFunctions.reloadCurrentProjectDataFunc();
@@ -195,8 +190,46 @@ const ViewTask = (props) => {
         setShowDeletePrompt(!showDeletePrompt);
     }
 
-    async function handleDeleteTask() {
-        const response = await ProjectFunctions.deleteTaskInProjectFunc(ProjectFunctions.currentProjectData._id, props.task._id);
+    async function handleTaskDeactivation() {
+        const response = await ProjectFunctions.deactivateTaskInProjectFunc(ProjectFunctions.currentProjectData._id, props.task._id);
+        if (response.status !== 200) {
+            if (response.status !== 204) {
+                // ERROR
+                await ProjectFunctions.reloadCurrentProjectDataFunc();
+            } else {
+                // Code 204!
+                await ProjectFunctions.reloadCurrentProjectDataFunc();
+                toggleDeletePrompt();
+            }
+        } else {
+            // Code 200
+            await ProjectFunctions.reloadCurrentProjectDataFunc();
+            toggleDeletePrompt();
+        }
+    }
+
+    async function handleTaskReactivation() {
+        const toSend = props.task;
+        toSend.active = true;
+        const response = await ProjectFunctions.patchTaskInProjectFunc(ProjectFunctions.currentProjectData._id, toSend._id, toSend);
+        if (response.status !== 200) {
+            if (response.status !== 204) {
+                // ERROR
+                await ProjectFunctions.reloadCurrentProjectDataFunc();
+            } else {
+                // Code 204!
+                await ProjectFunctions.reloadCurrentProjectDataFunc();
+                toggleDeletePrompt();
+            }
+        } else {
+            // Code 200
+            await ProjectFunctions.reloadCurrentProjectDataFunc();
+            toggleDeletePrompt();
+        }
+    }
+
+    async function handleTaskPermanentDeletion() {
+        const response = await ProjectFunctions.permanentlyDeleteTaskInProjectFunc(ProjectFunctions.currentProjectData._id, props.task._id);
         if (response.status !== 200) {
             if (response.status !== 204) {
                 // ERROR
@@ -320,12 +353,16 @@ const ViewTask = (props) => {
                                         <MaterialIcons name="menu-open" size={32} style={styles.rightColumnButtonIcon} />
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.marginVertical} onPress={toggleEditTaskForm}>
+                                <TouchableOpacity style={styles.marginVertical} onPress={
+                                    props.task.active ? toggleEditTaskForm : handleTaskReactivation
+                                }>
                                     <View style={styles.rightColumnButton}>
-                                        <MaterialIcons name="edit" size={32} style={styles.rightColumnButtonIcon} />
+                                        <MaterialIcons
+                                            name={props.task.active ? "edit" : "power"}
+                                            size={32} style={styles.rightColumnButtonIcon} />
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={props.task.active ? archiveTask : toggleDeletePrompt}>
+                                <TouchableOpacity onPress={props.task.active ? handleTaskDeactivation : toggleDeletePrompt}>
                                     <View style={styles.rightColumnButton}>
                                         <MaterialIcons name="delete" size={32} style={styles.rightColumnButtonIcon} />
                                     </View>
@@ -344,10 +381,10 @@ const ViewTask = (props) => {
                     <View style={styles.backgroundForModal}>
                     </View>
                     <View style={styles.modalWindow}>
-                        <Text style={styles.modalText} >Want to permanently delete this task?</Text>
+                        <Text style={styles.modalText}>Want to permanently delete this task? Please note that this process is not reversible</Text>
                         <View style={styles.modalButtonsContainer}>
                             <TouchableOpacity
-                                onPress={handleDeleteTask}
+                                onPress={handleTaskPermanentDeletion}
                             >
                                 <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
                                     <Text style={styles.modalText} >Yes</Text>
@@ -367,150 +404,8 @@ const ViewTask = (props) => {
 
             </Modal>
 
-            {/* <Pressable onPress={toggleCompletion}>
-                <Flex direction={"row"} maxW={"100%"} w={"100%"} minW={"100%"} my={scale(4.8)}>
-                    <Square w={"16%"} borderRadius={"lg"} borderWidth={"2"} borderColor={decideColor("border")} backgroundColor={decideColor("background")}>
-                        <Checkbox colorScheme="primary" size="lg" p={0} m={0} borderRadius={"lg"} backgroundColor={"transparent.50"} borderWidth={0}
-                            icon={<Icon as={<MaterialIcons name="check" />} />} defaultIsChecked={props.task.completion}
-                            isChecked={checkState} accessibilityLabel={"Checkbox for " + props.task.name}
-                        />
-                    </Square>
-                    <Spacer w={"1%"}></Spacer>
-                    <Box w={"83%"} maxW={"82%"} minW={"82%"} minH={scale(40)} h={"full"} borderRadius={"lg"} px={scale(16)}
-                        borderColor={decideColor("border")} borderWidth={"2"} backgroundColor={decideColor("background")} >
-
-
-                        {renderFormOrContent()}
-                    </Box>
-
-                </Flex>
-            </Pressable>
-
-            <AlertDialog leastDestructiveRef={cancelRef} isOpen={showDeletePrompt} onClose={toggleDeletePrompt}>
-                <AlertDialog.Content>
-                    <AlertDialog.CloseButton />
-                    <AlertDialog.Header>Archive Project</AlertDialog.Header>
-                    <AlertDialog.Body>
-
-
-                        This will remove all data relating to the Task. This action cannot be
-                        reversed. Deleted data can not be recovered.
-                    </AlertDialog.Body>
-                    <AlertDialog.Footer>
-                        <Button.Group space={2}>
-                            <Button variant="unstyled" colorScheme="coolGray" onPress={toggleDeletePrompt} ref={cancelRef}>
-                                Cancel
-                            </Button>
-                            <Button colorScheme="danger" onPress={handleDeleteTask}>
-                                Delete
-                            </Button>
-                        </Button.Group>
-                    </AlertDialog.Footer>
-                </AlertDialog.Content>
-            </AlertDialog> */}
-
         </React.Fragment >
     )
 }
 
 export default ViewTask;
-//     function renderFormOrContent() {
-//         if (showEditTaskForm) {
-//             return <EditTaskForm task={props.task} updateTaskFunc={updateTaskFunc} />
-//         }
-//         if (!showEditTaskForm) {
-//             return <HStack maxW={"100%"} minW={"100%"} >
-
-//                 <Box w={"85%"} my={scale(16)} mx={scale(3.2)}>
-//                     <Heading size="sm" lineBreakMode={"head"} color={decideColor("text")} >
-//                         {props.task.name}
-//                     </Heading>
-
-//                     <StandardDivider display={showTaskMenu ? "flex" : "none"} color={"tertiary.500"} />
-
-//                     <Text lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "flex" : "none"}>
-//                         {props.task.description.length > 0 ? props.task.description : "If you want to add a description, edit this task to do so"}
-//                     </Text>
-
-//                     <StandardDivider display={showTaskMenu ? "flex" : "none"} color={"tertiary.500"} />
-//                     <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "flex" : "none"}>
-//                         <Icon as={MaterialIcons} name="more-time" size={"2xs"} color={decideColor("text")}
-//                         />: {Date(props.task.creationDate)}
-//                     </Text>
-//                     <Text fontSize={scale(9.6)} lineBreakMode={"head"} color={decideColor("text")} display={showTaskMenu ? "flex" : "none"}>
-//                         <Icon as={MaterialIcons} name="edit" size={"2xs"} color={decideColor("text")}
-//                         />: {Date(props.task.modificationDate)}
-//                     </Text>
-//                 </Box>
-//                 <Center my={"auto"} w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "none" : "flex"}>
-//                     <IconButton icon={<Icon as={MaterialIcons} name="menu-open" />} borderRadius="full"
-//                         _icon={{ color: decideColor("text"), size: "md" }}
-//                         onPress={toggleTaskMenu} />
-//                 </Center>
-//                 <VStack w={"10%"} mx={scale(1.6)} display={showTaskMenu ? "block" : "none"}>
-//                     <IconButton w={"100%"} icon={<Icon as={MaterialIcons} name="zoom-out" />} borderRadius="full"
-//                         _icon={{ color: checkState ? "tertiary.400" : "tertiary.500", size: "md" }}
-//                         onPress={toggleTaskMenu} />
-//                     <IconButton w={"100%"} icon={<Icon as={MaterialIcons} name="edit" />} borderRadius="full"
-//                         _icon={{ color: checkState ? "tertiary.400" : "tertiary.500", size: "md" }}
-//                         onPress={toggleEditTaskForm} />
-//                     <IconButton w={"100%"} icon={<Icon as={MaterialIcons} name="delete" />} borderRadius="full"
-//                         _icon={{ color: checkState ? "tertiary.400" : "tertiary.500", size: "md" }}
-//                         onPress={props.task.active ? archiveTask : toggleDeletePrompt} />
-//                 </VStack>
-//             </HStack>
-//         }
-//     }
-
-//     const cancelRef = React.useRef(null);
-
-//     return (
-
-//         <React.Fragment>
-
-//             <Pressable onPress={toggleCompletion}>
-//                 <Flex direction={"row"} maxW={"100%"} w={"100%"} minW={"100%"} my={scale(4.8)}>
-//                     <Square w={"16%"} borderRadius={"lg"} borderWidth={"2"} borderColor={decideColor("border")} backgroundColor={decideColor("background")}>
-//                         <Checkbox colorScheme="primary" size="lg" p={0} m={0} borderRadius={"lg"} backgroundColor={"transparent.50"} borderWidth={0}
-//                             icon={<Icon as={<MaterialIcons name="check" />} />} defaultIsChecked={props.task.completion}
-//                             isChecked={checkState} accessibilityLabel={"Checkbox for " + props.task.name}
-//                         />
-//                     </Square>
-//                     <Spacer w={"1%"}></Spacer>
-//                     <Box w={"83%"} maxW={"82%"} minW={"82%"} minH={scale(40)} h={"full"} borderRadius={"lg"} px={scale(16)}
-//                         borderColor={decideColor("border")} borderWidth={"2"} backgroundColor={decideColor("background")} >
-
-//                         {/* If showEditTaskForm is true, the following HStack is not displayed */}
-//                         {renderFormOrContent()}
-//                     </Box>
-
-//                 </Flex>
-//             </Pressable>
-
-//             <AlertDialog leastDestructiveRef={cancelRef} isOpen={showDeletePrompt} onClose={toggleDeletePrompt}>
-//                 <AlertDialog.Content>
-//                     <AlertDialog.CloseButton />
-//                     <AlertDialog.Header>Archive Project</AlertDialog.Header>
-//                     <AlertDialog.Body>
-//                         {/* This will Archive your project - it will still be visible but read-only in your archived projects. */}
-//                         This will remove all data relating to the Task. This action cannot be
-//                         reversed. Deleted data can not be recovered.
-//                     </AlertDialog.Body>
-//                     <AlertDialog.Footer>
-//                         <Button.Group space={2}>
-//                             <Button variant="unstyled" colorScheme="coolGray" onPress={toggleDeletePrompt} ref={cancelRef}>
-//                                 Cancel
-//                             </Button>
-//                             <Button colorScheme="danger" onPress={handleDeleteTask}>
-//                                 Delete
-//                             </Button>
-//                         </Button.Group>
-//                     </AlertDialog.Footer>
-//                 </AlertDialog.Content>
-//             </AlertDialog>
-
-//         </React.Fragment >
-//     )
-// }
-
-// export default TaskSimple;
