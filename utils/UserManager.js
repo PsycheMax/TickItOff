@@ -20,23 +20,18 @@ const UserManager = (props) => {
 
     useEffect(async () => {
         if (loggedUserData !== undefined) {
-            console.log("Logged userdata set in State!");
             await setInStorage('loggedUserData', loggedUserData);
         }
-    }, [loggedUserData])
+    }, [loggedUserData]);
 
     // This runs only on launch
     useEffect(async () => {
         const rawUserDataInStorage = await getFromStorage("loggedUserData");
         if (rawUserDataInStorage !== null) {
             try {
-                console.log(rawUserDataInStorage)
                 const userDataInStorage = rawUserDataInStorage;
-                console.log(userDataInStorage);
                 if (userDataInStorage.token && userDataInStorage.token.length > 10) {
-
                     let decodedJWT = await jwtDecode(userDataInStorage.token);
-                    console.log("Setting it man")
                     await setLoggedUserData(userDataInStorage);
                 }
             }

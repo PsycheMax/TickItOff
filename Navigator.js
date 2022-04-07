@@ -18,44 +18,7 @@ import SignUpForm from './components/users/UserForms/SignUpForm';
 import EditUserForm from './components/users/UserForms/EditUserForm';
 import StandardDivider from './components/StandardDivider';
 import ProjectSelectionButton from './components/projects/ProjectSelectionButton';
-
-
-
-function HomeScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Home!</Text>
-        </View>
-    );
-}
-
-function Login(props) {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text onPress={props.navigation.navigate.bind(this, "Home")}>Login!</Text>
-            {console.log(props)}
-        </View>
-    );
-}
-
-function SettingsScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Settings!</Text>
-        </View>
-    );
-}
-
-function HomeTabs() {
-    return (<Tab.Navigator>
-
-        <Tab.Screen name="Home" component={HomeScreen} options={{ title: "Projects" }} />
-        <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: "Settings" }} />
-
-
-    </Tab.Navigator>
-    )
-}
+import LoadingWholeApp from './components/LoadingWholeApp';
 
 const Tab = createBottomTabNavigator();
 
@@ -132,9 +95,10 @@ export default function Navigator(props) {
 
                     </Stack.Navigator>
                     :
-                    <Stack.Navigator initialRouteName={'Login'}
+                    <Stack.Navigator initialRouteName={'Loading'}
                     // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
                     >
+                        <Stack.Screen name="Loading" component={LoadingWholeApp} />
                         <Stack.Screen name="Login" component={LoginForm} />
                         <Stack.Screen name="SignUp" component={SignUpForm} />
                     </Stack.Navigator>
