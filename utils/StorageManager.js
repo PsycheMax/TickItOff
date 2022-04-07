@@ -2,9 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function setInStorage(key, value) {
     try {
-        await AsyncStorage.setItem(key, value);
+        let parsedValue = JSON.stringify(value);
+        await AsyncStorage.setItem(key, parsedValue);
         console.log("SET CORRECT");
-        return { [key]: value };
+        return { [key]: parsedValue };
     } catch (error) {
         console.error(error);
     }
@@ -12,8 +13,10 @@ export async function setInStorage(key, value) {
 
 export async function getFromStorage(key) {
     try {
-        let toReturn = await AsyncStorage.getItem(key);
-        if (toReturn) {
+        let rawStorageData = await AsyncStorage.getItem(key);
+        if (rawStorageData) {
+            console.log(rawStorageData);
+            let toReturn = JSON.parse(rawStorageData);
             console.log(toReturn);
             return toReturn;
         } else {
@@ -22,5 +25,21 @@ export async function getFromStorage(key) {
         }
     } catch (error) {
         console.error(error);
+    }
+}
+
+export async function removeStorage(key) {
+    try {
+        AsyncStorage.removeItem(key, (error) => {
+            if (error) {
+                console.log(error);
+                AsyncStorage.clear((error) => {
+                    console.log(error);
+                });
+            }
+        })
+    } catch (error) {
+        console.log("Error in Storage Management");
+        console.log(error);
     }
 }

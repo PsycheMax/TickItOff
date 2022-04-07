@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { axiosPost, axiosGet, axiosPatch, axiosDelete } from './APIManager';
-import { getFromStorage, setInStorage } from './StorageManager';
+import { getFromStorage, setInStorage, removeStorage } from './StorageManager';
 import jwtDecode from 'jwt-decode';
 
 // Created a context template here, it will send down a logout function, a login function, and the logged User Data.
@@ -16,28 +16,37 @@ export const LoggedUserContext = React.createContext({
 
 const UserManager = (props) => {
 
-    const [loggedUserData, setLoggedUserData] = useState({});
+    const [loggedUserData, setLoggedUserData] = useState();
 
     useEffect(async () => {
-        // const rawUserDataInStorage = await getFromStorage("loggedUserData");
-        // if (rawUserDataInStorage !== null) {
-        //     const userDataInStorage = JSON.parse(rawUserDataInStorage);
-        //     if (userDataInStorage.token && userDataInStorage.token.length > 10) {
-        //         try {
-        //             let decodedJWT = await jwtDecode(userDataInStorage.token);
-        //             if (loggedUserData !== userDataInStorage) {
-        //                 await setLoggedUserData(userDataInStorage);
-        //             }
-        //         }
-        //         catch (error) {
-        //             console.log(error);
-        //         }
-        //     }
-        // } else {
-        //     console.log("NOT FOUND")
-        // }
+        if (loggedUserData !== undefined) {
+            console.log("Logged userdata set in State!");
+            await setInStorage('loggedUserData', loggedUserData);
+        }
+    }, [loggedUserData])
 
-    })
+    // This runs only on launch
+    useEffect(async () => {
+        const rawUserDataInStorage = await getFromStorage("loggedUserData");
+        if (rawUserDataInStorage !== null) {
+            try {
+                console.log(rawUserDataInStorage)
+                const userDataInStorage = rawUserDataInStorage;
+                console.log(userDataInStorage);
+                if (userDataInStorage.token && userDataInStorage.token.length > 10) {
+
+                    let decodedJWT = await jwtDecode(userDataInStorage.token);
+                    console.log("Setting it man")
+                    await setLoggedUserData(userDataInStorage);
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        } else {
+            console.log("NOT FOUND, GOTTA LOGIN")
+        }
+    }, [])
 
     // The following functions are to be passed down as context.functions()
 
@@ -57,7 +66,7 @@ const UserManager = (props) => {
         let response = await axiosPost('/user/login', loginUserObj);
         if (response.status === 200) {
             setLoggedUserData(response.data);
-            await setInStorage(loggedUserData);
+            await setInStorage('loggedUserData', response.data);
             console.log("LoggedUserLOGIN")
             console.log(response.data);
             return (response);
@@ -72,6 +81,7 @@ const UserManager = (props) => {
     async function logoutUserFunc() {
         let response = await axiosPost('/user/logout', {}, loggedUserData.token);
         if (response.status === 200) {
+            await removeStorage('loggedUserData');
             setLoggedUserData({
                 "_id": "",
                 "username": "",

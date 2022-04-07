@@ -142,7 +142,7 @@ const ProjectManager = (props) => {
      * @returns The API response
      */
     async function permanentlyDeleteProjectFunc(projectID) {
-        let response = await axiosDelete(`/project/permanentDelete/${projectID}`, loggedUserData.token);
+        let response = await axiosDelete(`/project/permanentlyDelete/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
             // setCurrentProjectData(null);
