@@ -78,7 +78,6 @@ const Logo = function (props) {
                 return styles.smallLogo;
                 break;
         }
-        return styles.extraSmallLogo
     }
 
     const imageSource = (Platform.OS === "android") ? chooseSize() : { uri: chooseSize() };

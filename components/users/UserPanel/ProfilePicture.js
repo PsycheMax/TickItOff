@@ -6,22 +6,26 @@ import { ThemeContext } from '../../../utils/ThemeManager';
 const ProfilePicture = (props) => {
 
     const theme = useContext(ThemeContext);
-    var imageSource = (Platform.OS === "android") ? { uri: props.source } : props.source;
+
+    const URISource = `https://identicon-api.herokuapp.com/${props.username}/${props.size}?format=png`;
+    var imageSource = (Platform.OS === "android") ? { uri: URISource } : URISource;
 
     var styles = StyleSheet.create({
         profilePictureContainer: {
-            backgroundColor: theme.colors.secondary[500],
+            backgroundColor: theme.colors.secondary[50],
 
             // height: theme.dimensions.methods.scale(60),
-            maxHeight: 70,
-            height: 70,
+            maxHeight: props.size,
+            height: props.size,
 
             // width: theme.dimensions.methods.scale(60),
-            maxWidth: 70,
-            width: 70,
+            maxWidth: props.size,
+            width: props.size,
 
             borderRadius: 100,
 
+
+            padding: 3,
             justifyContent: "center",
             alignItems: "center"
         },
@@ -40,8 +44,8 @@ const ProfilePicture = (props) => {
 }
 
 ProfilePicture.defaultProps = {
-    source: "https://randomuser.me/api/portraits/lego/3.jpg",
-    username: "Default Username"
+    username: "Default_Username",
+    size: 50
 }
 
 export default ProfilePicture;

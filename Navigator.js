@@ -39,31 +39,19 @@ export default function Navigator(props) {
             height: theme.dimensions.screenHeight * 0.06,
             backgroundColor: theme.colors.tertiary[500],
             borderBottomLeftRadius: theme.dimensions.methods.scale(10),
-            borderBottomRightRadius: theme.dimensions.methods.scale(10),
-            color: theme.colors.secondary[50]
-            // zIndex: 1
+            borderBottomRightRadius: theme.dimensions.methods.scale(10)
         },
         flexRow: {
-            // backgroundColor: "red",
             flexDirection: "row",
             display: "flex",
             width: "18%",
             minWidth: "18%",
             justifyContent: "space-between",
         },
-        logoContainer: {
-            // marginLeft: "-120%"
-
-        },
-        profilePictureContainer: {
-            // marginLeft: "30%"
-        },
         link: {
-            backgroundColor: "red",
-            minWidth: 75,
-            minHeight: 70,
-            // width: "100%",
-            // height: 75
+            // minWidth: 70,
+            // minHeight: 70,
+            marginRight: 10
         }
     })
 
@@ -74,7 +62,9 @@ export default function Navigator(props) {
         return <View style={[styles.backgroundColored]}>
 
             <Link style={[styles.logoContainer, styles.link]} to={{ screen: 'UserPanel' }} >
-                {LoggedUserData && LoggedUserData.image ? <ProfilePicture /> : <React.Fragment />}
+                {LoggedUserData && LoggedUserData.username
+                    ? <ProfilePicture username={LoggedUserData.username} />
+                    : <React.Fragment />}
             </Link>
 
         </View>
@@ -89,7 +79,7 @@ export default function Navigator(props) {
                 {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
                     <Stack.Navigator initialRouteName={'Home'}
 
-                        screenOptions={{ headerRight: headerTitle, headerStyle: styles.header }}
+                        screenOptions={{ headerRight: headerTitle, headerStyle: styles.header, headerTitleStyle: { color: theme.colors.secondary[50] } }}
                     >
 
                         <Stack.Screen name="Home" component={ProjectSelector} />

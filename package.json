@@ -20,7 +20,6 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-size-matters": "^0.4.0",
-    "react-native-svg": "12.1.1",
     "react-native-web": "0.17.1",
     "react-session-api": "^1.1.0",
     "tailwind-rn": "^3.0.1"
