@@ -25,6 +25,7 @@ const Logo = function (props) {
                         break;
                 }
                 break;
+            case "extraSmall":
             case "small":
             default:
                 switch (props.color) {
@@ -41,26 +42,49 @@ const Logo = function (props) {
     }
 
     const styles = StyleSheet.create({
+        extraSmallLogo: {
+            height: theme.dimensions.methods.moderateVerticalScale(55),
+            maxHeight: 70,
+            width: theme.dimensions.methods.moderateVerticalScale(55),
+            maxWidth: 70,
+            // zIndex: 15
+        },
         smallLogo: {
             height: theme.dimensions.methods.scale(100),
             maxHeight: 128,
             width: theme.dimensions.methods.scale(100),
             maxWidth: 128,
-            zIndex: 15
+            // zIndex: 15
         },
         fullLogo: {
             height: theme.dimensions.methods.scale(200),
             maxHeight: 200,
             width: theme.dimensions.methods.scale(400),
             maxWidth: 400,
-            zIndex: 15
+            // zIndex: 15
         }
     })
+
+    function chooseStyle() {
+        switch (props.size) {
+            case "extraSmall":
+                return styles.extraSmallLogo;
+                break;
+            case "full":
+                return styles.fullLogo;
+                break;
+            default:
+            case "extraSmall":
+                return styles.smallLogo;
+                break;
+        }
+        return styles.extraSmallLogo
+    }
 
     const imageSource = (Platform.OS === "android") ? chooseSize() : { uri: chooseSize() };
 
     return (
-        <Image alt={"Tick it off logo"} style={props.size === "small" ? styles.smallLogo : styles.fullLogo}
+        <Image alt={"Tick it off logo"} style={chooseStyle()}
             source={imageSource}
         />
     )

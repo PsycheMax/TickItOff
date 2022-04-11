@@ -12,13 +12,18 @@ const ProfilePicture = (props) => {
         profilePictureContainer: {
             backgroundColor: theme.colors.secondary[500],
 
-            height: theme.dimensions.methods.scale(80),
-            maxHeight: 100,
+            // height: theme.dimensions.methods.scale(60),
+            maxHeight: 70,
+            height: 70,
 
-            width: theme.dimensions.methods.scale(80),
-            maxWidth: 100,
+            // width: theme.dimensions.methods.scale(60),
+            maxWidth: 70,
+            width: 70,
 
-            borderRadius: 100
+            borderRadius: 100,
+
+            justifyContent: "center",
+            alignItems: "center"
         },
         profilePicture: {
             width: "100%",

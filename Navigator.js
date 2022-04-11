@@ -2,23 +2,20 @@ import { LoggedUserContext } from './utils/UserManager';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoadingSpinner from "./components/LoadingSpinner";
 import ProjectSelector from "./components/projects/ProjectSelector";
 import ViewProject from "./components/projects/ViewProject";
 import UserPanel from "./components/users/UserPanel/UserPanel";
 import React, { useContext } from 'react';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { createBottomTabNavigator, create } from '@react-navigation/bottom-tabs';
 import { ThemeContext } from './utils/ThemeManager';
 import Logo from './components/logo/Logo';
 import ProfilePicture from './components/users/UserPanel/ProfilePicture';
 import LoginForm from './components/users/UserForms/LoginForm';
 import SignUpForm from './components/users/UserForms/SignUpForm';
-import EditUserForm from './components/users/UserForms/EditUserForm';
-import StandardDivider from './components/StandardDivider';
-import ProjectSelectionButton from './components/projects/ProjectSelectionButton';
 import LoadingWholeApp from './components/LoadingWholeApp';
+import { Link } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,51 +26,56 @@ export default function Navigator(props) {
     const theme = useContext(ThemeContext);
 
     const styles = StyleSheet.create({
+        backgroundColored: {
+            backgroundColor: theme.colors.transparent[50],
+        },
         appContainer: {
-            backgroundColor: theme.colors.secondary[50],
             minWidth: theme.dimensions.windowWidth,
-            minHeight: theme.dimensions.windowHeight
+            minHeight: theme.dimensions.windowHeight,
+            height: "100%"
         },
         header: {
-            minHeight: 108,
-            height: theme.dimensions.screenHeight * 0.18,
-            backgroundColor: theme.colors.primary[500],
-            borderBottomLeftRadius: theme.dimensions.methods.scale(110),
-            borderBottomRightRadius: theme.dimensions.methods.scale(110),
-
+            minHeight: 15,
+            height: theme.dimensions.screenHeight * 0.06,
+            backgroundColor: theme.colors.tertiary[500],
+            borderBottomLeftRadius: theme.dimensions.methods.scale(10),
+            borderBottomRightRadius: theme.dimensions.methods.scale(10),
+            color: theme.colors.secondary[50]
+            // zIndex: 1
         },
         flexRow: {
-            display: "flex",
+            // backgroundColor: "red",
             flexDirection: "row",
+            display: "flex",
+            width: "18%",
+            minWidth: "18%",
             justifyContent: "space-between",
-            width: theme.dimensions.windowWidth - theme.dimensions.windowWidth * 0.20,
-            minWidth: theme.dimensions.windowWidth,
-            position: "absolute"
         },
         logoContainer: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
+            // marginLeft: "-120%"
+
         },
         profilePictureContainer: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
+            // marginLeft: "30%"
+        },
+        link: {
+            backgroundColor: "red",
+            minWidth: 75,
+            minHeight: 70,
+            // width: "100%",
+            // height: 75
         }
     })
 
 
+
     function headerTitle({ navigation, route, options, back }) {
 
-        return <View style={styles.flexRow}>
-            <View style={styles.logoContainer}>
-                <Logo />
-            </View>
+        return <View style={[styles.backgroundColored]}>
 
-            <View style={styles.profilePictureContainer}>
-                {/* {LoggedUserData && LoggedUserData.image ? <ProfilePicture /> : <React.Fragment />} */}
-                <ProfilePicture />
-            </View>
+            <Link style={[styles.logoContainer, styles.link]} to={{ screen: 'UserPanel' }} >
+                {LoggedUserData && LoggedUserData.image ? <ProfilePicture /> : <React.Fragment />}
+            </Link>
 
         </View>
     }
@@ -81,22 +83,24 @@ export default function Navigator(props) {
 
     return (
 
-        <View style={styles.appContainer}>
+        <View style={[styles.appContainer]}>
             <NavigationContainer>
 
                 {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
                     <Stack.Navigator initialRouteName={'Home'}
-                    // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
+
+                        screenOptions={{ headerRight: headerTitle, headerStyle: styles.header }}
                     >
 
                         <Stack.Screen name="Home" component={ProjectSelector} />
                         <Stack.Screen name="ViewProject" component={ViewProject} />
+                        <Stack.Screen name="UserPanel" component={UserPanel} />
 
 
                     </Stack.Navigator>
                     :
                     <Stack.Navigator initialRouteName={'Loading'}
-                    // screenOptions={{ headerTitle: headerTitle, headerStyle: styles.header }}
+                        screenOptions={{ headerShown: false }}
                     >
                         <Stack.Screen name="Loading" component={LoadingWholeApp} />
                         <Stack.Screen name="Login" component={LoginForm} />

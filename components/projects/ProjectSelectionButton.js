@@ -21,7 +21,8 @@ const ProjectSelectionButton = (props) => {
             borderRadius: 16,
             marginTop: 16,
             paddingHorizontal: theme.dimensions.methods.scale(16),
-            paddingTop: theme.dimensions.methods.scale(8),
+            paddingVertical: 8,
+
         },
         whiteText: {
             color: theme.colors.secondary[50],

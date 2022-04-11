@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { ThemeContext } from '../utils/ThemeManager';
 import LoadingSpinner from './LoadingSpinner';
+import Logo from './logo/Logo';
 
 const LoadingWholeApp = (props) => {
 
@@ -24,12 +25,13 @@ const LoadingWholeApp = (props) => {
     useEffect(() => {
         let toCancel = setTimeout(() => {
             props.navigation.navigate('Login');
-        }, 1000);
+        }, 1200);
         return clearTimeout(toCancel);
     }, [])
 
     return (
         <View style={[styles.centralContainer]}>
+            <Logo color="color" size="full" />
             <LoadingSpinner />
         </View>
     )
