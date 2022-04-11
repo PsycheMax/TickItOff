@@ -209,18 +209,18 @@ const LoginForm = (props) => {
                         {alertMessages.genericForm.content ? alertMessages.genericForm.content : undefined}
                     </Text> : undefined}
 
+                    <View style={styles.linkContainer}>
+                        <Text style={styles.link} onPress={handleLinkClick}>
+                            Don't have an account? Click here!
+                        </Text>
+                    </View>
+
                     <View style={styles.buttonContainer}>
                         <Button
                             title='Login' color={theme.colors.tertiary[600]}
                             accessibilityLabel="Submit Form"
                             onPress={handleLogin}
                         />
-                    </View>
-
-                    <View style={styles.linkContainer}>
-                        <Text style={styles.link} onPress={handleLinkClick}>
-                            Don't have an account? Click here!
-                        </Text>
                     </View>
 
                     <View style={styles.buttonContainer}>

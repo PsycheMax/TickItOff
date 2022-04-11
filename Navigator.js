@@ -7,22 +7,21 @@ import ViewProject from "./components/projects/ViewProject";
 import UserPanel from "./components/users/UserPanel/UserPanel";
 import React, { useContext } from 'react';
 
-import { StyleSheet, Text, View, Pressable } from 'react-native';
-import { createBottomTabNavigator, create } from '@react-navigation/bottom-tabs';
+import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from './utils/ThemeManager';
-import Logo from './components/logo/Logo';
+
 import ProfilePicture from './components/users/UserPanel/ProfilePicture';
 import LoginForm from './components/users/UserForms/LoginForm';
 import SignUpForm from './components/users/UserForms/SignUpForm';
 import LoadingWholeApp from './components/LoadingWholeApp';
 import { Link } from '@react-navigation/native';
-
-const Tab = createBottomTabNavigator();
+import { ProjectContext } from './utils/ProjectManager';
 
 export default function Navigator(props) {
 
     const Stack = createNativeStackNavigator();
     const LoggedUserData = useContext(LoggedUserContext).userData;
+    const ProjectContextData = useContext(ProjectContext).currentProjectData;
     const theme = useContext(ThemeContext);
 
     const styles = StyleSheet.create({
@@ -32,7 +31,7 @@ export default function Navigator(props) {
         appContainer: {
             minWidth: theme.dimensions.windowWidth,
             minHeight: theme.dimensions.windowHeight,
-            height: "100%"
+            backgroundColor: theme.colors.primary[800],
         },
         header: {
             minHeight: 15,
@@ -71,10 +70,23 @@ export default function Navigator(props) {
     }
 
 
+    const linking = {
+        prefixes: ['http://192.168.68.131:19006'],
+        config: {
+            screens: {
+                Home: '',
+                ViewProject: "project/:id",
+                UserPanel: "userPanel"
+            }
+        }
+    }
+
     return (
 
-        <View style={[styles.appContainer]}>
-            <NavigationContainer>
+        <View style={[styles.appContainer, styles.backgroundColored]}>
+            <NavigationContainer
+                linking={linking} fallback={LoadingWholeApp}
+            >
 
                 {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
                     <Stack.Navigator initialRouteName={'Home'}
@@ -83,7 +95,7 @@ export default function Navigator(props) {
                     >
 
                         <Stack.Screen name="Home" component={ProjectSelector} />
-                        <Stack.Screen name="ViewProject" component={ViewProject} />
+                        <Stack.Screen name="ViewProject" component={ViewProject} initialParams={ProjectContextData._id} />
                         <Stack.Screen name="UserPanel" component={UserPanel} />
 
 

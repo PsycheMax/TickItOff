@@ -18,14 +18,20 @@ const LoadingWholeApp = (props) => {
             minWidth: theme.dimensions.windowWidth,
             maxWidth: theme.dimensions.windowWidth,
             justifyContent: "center",
+            alignSelf: "center",
+            alignContent: "center",
             alignItems: "center"
         }
     })
 
     useEffect(() => {
-        let toCancel = setTimeout(() => {
-            props.navigation.navigate('Login');
-        }, 1200);
+        console.log(props.navigation)
+        let toCancel = () => {
+            return setTimeout(() => {
+                props.navigation.navigate('Login');
+            }, 1200)
+        };
+        toCancel();
         return clearTimeout(toCancel);
     }, [])
 

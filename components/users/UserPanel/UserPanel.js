@@ -48,53 +48,7 @@ const UserPanel = (props) => {
             height: 26,
 
         },
-        backgroundForModal: {
-            backgroundColor: theme.colors.primary[800],
-            opacity: 0.4,
-            width: theme.dimensions.screenWidth,
-            height: theme.dimensions.screenHeight,
-            position: "absolute",
-            zIndex: 1,
-            top: 0,
-            left: 0
-        },
-        centeredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 22
-        },
-        modalWindow: {
-            position: "relative",
-            zIndex: 10,
-            margin: 20,
-            backgroundColor: theme.colors.secondary[300],
-            borderRadius: 20,
-            padding: 35,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5
-        },
-        modalButtonsContainer: {
-            flexDirection: "row",
-            marginTop: theme.dimensions.methods.moderateScale(16)
-        },
-        modalButtons: {
-            paddingHorizontal: theme.dimensions.methods.moderateScale(24),
-            paddingVertical: theme.dimensions.methods.moderateScale(18),
-            marginHorizontal: theme.dimensions.methods.moderateScale(12),
-            borderRadius: 50
-        },
-        modalText: {
-            fontSize: theme.dimensions.methods.moderateScale(18),
-            color: theme.colors.primary[50]
-        }
+        ...theme.styles.modal
     })
 
     return (
@@ -114,7 +68,7 @@ const UserPanel = (props) => {
                 </TouchableOpacity>
                 <Modal visible={showLogoutModal} transparent={true} >
 
-                    <View style={styles.centeredView}>
+                    <View style={styles.modalCenteredView}>
                         <View style={styles.backgroundForModal}>
                         </View>
                         <View style={styles.modalWindow}>

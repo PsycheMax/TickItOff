@@ -116,53 +116,7 @@ const ViewTask = (props) => {
         marginVertical: {
             marginVertical: theme.dimensions.methods.moderateScale(16)
         },
-        backgroundForModal: {
-            backgroundColor: theme.colors.primary[800],
-            opacity: 0.4,
-            width: theme.dimensions.methods.scale(theme.dimensions.windowWidth),
-            height: theme.dimensions.methods.scale(theme.dimensions.windowHeight),
-            position: "absolute",
-            zIndex: 1,
-            top: -30,
-            left: 0
-        },
-        modalCenteredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 22
-        },
-        modalWindow: {
-            position: "relative",
-            zIndex: 10,
-            margin: 20,
-            backgroundColor: theme.colors.secondary[300],
-            borderRadius: 20,
-            padding: 35,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5
-        },
-        modalButtonsContainer: {
-            flexDirection: "row",
-            marginTop: theme.dimensions.methods.moderateScale(16)
-        },
-        modalButtons: {
-            paddingHorizontal: theme.dimensions.methods.moderateScale(24),
-            paddingVertical: theme.dimensions.methods.moderateScale(18),
-            marginHorizontal: theme.dimensions.methods.moderateScale(12),
-            borderRadius: 50
-        },
-        modalText: {
-            fontSize: theme.dimensions.methods.moderateScale(18),
-            color: theme.colors.primary[50]
-        }
+        ...theme.styles.modal
     })
 
     async function toggleCompletion() {

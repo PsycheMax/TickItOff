@@ -30,6 +30,11 @@ export const ThemeContext = createContext({
             moderateScale: {},
             moderateVerticalScale: {}
         }
+    },
+    styles: {
+        modal: {
+
+        }
     }
 })
 
@@ -181,13 +186,62 @@ const ThemeManager = (props) => {
     }
 
     const standardStyles = {
-
+        modal: {
+            backgroundForModal: {
+                backgroundColor: colorTheme.primary[800],
+                opacity: 0.4,
+                width: dimensions.methods.scale(dimensions.windowWidth),
+                height: dimensions.methods.scale(dimensions.windowHeight),
+                position: "absolute",
+                zIndex: 1,
+                top: -30,
+                left: 0
+            },
+            modalCenteredView: {
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 22
+            },
+            modalWindow: {
+                position: "relative",
+                zIndex: 10,
+                margin: 20,
+                backgroundColor: colorTheme.secondary[300],
+                borderRadius: 20,
+                padding: 35,
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 2
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 5
+            },
+            modalButtonsContainer: {
+                flexDirection: "row",
+                marginTop: dimensions.methods.moderateScale(16)
+            },
+            modalButtons: {
+                paddingHorizontal: dimensions.methods.moderateScale(24),
+                paddingVertical: dimensions.methods.moderateScale(18),
+                marginHorizontal: dimensions.methods.moderateScale(12),
+                borderRadius: 50
+            },
+            modalText: {
+                fontSize: dimensions.methods.moderateScale(18),
+                color: colorTheme.primary[50]
+            }
+        }
     }
 
     return (
         <ThemeContext.Provider value={{
             colors: colorTheme,
             dimensions: dimensions,
+            styles: standardStyles
         }} >
             {props.children}
         </ThemeContext.Provider>
