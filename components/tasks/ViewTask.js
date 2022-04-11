@@ -119,14 +119,14 @@ const ViewTask = (props) => {
         backgroundForModal: {
             backgroundColor: theme.colors.primary[800],
             opacity: 0.4,
-            width: theme.dimensions.screenWidth,
-            height: theme.dimensions.screenHeight,
+            width: theme.dimensions.methods.scale(theme.dimensions.windowWidth),
+            height: theme.dimensions.methods.scale(theme.dimensions.windowHeight),
             position: "absolute",
             zIndex: 1,
-            top: 0,
+            top: -30,
             left: 0
         },
-        centeredView: {
+        modalCenteredView: {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
@@ -377,7 +377,7 @@ const ViewTask = (props) => {
 
             <Modal visible={showDeletePrompt} transparent={true} >
 
-                <View style={styles.centeredView}>
+                <View style={styles.modalCenteredView}>
                     <View style={styles.backgroundForModal}>
                     </View>
                     <View style={styles.modalWindow}>

@@ -180,6 +180,10 @@ const ThemeManager = (props) => {
         }
     }
 
+    const standardStyles = {
+
+    }
+
     return (
         <ThemeContext.Provider value={{
             colors: colorTheme,
