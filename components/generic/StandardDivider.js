@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ThemeContext } from '../utils/ThemeManager';
+import { ThemeContext } from '../../utils/ThemeManager';
 
 const StandardDivider = (props) => {
 
@@ -15,7 +15,7 @@ const StandardDivider = (props) => {
             width: moderateScale(48),
             maxWidth: 80,
             height: moderateScale(8),
-            maxHeight: 32,
+            maxHeight: 24,
             marginVertical: moderateScale(6.4)
         }
     })

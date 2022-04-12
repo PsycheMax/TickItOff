@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ThemeContext } from '../utils/ThemeManager';
+import { ThemeContext } from '../../utils/ThemeManager';
 import LoadingSpinner from './LoadingSpinner';
-import Logo from './logo/Logo';
+import Logo from '../logo/Logo';
 
 const LoadingWholeApp = (props) => {
 

@@ -5,7 +5,7 @@ import { LoggedUserContext } from '../../utils/UserManager';
 import { ProjectContext } from '../../utils/ProjectManager';
 import { ThemeContext } from '../../utils/ThemeManager';
 import NewProjectForm from './NewProjectForm';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../generic/LoadingSpinner';
 import ProjectSelectionButton from './ProjectSelectionButton';
 
 const ProjectSelector = (props) => {
@@ -49,8 +49,9 @@ const ProjectSelector = (props) => {
             color: theme.colors.secondary[50]
         },
         title: {
-            fontSize: 24,
-            fontWeight: "700"
+            fontSize: 28,
+            fontWeight: "700",
+            marginBottom: 12
         }
 
     });
@@ -60,6 +61,7 @@ const ProjectSelector = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
 
     const [showArchivedProjects, setShowArchivedProjects] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false)
 
     let projects = UserData.projects;
 
@@ -113,12 +115,13 @@ const ProjectSelector = (props) => {
         setShowArchivedProjects(!showArchivedProjects);
     }
 
+    async function onRefreshFunction() {
+        setIsRefreshing(true);
+        LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) })
+    }
+
     useEffect(() => {
         LoggedUserFunctions.updateLoggedUserDataFunc();
-        // props.navigation.reset({
-        //     index: 0,
-        //     routes: [{ name: "ProjectSelector" }]
-        // })
     }, [])
 
     if (UserData._id !== undefined) {
@@ -126,6 +129,10 @@ const ProjectSelector = (props) => {
             <View style={styles.container}>
 
                 <SectionList
+                    // OnRefresh lets mobile user refresh by pulling down the list
+                    onRefresh={onRefreshFunction}
+                    refreshing={isRefreshing}
+
                     sections={processUserProjectDataForSectionList()}
                     renderItem={({ item }) =>
                         <View style={[styles.listContainerStandardPadding, item.active ? styles.activeListContainerBG : styles.archivedListContainerBG]} >

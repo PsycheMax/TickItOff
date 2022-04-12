@@ -7,7 +7,7 @@ import { ThemeContext } from '../../utils/ThemeManager';
 import ViewTask from '../tasks/ViewTask';
 import NewTaskForm from '../tasks/NewTaskForm';
 import EditProjectForm from './EditProjectForm';
-import StandardDivider from '../StandardDivider';
+import StandardDivider from '../generic/StandardDivider';
 
 const ViewProject = (props) => {
 
@@ -20,6 +20,7 @@ const ViewProject = (props) => {
     const [showUserManagement, setShowUserManagement] = useState(false);
     const [showArchivedTasks, setShowArchivedTasks] = useState(false);
     const [showProjectEditForm, setShowProjectEditForm] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
@@ -248,12 +249,20 @@ const ViewProject = (props) => {
         setShowDeletePrompt(false);
     }
 
+    async function onRefreshFunction() {
+        setIsRefreshing(true);
+        ProjectFunctions.reloadCurrentProjectDataFunc().then((result) => { setIsRefreshing(false) });
+    }
+
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
         <View style={styles.maxWidth}>
             <SectionList
                 //The data is obtained by a method that parses the ProjectData in a SectionList readable form
                 sections={processProjectDataForSectionList()}
+
+                onRefresh={onRefreshFunction}
+                refreshing={isRefreshing}
 
                 // This is the header of this whole component
                 renderSectionHeader={({ section: { title, data, tag, requiresFullHeader } }) => {

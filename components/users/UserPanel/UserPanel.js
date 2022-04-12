@@ -17,9 +17,19 @@ const UserPanel = (props) => {
     const theme = useContext(ThemeContext);
 
     const styles = StyleSheet.create({
+        coloredBackground: {
+            backgroundColor: theme.colors.primary[500]
+        },
+        roundBot: {
+            borderBottomEndRadius: 100,
+            borderBottomStartRadius: 100
+        },
+        roundTop: {
+            borderTopEndRadius: 100,
+            borderTopStartRadius: 100
+        },
         pageContainer: {
             width: "100%",
-            backgroundColor: theme.colors.primary[700],
             alignItems: "center",
             paddingBottom: 20,
             flex: 1,
@@ -33,16 +43,18 @@ const UserPanel = (props) => {
             marginVertical: theme.dimensions.methods.moderateVerticalScale(24)
         },
         whiteText: {
-            color: theme.colors.secondary[100],
-            fontSize: theme.dimensions.methods.moderateScale(24),
-            marginBottom: theme.dimensions.methods.moderateScale(16)
+            color: theme.colors.secondary[50],
+        },
+        logoutText: {
+            fontSize: Platform.OS === "web" ? 24 : 18,
+            fontWeight: "600",
         },
         iconContainer: {
             backgroundColor: logoutButtonTouched ? theme.colors.tertiary[700] : theme.colors.tertiary[500],
             width: "35%",
-            minWidth: theme.dimensions.methods.moderateScale(120),
-            height: theme.dimensions.methods.moderateScale(32),
-            minHeight: theme.dimensions.methods.moderateScale(32),
+            minWidth: 120,
+            height: 64,
+            minHeight: 64,
             borderRadius: 25,
             alignItems: "center",
             justifyContent: "center",
@@ -57,22 +69,22 @@ const UserPanel = (props) => {
 
     function renderContent() {
         return (<>
-            <ScrollView>
+            <View style={[styles.coloredBackground, styles.roundBot, styles.roundTop]}>
                 <KeyboardAvoidingView behavior='position'>
                     <EditUserForm />
                     <View style={styles.logoutContainer}>
-                        <Text style={styles.whiteText}>Logout</Text>
                         <TouchableOpacity onPress={() => { setShowLogoutModal(true) }} >
                             <View style={styles.iconContainer}
                                 onTouchStart={() => { setLogoutButtonTouched(true) }}
                                 onTouchEnd={() => { setLogoutButtonTouched(false) }}
                                 onTouchCancel={() => { setLogoutButtonTouched(false) }} >
-                                <MaterialIcons name='logout' color={theme.colors.secondary[100]} size={27} style={styles.icon} />
+                                {/* <MaterialIcons name='logout' color={theme.colors.secondary[100]} size={27} style={styles.icon} />*/}
+                                <Text style={[styles.whiteText, styles.logoutText]}>Logout</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
                 </KeyboardAvoidingView>
-            </ScrollView>
+            </View>
 
             <Modal visible={showLogoutModal} transparent={true} >
 
@@ -102,7 +114,7 @@ const UserPanel = (props) => {
 
     return (
         Platform.OS === "web" ?
-            <View contentContainerStyle={styles.pageContainer}>
+            <View contentContainerStyle={[styles.pageContainer, styles.coloredBackground]}>
                 {renderContent()}
             </View>
             :

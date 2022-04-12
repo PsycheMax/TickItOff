@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { LoggedUserContext } from '../../../utils/UserManager';
@@ -44,24 +44,24 @@ const LoginForm = (props) => {
         formBox: {
 
         },
-        heading: {
-            color: theme.colors.secondary[50],
-            fontSize: theme.dimensions.methods.moderateScale(16),
-            paddingTop: theme.dimensions.methods.moderateScale(16),
-            paddingBottom: theme.dimensions.methods.moderateScale(8),
-            minWidth: theme.dimensions.methods.moderateScale(275)
+        textBoxDimensions: {
+            paddingTop: 16,
+            paddingBottom: 8,
+            minWidth: theme.dimensions.methods.moderateScale(275),
+            fontSize: Platform.OS === "web" ? 24 : 18,
+            color: theme.colors.secondary[50]
         },
         inputField: {
+
             maxWidth: theme.dimensions.windowWidth * 0.80,
-            color: theme.colors.secondary[50],
-            borderColor: theme.colors.secondary[300],
+            color: theme.colors.quartiary[50],
+            borderColor: theme.colors.quartiary[300],
             backgroundColor: theme.colors.primary[600],
             borderWidth: 2,
             fontSize: 18,
-            height: theme.dimensions.methods.moderateVerticalScale(48),
-            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
-            marginTop: theme.dimensions.methods.moderateVerticalScale(12),
-            marginBottom: theme.dimensions.methods.moderateVerticalScale(12),
+            height: 64,
+            minHeight: 64,
+            marginVertical: 14,
             padding: 16
         },
         passwordContainer: {
@@ -77,11 +77,12 @@ const LoginForm = (props) => {
             fontSize: 18,
             color: theme.colors.secondary[50],
             height: "100%",
-            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
-            width: "100%"
+            minHeight: 48,
+            width: "100%",
+            marginLeft: -3
         },
         showPasswordButtonContainer: {
-
+            marginLeft: -8
         },
         errorMessage: {
             color: theme.colors.tertiary[300],
@@ -95,7 +96,8 @@ const LoginForm = (props) => {
         },
         link: {
             color: theme.colors.tertiary[300]
-        }
+        },
+        ...theme.styles.text
     })
 
     // The loginUserObj for the API is loginUser:{email:"", password:""}
@@ -167,7 +169,7 @@ const LoginForm = (props) => {
                 </View>
 
                 <View style={styles.formBox}>
-                    <Text style={styles.heading}>
+                    <Text style={[styles.textBoxDimensions, styles.headerFont]}>
                         Insert your email address
                     </Text>
                     <TextInput autoFocus={true} autoComplete='email'
@@ -181,7 +183,7 @@ const LoginForm = (props) => {
                         <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
                         {alertMessages.email.content ? alertMessages.email.content : undefined}
                     </Text> : undefined}
-                    <Text style={styles.heading}>
+                    <Text style={[styles.textBoxDimensions, styles.headerFont]}>
                         Insert your password
                     </Text>
                     <View style={[styles.inputField, styles.passwordContainer]}>

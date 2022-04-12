@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, Text, TextInput, View, StyleSheet, Button } from 'react-native';
+import { ScrollView, Text, TextInput, View, StyleSheet, Button, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { LoggedUserContext } from '../../../utils/UserManager';
@@ -31,39 +31,39 @@ const EditUserForm = (props) => {
         loginFormContainer: {
             // height: "100%",
             width: "100%",
-            backgroundColor: theme.colors.primary[700],
+            backgroundColor: theme.colors.primary[500],
             alignItems: "center"
         },
         loginFormBackground: {
-            minHeight: 750,
+            // minHeight: 750,
             width: theme.dimensions.screenWidth,
             alignItems: "center"
         },
-        logoContainer: {
-            paddingTop: 16
+        textBoxDimensions: {
+            paddingTop: 8,
+            paddingBottom: 4,
+            minWidth: theme.dimensions.methods.moderateScale(275),
+            fontSize: Platform.OS === "web" ? 26 : 22,
+            color: theme.colors.primary[800],
         },
-        formBox: {
-
-        },
-        heading: {
+        whiteText: {
             color: theme.colors.secondary[50],
-            fontSize: theme.dimensions.methods.moderateScale(16),
-            paddingTop: theme.dimensions.methods.moderateScale(16),
-            paddingBottom: theme.dimensions.methods.moderateScale(8),
-            minWidth: theme.dimensions.methods.moderateScale(275)
+        },
+        textBold: {
+            fontWeight: "600",
+            fontSize: Platform.OS === "web" ? 28 : 24,
         },
         inputField: {
             maxWidth: theme.dimensions.windowWidth * 0.80,
             color: theme.colors.secondary[50],
-            borderColor: theme.colors.secondary[300],
-            backgroundColor: theme.colors.primary[600],
+            borderColor: theme.colors.quartiary[300],
+            // backgroundColor: theme.colors.primary[600],
             borderWidth: 2,
             fontSize: 18,
-            height: theme.dimensions.methods.moderateVerticalScale(48),
-            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
-            marginTop: theme.dimensions.methods.moderateVerticalScale(12),
-            marginBottom: theme.dimensions.methods.moderateVerticalScale(12),
-            padding: 16
+            height: 48,
+            minHeight: 48,
+            // marginVertical: 8,
+            paddingLeft: 16
         },
         passwordContainer: {
             display: "flex",
@@ -73,15 +73,17 @@ const EditUserForm = (props) => {
             padding: 16
         },
         passwordInput: {
+            // minWidth: theme.dimensions.screenWidth * 0.70,
             maxWidth: theme.dimensions.screenWidth * 0.70,
             fontSize: 18,
             color: theme.colors.secondary[50],
             height: "100%",
-            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
-            width: "100%"
+            minHeight: 48,
+            width: "100%",
+            marginLeft: -3
         },
         showPasswordButtonContainer: {
-
+            marginLeft: -8
         },
         errorMessage: {
             color: theme.colors.tertiary[300],
@@ -245,14 +247,14 @@ const EditUserForm = (props) => {
             <View style={styles.loginFormBackground}>
 
                 <View style={styles.formBox}>
-                    <Text style={[styles.heading, styles.signUp]}>
+                    <Text style={[styles.textBoxDimensions, styles.textBold, styles.whiteText]}>
                         Modify your account
                     </Text>
-                    <Text style={styles.heading}>
+                    <Text style={[styles.textBoxDimensions, styles.whiteText]}>
                         Email address
                     </Text>
                     <TextInput autoFocus={true} autoComplete='email'
-                        placeholder={"Email address"} placeholderTextColor={theme.colors.secondary[300]}
+                        placeholder={"Email address"} placeholderTextColor={theme.colors.secondary[200]}
                         textContentType={"emailAddress"}
                         style={styles.inputField}
                         value={patchedUser.email}
@@ -262,11 +264,11 @@ const EditUserForm = (props) => {
                         <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
                         {alertMessages.email.content ? alertMessages.email.content : undefined}
                     </Text> : undefined}
-                    <Text style={styles.heading}>
+                    <Text style={[styles.textBoxDimensions, styles.whiteText]}>
                         Username
                     </Text>
                     <TextInput autoFocus={true} autoComplete={"username-new"}
-                        placeholder={"Username"} placeholderTextColor={theme.colors.secondary[300]}
+                        placeholder={"Username"} placeholderTextColor={theme.colors.secondary[200]}
                         textContentType={"username"}
                         style={styles.inputField}
                         value={patchedUser.username}
@@ -277,13 +279,13 @@ const EditUserForm = (props) => {
                         {alertMessages.username.content ? alertMessages.username.content : undefined}
                     </Text> : undefined}
 
-                    <Text style={styles.heading}>
+                    <Text style={[styles.textBoxDimensions, styles.whiteText]}>
                         Old password
                     </Text>
                     <View style={[styles.inputField, styles.passwordContainer]}>
                         <TextInput
                             autoComplete='password'
-                            placeholder={"Old password"} placeholderTextColor={theme.colors.secondary[300]}
+                            placeholder={"Old password"} placeholderTextColor={theme.colors.secondary[200]}
                             textContentType={"password"}
                             style={styles.passwordInput} secureTextEntry={showOldPassword ? false : true}
                             value={patchedUser.oldPassword}
@@ -300,13 +302,13 @@ const EditUserForm = (props) => {
                         {alertMessages.oldPassword.content ? alertMessages.oldPassword.content : undefined}
                     </Text> : undefined}
 
-                    <Text style={styles.heading}>
+                    <Text style={[styles.textBoxDimensions, styles.whiteText]}>
                         New password
                     </Text>
                     <View style={[styles.inputField, styles.passwordContainer]}>
                         <TextInput
                             autoComplete='password-new'
-                            placeholder={"New Password"} placeholderTextColor={theme.colors.secondary[300]}
+                            placeholder={"New Password"} placeholderTextColor={theme.colors.secondary[200]}
                             textContentType={"newPassword"}
                             style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                             value={patchedUser.password}
@@ -319,13 +321,13 @@ const EditUserForm = (props) => {
                         />
                     </View>
 
-                    <Text style={styles.heading}>
+                    <Text style={[styles.textBoxDimensions, styles.whiteText]}>
                         Repeat the new password
                     </Text>
                     <View style={[styles.inputField, styles.passwordContainer]}>
                         <TextInput
                             autoComplete={'password-new'}
-                            placeholder={"Repeat password"} placeholderTextColor={theme.colors.secondary[300]}
+                            placeholder={"Repeat password"} placeholderTextColor={theme.colors.secondary[200]}
                             textContentType={"newPassword"}
                             style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                             value={patchedUser.passwordRepeat}
@@ -349,7 +351,7 @@ const EditUserForm = (props) => {
 
                     <View style={styles.buttonContainer}>
                         <Button
-                            title='Modify your profile' color={theme.colors.tertiary[600]}
+                            title='Save changes' color={theme.colors.tertiary[600]}
                             accessibilityLabel="Submit form to edit your user account"
                             onPress={handlePatching}
                         />

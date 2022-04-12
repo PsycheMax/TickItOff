@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, ScrollViewComponent, StyleSheet, Text, View } from 'react-native';
+import React, { useContext } from 'react';
+import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Link, NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,7 +14,7 @@ import { LoggedUserContext } from './utils/UserManager';
 import ProfilePicture from './components/users/UserPanel/ProfilePicture';
 import LoginForm from './components/users/UserForms/LoginForm';
 import SignUpForm from './components/users/UserForms/SignUpForm';
-import LoadingWholeApp from './components/LoadingWholeApp';
+import LoadingWholeApp from './components/generic/LoadingWholeApp';
 import { ProjectContext } from './utils/ProjectManager';
 
 export default function Navigator(props) {
@@ -106,7 +106,7 @@ export default function Navigator(props) {
         return (
 
             <NavigationContainer
-                // theme={personalizedThemeForNavigator}
+                theme={personalizedThemeForNavigator}
                 linking={linking} fallback={LoadingWholeApp}
             >
 

@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ProjectContext } from '../../utils/ProjectManager';
 import { ThemeContext } from '../../utils/ThemeManager';
 import EditTaskForm from './EditTaskForm';
-import StandardDivider from '../StandardDivider';
+import StandardDivider from '../generic/StandardDivider';
 
 //This var has to be passed to the editform to keep it look consistent
 var heightForEditForm;

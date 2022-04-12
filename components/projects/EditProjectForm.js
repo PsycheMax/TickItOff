@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { ProjectContext } from '../../utils/ProjectManager';
 import { ThemeContext } from '../../utils/ThemeManager';
-import StandardDivider from '../StandardDivider';
+import StandardDivider from '../generic/StandardDivider';
 
 const inputRules = {
     name: {

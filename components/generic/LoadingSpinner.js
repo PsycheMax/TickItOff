@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-import { ThemeContext } from '../utils/ThemeManager';
+import { ThemeContext } from '../../utils/ThemeManager';
 
 const LoadingSpinner = (props) => {
 

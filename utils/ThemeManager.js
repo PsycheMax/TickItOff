@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { Dimensions, Appearance } from 'react-native';
+import { Dimensions, Appearance, Platform } from 'react-native';
 
 import { scale, verticalScale, moderateScale, moderateVerticalScale } from 'react-native-size-matters';
 
@@ -32,9 +32,7 @@ export const ThemeContext = createContext({
         }
     },
     styles: {
-        modal: {
-
-        }
+        modal: {}
     }
 })
 
@@ -72,16 +70,16 @@ const ThemeManager = (props) => {
         },
         secondary:
         {
-            "50": "#F6EEF3",
-            "100": "#EDDEE6",
-            "200": "#DDC0D0",
-            "300": "#CB9FB7",
-            "400": "#BB82A1",
-            "500": "#A96189",
-            "600": "#8B4C6E",
-            "700": "#663851",
-            "800": "#452637",
-            "900": "#21121A"
+            "50": "#F5FBFF",
+            "100": "#EBF8FF",
+            "200": "#DBF3FF",
+            "300": "#C7EBFF",
+            "400": "#B3E4FF",
+            "500": "#A0DDFF",
+            "600": "#4DC1FF",
+            "700": "#00A2FA",
+            "800": "#006DA8",
+            "900": "#003552"
         },
         tertiary:
         {
@@ -186,6 +184,7 @@ const ThemeManager = (props) => {
     }
 
     const standardStyles = {
+
         modal: {
             backgroundForModal: {
                 backgroundColor: colorTheme.primary[800],

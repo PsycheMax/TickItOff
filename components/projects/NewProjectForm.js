@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Pressable, StyleSheet, TextInput, TouchableOpacity, View, Text, Alert } from 'react-native';
+import { Pressable, StyleSheet, TextInput, TouchableOpacity, View, Text, Alert, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ProjectContext } from '../../utils/ProjectManager';
@@ -41,8 +41,8 @@ const NewProjectForm = (props) => {
             flexWrap: "nowrap",
             backgroundColor: theme.colors.primary[500],
             borderRadius: 16,
-            minHeight: theme.dimensions.methods.moderateScale(96),
-            height: theme.dimensions.methods.moderateScale(96),
+            minHeight: Platform.OS === "web" ? 150 : 120,
+            height: Platform.OS === "web" ? 150 : 120,
             alignItems: "center"
         },
         leftColumn: {
@@ -59,8 +59,8 @@ const NewProjectForm = (props) => {
         },
         inputField: {
             backgroundColor: theme.colors.secondary[50],
-            height: theme.dimensions.methods.moderateScale(32),
-            borderRadius: theme.dimensions.methods.moderateScale(16),
+            height: Platform.OS === "web" ? 48 : 40,
+            borderRadius: 10,
             paddingHorizontal: 12,
             paddingVertical: 4,
             fontSize: 18,
@@ -94,8 +94,8 @@ const NewProjectForm = (props) => {
         },
         submitLogo: {
             color: theme.colors.secondary[50],
-            width: 28 - 1,
-            height: 28 - 1
+            width: Platform.OS === "web" ? 48 - 1 : 28 - 1,
+            height: Platform.OS === "web" ? 48 - 1 : 28 - 1
         },
         errorMessageContainer: {
             display: alertMessages.genericForm.show ? "flex" : "none",
@@ -140,21 +140,22 @@ const NewProjectForm = (props) => {
             <View style={styles.mainContainer}>
                 <View style={styles.leftColumn}>
                     <TextInput
-                        placeholder="New Project Title"
+                        placeholder="New Project Title" accessibilityLabel='New Project Title Form'
                         onChangeText={(value) => { handleChange(value, "name") }}
                         value={newProject.name} autocorrect={true}
                         style={styles.inputField} />
                     <TextInput
-                        placeholder="New Project Description"
+                        placeholder="New Project Description" accessibilityLabel='New Project description Form'
                         onChangeText={(value) => { handleChange(value, "description") }}
                         value={newProject.description} autocorrect={true}
                         style={styles.inputField} />
                 </View>
-                <View style={styles.rightColumn}>
+                <View style={styles.rightColumn} accessibilityLabel="Create new project">
                     <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} >
 
                         <MaterialIcons style={styles.submitLogo}
-                            name="playlist-add" size={28} />
+                            name="playlist-add"
+                            size={Platform.OS === "web" ? 48 : 28} />
 
                     </TouchableOpacity>
                 </View>

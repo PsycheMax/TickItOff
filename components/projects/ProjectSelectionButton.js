@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ThemeContext } from '../../utils/ThemeManager';
-import StandardDivider from '../StandardDivider';
+import StandardDivider from '../generic/StandardDivider';
 
 const ProjectSelectionButton = (props) => {
 
