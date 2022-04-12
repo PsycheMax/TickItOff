@@ -5,7 +5,7 @@ import { ThemeContext } from '../../utils/ThemeManager';
 import LoadingSpinner from './LoadingSpinner';
 import Logo from '../logo/Logo';
 
-const LoadingWholeApp = (props) => {
+const SplashScreen = (props) => {
 
     const theme = useContext(ThemeContext);
 
@@ -25,14 +25,17 @@ const LoadingWholeApp = (props) => {
     })
 
     useEffect(() => {
-        console.log(props.navigation)
-        let toCancel = () => {
-            return setTimeout(() => {
-                props.navigation.navigate('Login');
-            }, 1200)
-        };
-        toCancel();
-        return clearTimeout(toCancel);
+        if (props.shouldRedirect) {
+            console.log(props.navigation)
+            let toCancel = () => {
+                return setTimeout(() => {
+                    props.navigation.navigate('Login');
+                }, 1200)
+            };
+            toCancel();
+
+            return clearTimeout(toCancel);
+        }
     }, [])
 
     return (
@@ -43,5 +46,9 @@ const LoadingWholeApp = (props) => {
     )
 }
 
-export default LoadingWholeApp;
+SplashScreen.defaultProps = {
+    shouldRedirect: true
+}
+
+export default SplashScreen;
 

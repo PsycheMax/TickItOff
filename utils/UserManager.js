@@ -11,36 +11,46 @@ export const LoggedUserContext = React.createContext({
     patchUserFunc: (patchedUser, target) => { },
     getUserDataFunc: (target) => { },
     updateLoggedUserDataFunc: () => { },
-    userData: {}
+    userData: {},
+    hasCheckedLocalStorage: true
 });
 
 const UserManager = (props) => {
 
     const [loggedUserData, setLoggedUserData] = useState();
+    const [hasCheckedLocalStorage, setHasCheckedLocalStorage] = useState(false);
 
     useEffect(async () => {
         if (loggedUserData !== undefined) {
             await setInStorage('loggedUserData', loggedUserData);
         }
+        setHasCheckedLocalStorage(true);
     }, [loggedUserData]);
 
     // This runs only on launch
     useEffect(async () => {
+        // It checks if there's any data in storage
         const rawUserDataInStorage = await getFromStorage("loggedUserData");
+        // If there is, it tries to check its decodability
         if (rawUserDataInStorage !== null) {
             try {
                 const userDataInStorage = rawUserDataInStorage;
+                // if a token exists, and it's decodable
                 if (userDataInStorage.token && userDataInStorage.token.length > 10) {
                     let decodedJWT = await jwtDecode(userDataInStorage.token);
+                    // then the data found in storage can be used in the state
                     await setLoggedUserData(userDataInStorage);
+                    // setHasCheckedLocalStorage(true);
                 }
             }
             catch (error) {
                 console.log(error);
             }
         } else {
-            console.log("NOT FOUND, GOTTA LOGIN")
+            console.log("NOT FOUND, GOTTA LOGIN");
+            // setHasCheckedLocalStorage(true);
         }
+
     }, [])
 
     // The following functions are to be passed down as context.functions()
@@ -173,6 +183,7 @@ const UserManager = (props) => {
             getUserDataFunc: getUserDataFunc,
             updateLoggedUserDataFunc: updateLoggedUserDataFunc,
             userData: loggedUserData,
+            hasCheckedLocalStorage: hasCheckedLocalStorage
         }}>
             {props.children}
         </LoggedUserContext.Provider>

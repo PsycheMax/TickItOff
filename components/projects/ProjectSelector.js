@@ -107,7 +107,7 @@ const ProjectSelector = (props) => {
     }
 
     async function selectProject(targetID) {
-        await ProjectFunctions.setCurrentProjectDataFunc(targetID);
+        // await ProjectFunctions.setCurrentProjectDataFunc(targetID);
         props.navigation.navigate('ViewProject', { id: targetID });
     }
 

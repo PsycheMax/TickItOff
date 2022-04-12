@@ -18,7 +18,8 @@
     "react-native-screens": "~3.10.1",
     "react-native-size-matters": "^0.4.0",
     "react-native-web": "0.17.1",
-    "react-session-api": "^1.1.0"
+    "react-session-api": "^1.1.0",
+    "expo-linking": "~3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",

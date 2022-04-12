@@ -14,13 +14,17 @@ import { LoggedUserContext } from './utils/UserManager';
 import ProfilePicture from './components/users/UserPanel/ProfilePicture';
 import LoginForm from './components/users/UserForms/LoginForm';
 import SignUpForm from './components/users/UserForms/SignUpForm';
-import LoadingWholeApp from './components/generic/LoadingWholeApp';
+import SplashScreen from './components/generic/SplashScreen';
 import { ProjectContext } from './utils/ProjectManager';
+
+import * as Linking from 'expo-linking';
+import Page404 from './components/generic/Page404';
 
 export default function Navigator(props) {
 
     const Stack = createNativeStackNavigator();
-    const LoggedUserData = useContext(LoggedUserContext).userData;
+    const UserContextManager = useContext(LoggedUserContext);
+    const LoggedUserData = UserContextManager.userData;
     const ProjectContextData = useContext(ProjectContext).currentProjectData;
     const theme = useContext(ThemeContext);
 
@@ -73,13 +77,19 @@ export default function Navigator(props) {
     }
 
 
+
+    const prefix = Linking.createURL('/');
+
     const linking = {
-        prefixes: ['http://192.168.68.131:19006'],
+        // prefixes: ['http://192.168.68.131:19006'],
+        prefixes: [prefix, 'http://192.168.68.131:19006', 'https://maxpace.net/tickitoff'],
         config: {
             screens: {
+                Home: '/',
                 Home: '',
                 ViewProject: "project/:id",
-                UserPanel: "userPanel"
+                UserPanel: "userPanel",
+                404: '*'
             }
         }
     }
@@ -92,41 +102,47 @@ export default function Navigator(props) {
         }
     }
 
-    function renderNavigator() {
+    function renderNavigator(props) {
         return (
 
-            <NavigationContainer
-                theme={personalizedThemeForNavigator}
-                linking={linking} fallback={LoadingWholeApp}
-            >
+            UserContextManager.hasCheckedLocalStorage
+                ?
+                <NavigationContainer
+                    theme={personalizedThemeForNavigator}
+                    linking={linking} fallback={SplashScreen}
+                >
+                    {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
+                        <Stack.Navigator
+                            // initialRouteName={'Home'}
+                            style={styles.backgroundColored}
 
-                {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
-                    <Stack.Navigator initialRouteName={'Home'}
-                        style={styles.backgroundColored}
+                            screenOptions={{
+                                headerRight: headerTitle, headerStyle: styles.header,
+                                headerTitleStyle: { color: theme.colors.secondary[50] },
+                                // contentStyle: styles.backgroundColored,
+                            }}
+                        >
 
-                        screenOptions={{
-                            headerRight: headerTitle, headerStyle: styles.header,
-                            headerTitleStyle: { color: theme.colors.secondary[50] },
-                            // contentStyle: styles.backgroundColored,
-                        }}
-                    >
+                            <Stack.Screen name="Home" component={ProjectSelector} />
+                            <Stack.Screen name="ViewProject" component={ViewProject} initialParams={ProjectContextData._id} />
+                            <Stack.Screen name="UserPanel" component={UserPanel} />
+                            <Stack.Screen options={{ headerShown: false }} name='404' component={Page404} />
 
-                        <Stack.Screen name="Home" component={ProjectSelector} />
-                        <Stack.Screen name="ViewProject" component={ViewProject} initialParams={ProjectContextData._id} />
-                        <Stack.Screen name="UserPanel" component={UserPanel} />
+                        </Stack.Navigator>
+                        :
+                        <Stack.Navigator
+                            screenOptions={{ headerShown: false }}
+                        >
+                            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                            <Stack.Screen name="Login" component={LoginForm} />
+                            <Stack.Screen name="SignUp" component={SignUpForm} />
+                            <Stack.Screen name='404' component={Page404} />
 
-
-                    </Stack.Navigator>
-                    :
-                    <Stack.Navigator initialRouteName={'Loading'}
-                        screenOptions={{ headerShown: false }}
-                    >
-                        <Stack.Screen name="Loading" component={LoadingWholeApp} />
-                        <Stack.Screen name="Login" component={LoginForm} />
-                        <Stack.Screen name="SignUp" component={SignUpForm} />
-                    </Stack.Navigator>
-                }
-            </NavigationContainer >
+                        </Stack.Navigator>
+                    }
+                </NavigationContainer >
+                :
+                <SplashScreen shouldRedirect={false} />
         )
     }
 
@@ -136,7 +152,7 @@ export default function Navigator(props) {
             <View style={[styles.appContainer, styles.backgroundColored]}
             // behavior={'padding'}
             >
-                {renderNavigator()}
+                {renderNavigator(props)}
             </View>
             :
             <ScrollView
@@ -147,7 +163,7 @@ export default function Navigator(props) {
 
             >
                 <View style={[styles.emptySpace]} pointerEvents="none" />
-                {renderNavigator()}
+                {renderNavigator(props)}
             </ScrollView>
     );
 }

@@ -9,7 +9,9 @@ const LoadingSpinner = (props) => {
 
     return (
         <View>
-            <ActivityIndicator size={props.size ? props.size : "large"} color={props.color ? props.color : theme.colors.primary[500]} />
+            <ActivityIndicator size={props.size ? props.size : "large"} color={props.color ? props.color : theme.colors.primary[500]}
+                style={{ marginTop: props.marginTop ? props.marginTop : 0 }}
+            />
         </View>
     )
 }

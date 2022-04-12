@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Pressable, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -8,11 +8,11 @@ import ViewTask from '../tasks/ViewTask';
 import NewTaskForm from '../tasks/NewTaskForm';
 import EditProjectForm from './EditProjectForm';
 import StandardDivider from '../generic/StandardDivider';
+import LoadingSpinner from '../generic/LoadingSpinner';
 
 const ViewProject = (props) => {
 
     const theme = useContext(ThemeContext);
-    const { methods } = theme.dimensions;
 
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
@@ -257,161 +257,177 @@ const ViewProject = (props) => {
         ProjectFunctions.reloadCurrentProjectDataFunc().then((result) => { setIsRefreshing(false) });
     }
 
+    useEffect(async () => {
+        if (props.route && props.route.params.id) {
+            if (ProjectData._id === undefined || ProjectData._id !== props.route.params.id) {
+                await ProjectFunctions.setCurrentProjectDataFunc(props.route.params.id);
+            }
+        }
+
+        return async () => {
+            await ProjectFunctions.setCurrentProjectDataFunc()
+        }
+
+    }, [])
+
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
-        <View style={styles.maxWidth}>
-            <SectionList
-                //The data is obtained by a method that parses the ProjectData in a SectionList readable form
-                sections={processProjectDataForSectionList()}
+        ProjectData._id === undefined
+            ? <LoadingSpinner marginTop={"5%"} /> :
+            ProjectData._id !== props.route.params.id ? <LoadingSpinner marginTop={"5%"} /> :
+                <View style={styles.maxWidth}>
+                    <SectionList
+                        //The data is obtained by a method that parses the ProjectData in a SectionList readable form
+                        sections={processProjectDataForSectionList()}
 
-                onRefresh={onRefreshFunction}
-                refreshing={isRefreshing}
+                        onRefresh={onRefreshFunction}
+                        refreshing={isRefreshing}
 
-                // This is the header of this whole component
-                renderSectionHeader={({ section: { title, data, tag, requiresFullHeader } }) => {
-                    // The following if statement creates the header only if the data array being represented is the first one, the "active" array
-                    if (requiresFullHeader) {
-                        return <>
-                            <View style={[styles.columnContainer, styles.mainHMarginSize]}>
-                                <View style={[styles.columnContainer, styles.topSection, styles.hideOnProjectEditForm]}>
-                                    <View style={[styles.rowContainer, styles.spaceBetween]}>
-                                        <View style={[styles.nameContainer]}>
-                                            <Text style={[styles.name, styles.darkText]}>
-                                                {ProjectData.name}
+                        // This is the header of this whole component
+                        renderSectionHeader={({ section: { title, data, tag, requiresFullHeader } }) => {
+                            // The following if statement creates the header only if the data array being represented is the first one, the "active" array
+                            if (requiresFullHeader) {
+                                return <>
+                                    <View style={[styles.columnContainer, styles.mainHMarginSize]}>
+                                        <View style={[styles.columnContainer, styles.topSection, styles.hideOnProjectEditForm]}>
+                                            <View style={[styles.rowContainer, styles.spaceBetween]}>
+                                                <View style={[styles.nameContainer]}>
+                                                    <Text style={[styles.name, styles.darkText]}>
+                                                        {ProjectData.name}
+                                                    </Text>
+                                                </View>
+                                                <View style={[styles.rowContainer, styles.buttonsContainer]}>
+                                                    <View style={[styles.centered]}>
+                                                        {ProjectData.active ?
+                                                            <Pressable onPress={toggleEditProjectForm} >
+                                                                <MaterialIcons name="edit" size={32}
+                                                                    color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                                />
+                                                            </Pressable>
+                                                            : <Pressable onPress={handleProjectReactivation}>
+                                                                <MaterialIcons name="power" size={32}
+                                                                    color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                                />
+                                                            </Pressable>
+                                                        }
+                                                    </View>
+                                                    <View style={styles.centered}>
+                                                        <Pressable onPress={toggleDeletePrompt} >
+                                                            <MaterialIcons name="delete-outline" size={32}
+                                                                color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                            />
+                                                        </Pressable>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <StandardDivider color={theme.colors.tertiary[500]} />
+                                            <Text style={[styles.description, styles.darkText]}>
+                                                {ProjectData.description}
+                                            </Text>
+                                            <StandardDivider color={theme.colors.tertiary[500]} />
+                                            <Text style={[styles.description, styles.darkText]}>
+                                                <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
+                                            </Text>
+                                            <Text style={[styles.description, styles.darkText]}>
+                                                <MaterialIcons name="edit" size={18} />: {ProjectData.modificationDate}
                                             </Text>
                                         </View>
-                                        <View style={[styles.rowContainer, styles.buttonsContainer]}>
-                                            <View style={[styles.centered]}>
-                                                {ProjectData.active ?
-                                                    <Pressable onPress={toggleEditProjectForm} >
-                                                        <MaterialIcons name="edit" size={32}
-                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
-                                                        />
-                                                    </Pressable>
-                                                    : <Pressable onPress={handleProjectReactivation}>
-                                                        <MaterialIcons name="power" size={32}
-                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
-                                                        />
-                                                    </Pressable>
-                                                }
-                                            </View>
-                                            <View style={styles.centered}>
-                                                <Pressable onPress={toggleDeletePrompt} >
-                                                    <MaterialIcons name="delete-outline" size={32}
-                                                        color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
-                                                    />
-                                                </Pressable>
-                                            </View>
+
+                                        <View style={[styles.columnContainer, styles.formContainer, styles.showOnProjectEditForm]} >
+                                            <EditProjectForm toggleFormFunc={toggleEditProjectForm} />
+                                            <StandardDivider color={theme.colors.tertiary[500]} />
+                                            <Text style={[styles.description, styles.darkText]}>
+                                                <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
+                                            </Text>
+                                            <Text style={[styles.description, styles.darkText]}>
+                                                <MaterialIcons name="edit" size={18} />: {ProjectData.modificationDate}
+                                            </Text>
                                         </View>
                                     </View>
-                                    <StandardDivider color={theme.colors.tertiary[500]} />
-                                    <Text style={[styles.description, styles.darkText]}>
-                                        {ProjectData.description}
-                                    </Text>
-                                    <StandardDivider color={theme.colors.tertiary[500]} />
-                                    <Text style={[styles.description, styles.darkText]}>
-                                        <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
-                                    </Text>
-                                    <Text style={[styles.description, styles.darkText]}>
-                                        <MaterialIcons name="edit" size={18} />: {ProjectData.modificationDate}
-                                    </Text>
-                                </View>
+                                    <View style={[
+                                        styles.projectListContainer, styles.topListContainer,
+                                        tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
+                                    ]}>
+                                        <Text style={[
+                                            styles.name,
+                                            styles.paddingLeft,
+                                            tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}
+                                        </Text>
+                                        {/* Considering it's the header, the NewTaskForm goes here */}
+                                        {ProjectData.active ?
+                                            <View style={styles.mainHPaddingSize}>
+                                                <NewTaskForm />
+                                            </View>
+                                            : <></>}
 
-                                <View style={[styles.columnContainer, styles.formContainer, styles.showOnProjectEditForm]} >
-                                    <EditProjectForm toggleFormFunc={toggleEditProjectForm} />
-                                    <StandardDivider color={theme.colors.tertiary[500]} />
-                                    <Text style={[styles.description, styles.darkText]}>
-                                        <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
-                                    </Text>
-                                    <Text style={[styles.description, styles.darkText]}>
-                                        <MaterialIcons name="edit" size={18} />: {ProjectData.modificationDate}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={[
+                                    </View>
+                                </>
+                                // For every other category, create a regular heading (after checking what color should be used)
+                            } else return <View style={[
                                 styles.projectListContainer, styles.topListContainer,
                                 tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                             ]}>
                                 <Text style={[
-                                    styles.name,
-                                    styles.paddingLeft,
-                                    tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}
-                                </Text>
-                                {/* Considering it's the header, the NewTaskForm goes here */}
-                                {ProjectData.active ?
-                                    <View style={styles.mainHPaddingSize}>
-                                        <NewTaskForm />
-                                    </View>
-                                    : <></>}
-
+                                    styles.name, styles.paddingLeft,
+                                    tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}</Text>
                             </View>
-                        </>
-                        // For every other category, create a regular heading (after checking what color should be used)
-                    } else return <View style={[
-                        styles.projectListContainer, styles.topListContainer,
-                        tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
-                    ]}>
-                        <Text style={[
-                            styles.name, styles.paddingLeft,
-                            tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}</Text>
-                    </View>
-                }}
+                        }}
 
-                // RenderItem is the method that renders every object found in the sections array objects. See above for the JSON format of these objects
-                // Please note that here the BG is dictated by the status of the section: if the section is about active tasks, it'll be lightly colored behind - if archived, dark.
-                renderItem={({ item }) => {
-                    return <View
-                        style={[
-                            styles.mainHPaddingSize,
-                            item.active ? styles.activeListContainerBG : styles.archivedListContainerBG]}>
-                        <ViewTask task={item} />
-                    </View>
-                }}
+                        // RenderItem is the method that renders every object found in the sections array objects. See above for the JSON format of these objects
+                        // Please note that here the BG is dictated by the status of the section: if the section is about active tasks, it'll be lightly colored behind - if archived, dark.
+                        renderItem={({ item }) => {
+                            return <View
+                                style={[
+                                    styles.mainHPaddingSize,
+                                    item.active ? styles.activeListContainerBG : styles.archivedListContainerBG]}>
+                                <ViewTask task={item} />
+                            </View>
+                        }}
 
-                // This renders a simple rounded footer for each section
-                renderSectionFooter={({ section: { tag } }) => {
-                    return <View style={[
-                        styles.bottomListContainer,
-                        tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
-                    ]}>
-                    </View>
-                }}
-            />
+                        // This renders a simple rounded footer for each section
+                        renderSectionFooter={({ section: { tag } }) => {
+                            return <View style={[
+                                styles.bottomListContainer,
+                                tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
+                            ]}>
+                            </View>
+                        }}
+                    />
 
-            {/* The following modal will work both for deletion and reactivation, based on the actual status of the project being viewed */}
-            <Modal visible={showDeletePrompt} transparent={true} >
-                <View style={styles.modalCenteredView}>
-                    <View style={styles.backgroundForModal}>
-                    </View>
-                    <View style={styles.modalWindow}>
+                    {/* The following modal will work both for deletion and reactivation, based on the actual status of the project being viewed */}
+                    <Modal visible={showDeletePrompt} transparent={true} >
+                        <View style={styles.modalCenteredView}>
+                            <View style={styles.backgroundForModal}>
+                            </View>
+                            <View style={styles.modalWindow}>
 
-                        {/* If the project is active, it asks "want to archive it" otherwise "want to permanently delete it?" */}
-                        {ProjectData.active ? <Text style={styles.modalText} >Want to archive this project?</Text> :
-                            <Text style={styles.modalText} >Want to permanently delete this project? PLEASE note this process is not revertible</Text>}
+                                {/* If the project is active, it asks "want to archive it" otherwise "want to permanently delete it?" */}
+                                {ProjectData.active ? <Text style={styles.modalText} >Want to archive this project?</Text> :
+                                    <Text style={styles.modalText} >Want to permanently delete this project? PLEASE note this process is not revertible</Text>}
 
-                        <View style={styles.modalButtonsContainer}>
-                            <TouchableOpacity
-                                // Based on the activation status, it handles the deletion in different ways
-                                onPress={ProjectData.active ? handleProjectDeactivation : handleProjectPermanentDeletion}
-                            >
-                                <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
-                                    <Text style={styles.modalText} >Yes</Text>
+                                <View style={styles.modalButtonsContainer}>
+                                    <TouchableOpacity
+                                        // Based on the activation status, it handles the deletion in different ways
+                                        onPress={ProjectData.active ? handleProjectDeactivation : handleProjectPermanentDeletion}
+                                    >
+                                        <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
+                                            <Text style={styles.modalText} >Yes</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={toggleDeletePrompt}
+                                    >
+                                        <View style={[styles.modalButtons, { backgroundColor: theme.colors.secondary[500] }]}>
+                                            <Text style={styles.modalText} >No</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={toggleDeletePrompt}
-                            >
-                                <View style={[styles.modalButtons, { backgroundColor: theme.colors.secondary[500] }]}>
-                                    <Text style={styles.modalText} >No</Text>
-                                </View>
-                            </TouchableOpacity>
+                            </View>
+
                         </View>
-                    </View>
 
+                    </Modal>
                 </View>
-
-            </Modal>
-        </View>
     )
 }
 
