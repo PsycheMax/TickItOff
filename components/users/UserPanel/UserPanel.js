@@ -70,20 +70,18 @@ const UserPanel = (props) => {
     function renderContent() {
         return (<>
             <View style={[styles.coloredBackground, styles.roundBot, styles.roundTop]}>
-                <KeyboardAvoidingView behavior='position'>
-                    <EditUserForm />
-                    <View style={styles.logoutContainer}>
-                        <TouchableOpacity onPress={() => { setShowLogoutModal(true) }} >
-                            <View style={styles.iconContainer}
-                                onTouchStart={() => { setLogoutButtonTouched(true) }}
-                                onTouchEnd={() => { setLogoutButtonTouched(false) }}
-                                onTouchCancel={() => { setLogoutButtonTouched(false) }} >
-                                {/* <MaterialIcons name='logout' color={theme.colors.secondary[100]} size={27} style={styles.icon} />*/}
-                                <Text style={[styles.whiteText, styles.logoutText]}>Logout</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
+                <EditUserForm />
+                <View style={styles.logoutContainer}>
+                    <TouchableOpacity onPress={() => { setShowLogoutModal(true) }} >
+                        <View style={styles.iconContainer}
+                            onTouchStart={() => { setLogoutButtonTouched(true) }}
+                            onTouchEnd={() => { setLogoutButtonTouched(false) }}
+                            onTouchCancel={() => { setLogoutButtonTouched(false) }} >
+                            {/* <MaterialIcons name='logout' color={theme.colors.secondary[100]} size={27} style={styles.icon} />*/}
+                            <Text style={[styles.whiteText, styles.logoutText]}>Logout</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <Modal visible={showLogoutModal} transparent={true} >

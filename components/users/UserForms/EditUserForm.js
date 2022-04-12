@@ -47,7 +47,7 @@ const EditUserForm = (props) => {
             color: theme.colors.primary[800],
         },
         whiteText: {
-            color: theme.colors.secondary[50],
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50],
         },
         textBold: {
             fontWeight: "600",
@@ -55,7 +55,7 @@ const EditUserForm = (props) => {
         },
         inputField: {
             maxWidth: theme.dimensions.windowWidth * 0.80,
-            color: theme.colors.secondary[50],
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50],
             borderColor: theme.colors.quartiary[300],
             // backgroundColor: theme.colors.primary[600],
             borderWidth: 2,
@@ -254,7 +254,7 @@ const EditUserForm = (props) => {
                         Email address
                     </Text>
                     <TextInput autoFocus={true} autoComplete='email'
-                        placeholder={"Email address"} placeholderTextColor={theme.colors.secondary[200]}
+                        placeholder={"Email address"} placeholderTextColor={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50]}
                         textContentType={"emailAddress"}
                         style={styles.inputField}
                         value={patchedUser.email}
@@ -268,7 +268,7 @@ const EditUserForm = (props) => {
                         Username
                     </Text>
                     <TextInput autoFocus={true} autoComplete={"username-new"}
-                        placeholder={"Username"} placeholderTextColor={theme.colors.secondary[200]}
+                        placeholder={"Username"} placeholderTextColor={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50]}
                         textContentType={"username"}
                         style={styles.inputField}
                         value={patchedUser.username}
@@ -285,7 +285,7 @@ const EditUserForm = (props) => {
                     <View style={[styles.inputField, styles.passwordContainer]}>
                         <TextInput
                             autoComplete='password'
-                            placeholder={"Old password"} placeholderTextColor={theme.colors.secondary[200]}
+                            placeholder={"Old password"} placeholderTextColor={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50]}
                             textContentType={"password"}
                             style={styles.passwordInput} secureTextEntry={showOldPassword ? false : true}
                             value={patchedUser.oldPassword}
@@ -308,7 +308,7 @@ const EditUserForm = (props) => {
                     <View style={[styles.inputField, styles.passwordContainer]}>
                         <TextInput
                             autoComplete='password-new'
-                            placeholder={"New Password"} placeholderTextColor={theme.colors.secondary[200]}
+                            placeholder={"New Password"} placeholderTextColor={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50]}
                             textContentType={"newPassword"}
                             style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                             value={patchedUser.password}
@@ -327,7 +327,7 @@ const EditUserForm = (props) => {
                     <View style={[styles.inputField, styles.passwordContainer]}>
                         <TextInput
                             autoComplete={'password-new'}
-                            placeholder={"Repeat password"} placeholderTextColor={theme.colors.secondary[200]}
+                            placeholder={"Repeat password"} placeholderTextColor={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50]}
                             textContentType={"newPassword"}
                             style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                             value={patchedUser.passwordRepeat}

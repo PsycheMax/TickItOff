@@ -202,26 +202,28 @@ const ViewTask = (props) => {
 
     function decideColor(type) {
         if (props.task.active) {
+            // WHEN THE TASK IS ACTIVE
             switch (type) {
                 case "text":
                     if (checkState) {
-                        // ACTIVE CHECKED = WHITE
-                        return theme.colors.primary[50];
+                        // TEXT, ACTIVE CHECKED = WHITE
+                        return theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[50];
                     } else {
-                        // ACTIVE UNCHECKED = BLUE
-                        return theme.colors.primary[500];
+                        // TEXT, ACTIVE UNCHECKED = BLUE
+                        return theme.colorScheme === "dark" ? theme.colors.primary[700] : theme.colors.primary[500];
                     }
                     break;
                 case "background":
                     if (checkState) {
-                        // BORDERS AND BG, WHEN CHECKED = BLUE
+                        // BG, ACTIVE CHECKED = BLUE
                         return theme.colors.primary[500];
                     } else {
-                        // BORDERS AND BG WHEN UNCHECKED = WHITE
+                        // BG, ACTIVE UNCHECKED = WHITE
                         return theme.colors.transparent[50];
                     }
                     break;
                 case "border":
+                    // BORDERS, ACTIVE CHECKED AND UNCHECKED = BLUE
                     return theme.colors.primary[500];
                     break;
 
@@ -229,20 +231,22 @@ const ViewTask = (props) => {
                     break;
             }
         } else {
+            // WHEN TASK IS ARCHIVED
             switch (type) {
                 case "text":
-                    return theme.colors.primary[50];
+                    // TEXT, CHECKED OR NOT, HAS TO BE WHITE
+                    return theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[50];
                     break;
                 case "background":
                     if (checkState) {
-                        return theme.colors.secondary[300];
+                        return theme.colors.primary[600];
                     } else {
                         return theme.colors.transparent[50];
                     }
                     break;
                 case "border":
                     if (checkState) {
-                        return theme.colors.secondary[300];
+                        return theme.colors.primary[600];
                     } else {
                         return theme.colors.primary[50];
                     }

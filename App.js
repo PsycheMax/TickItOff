@@ -3,7 +3,6 @@ import ProjectManagerContextProvider from "./utils/ProjectManager";
 import ThemeManagerContextProvider from "./utils/ThemeManager";
 
 import Navigator from "./Navigator";
-// import PaletteViewer from "./PaletteViewer";
 
 export default function App() {
 
@@ -13,7 +12,6 @@ export default function App() {
         <ThemeManagerContextProvider>
 
           <Navigator />
-          {/* <PaletteViewer /> */}
 
         </ThemeManagerContextProvider>
       </ProjectManagerContextProvider>

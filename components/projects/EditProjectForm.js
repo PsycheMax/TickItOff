@@ -24,15 +24,16 @@ const inputRules = {
 const EditProjectForm = (props) => {
 
     const theme = useContext(ThemeContext);
-    const { methods } = theme.dimensions;
 
     const styles = StyleSheet.create({
         columnContainer: {
             flexDirection: "column"
         },
         rowContainer: {
+            marginTop: 12,
             flexDirection: "row",
-            maxHeight: theme.dimensions.windowHeight * 0.16
+            maxHeight: theme.dimensions.windowHeight * 0.16,
+            height: theme.dimensions.windowHeight * 0.16
         },
         darkText: {
             color: theme.colors.primary[700]
@@ -52,13 +53,14 @@ const EditProjectForm = (props) => {
             maxWidth: "85%",
         },
         inputField: {
+            color: theme.colors.primary[900],
             backgroundColor: theme.colors.secondary[50],
-            height: methods.moderateScale(32),
-            borderRadius: methods.moderateScale(16),
-            borderWidth: methods.moderateScale(1),
+            height: 32,
+            borderRadius: 16,
+            borderWidth: 1,
             borderColor: theme.colors.primary[500],
-            paddingHorizontal: methods.moderateScale(12),
-            paddingVertical: methods.moderateScale(4),
+            paddingHorizontal: 12,
+            paddingVertical: 4,
             fontSize: 18,
             fontWeight: "500"
         },
@@ -71,7 +73,7 @@ const EditProjectForm = (props) => {
             minWidth: "15%",
             maxWidth: "15%",
             alignItems: "center",
-            marginRight: methods.moderateScale(8),
+            marginRight: 8,
 
         },
         submitButton: {
@@ -159,7 +161,7 @@ const EditProjectForm = (props) => {
                     onChangeText={(value) => { handleChange(value, "name") }}
                     value={patchedProject.name} autocorrect={true}
                 />
-                <StandardDivider />
+                <StandardDivider color={theme.colors.tertiary[500]} />
 
                 <TextInput
                     multiline={true} style={[styles.inputField, styles.descriptionInput, styles.description]}

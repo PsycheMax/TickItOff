@@ -58,6 +58,7 @@ const NewProjectForm = (props) => {
             justifyContent: "space-between",
         },
         inputField: {
+            color: theme.colors.primary[900],
             backgroundColor: theme.colors.secondary[50],
             height: Platform.OS === "web" ? 48 : 40,
             borderRadius: 10,
@@ -140,12 +141,14 @@ const NewProjectForm = (props) => {
             <View style={styles.mainContainer}>
                 <View style={styles.leftColumn}>
                     <TextInput
-                        placeholder="New Project Title" accessibilityLabel='New Project Title Form'
+                        placeholder="New Project Title" placeholderTextColor={theme.colors.primary[500]}
+                        accessibilityLabel='New Project Title Form'
                         onChangeText={(value) => { handleChange(value, "name") }}
                         value={newProject.name} autocorrect={true}
                         style={styles.inputField} />
                     <TextInput
-                        placeholder="New Project Description" accessibilityLabel='New Project description Form'
+                        placeholder="New Project Description" placeholderTextColor={theme.colors.primary[500]}
+                        accessibilityLabel='New Project description Form'
                         onChangeText={(value) => { handleChange(value, "description") }}
                         value={newProject.description} autocorrect={true}
                         style={styles.inputField} />

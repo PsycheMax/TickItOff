@@ -38,10 +38,10 @@ const ViewProject = (props) => {
             flexDirection: "row"
         },
         darkText: {
-            color: theme.colors.primary[700]
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[700],
         },
         whiteText: {
-            color: theme.colors.secondary[50]
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50],
         },
         spaceBetween: {
             alignContent: "space-between",
@@ -83,6 +83,9 @@ const ViewProject = (props) => {
             width: 32 - 1,
             height: 32 - 1
         },
+        paddingLeft: {
+            paddingLeft: 12
+        },
         formContainer: {
 
         },
@@ -93,7 +96,7 @@ const ViewProject = (props) => {
             display: showProjectEditForm ? "none" : "flex"
         },
         projectListContainer: {
-            marginTop: methods.moderateVerticalScale(16),
+            marginTop: 16,
             maxWidth: "100%",
             width: "100%",
             minWidth: "100%",
@@ -101,7 +104,7 @@ const ViewProject = (props) => {
         archivedTasksList: {
             borderRadius: 32,
             paddingHorizontal: 18,
-            paddingVertical: 18,
+            // paddingVertical: 18,
         },
         showOnArchivedTasks: {
             display: showArchivedTasks ? "flex" : "none"
@@ -110,7 +113,7 @@ const ViewProject = (props) => {
             // backgroundColor: theme.colors.secondary[50],
         },
         archivedListContainerBG: {
-            backgroundColor: theme.colors.primary[800]
+            backgroundColor: theme.colorScheme === "dark" ? theme.colors.primary[200] : theme.colors.primary[800]
         },
         bottomListContainer: {
             paddingBottom: 32,
@@ -121,7 +124,7 @@ const ViewProject = (props) => {
             borderBottomRightRadius: 25,
         },
         topListContainer: {
-            paddingTop: 32,
+            // paddingTop: 32,
             borderTopLeftRadius: 25,
             borderTopRightRadius: 25,
         },
@@ -281,25 +284,31 @@ const ViewProject = (props) => {
                                             <View style={[styles.centered]}>
                                                 {ProjectData.active ?
                                                     <Pressable onPress={toggleEditProjectForm} >
-                                                        <MaterialIcons name="edit" size={32} color={theme.colors.primary[500]} />
+                                                        <MaterialIcons name="edit" size={32}
+                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                        />
                                                     </Pressable>
                                                     : <Pressable onPress={handleProjectReactivation}>
-                                                        <MaterialIcons name="power" size={32} color={theme.colors.primary[500]} />
+                                                        <MaterialIcons name="power" size={32}
+                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                        />
                                                     </Pressable>
                                                 }
                                             </View>
                                             <View style={styles.centered}>
                                                 <Pressable onPress={toggleDeletePrompt} >
-                                                    <MaterialIcons name="delete-outline" size={32} color={theme.colors.primary[500]} />
+                                                    <MaterialIcons name="delete-outline" size={32}
+                                                        color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                    />
                                                 </Pressable>
                                             </View>
                                         </View>
                                     </View>
-                                    <StandardDivider color={theme.colors.primary[500]} />
+                                    <StandardDivider color={theme.colors.tertiary[500]} />
                                     <Text style={[styles.description, styles.darkText]}>
                                         {ProjectData.description}
                                     </Text>
-                                    <StandardDivider color={theme.colors.primary[500]} />
+                                    <StandardDivider color={theme.colors.tertiary[500]} />
                                     <Text style={[styles.description, styles.darkText]}>
                                         <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
                                     </Text>
@@ -310,7 +319,7 @@ const ViewProject = (props) => {
 
                                 <View style={[styles.columnContainer, styles.formContainer, styles.showOnProjectEditForm]} >
                                     <EditProjectForm toggleFormFunc={toggleEditProjectForm} />
-                                    <StandardDivider color={theme.colors.primary[500]} />
+                                    <StandardDivider color={theme.colors.tertiary[500]} />
                                     <Text style={[styles.description, styles.darkText]}>
                                         <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
                                     </Text>
@@ -325,6 +334,7 @@ const ViewProject = (props) => {
                             ]}>
                                 <Text style={[
                                     styles.name,
+                                    styles.paddingLeft,
                                     tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}
                                 </Text>
                                 {/* Considering it's the header, the NewTaskForm goes here */}
@@ -342,7 +352,7 @@ const ViewProject = (props) => {
                         tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                     ]}>
                         <Text style={[
-                            styles.name,
+                            styles.name, styles.paddingLeft,
                             tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}</Text>
                     </View>
                 }}

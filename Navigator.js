@@ -26,22 +26,17 @@ export default function Navigator(props) {
 
     const styles = StyleSheet.create({
         backgroundColored: {
-            backgroundColor: theme.colors.primary[50],
+            backgroundColor: theme.colors.secondary[50],
             minHeight: theme.dimensions.windowHeight,
             height: "100%"
-            // minHeight: "100%"
-            // flex: 1
         },
         appContainer: {
             minWidth: theme.dimensions.windowWidth,
             minHeight: theme.dimensions.windowHeight,
-            // backgroundColor: theme.colors.transparent[50],
         },
         header: {
-            flex: 1,
             minHeight: 50,
             height: theme.dimensions.windowHeight * 0.06,
-            // height: 250,
             backgroundColor: theme.colors.tertiary[500],
             borderBottomLeftRadius: theme.dimensions.methods.scale(10),
             borderBottomRightRadius: theme.dimensions.methods.scale(10)
@@ -54,12 +49,7 @@ export default function Navigator(props) {
             justifyContent: "space-between",
         },
         link: {
-            // minWidth: 70,
-            // minHeight: 70,
             marginRight: 10
-        },
-        headerOnWeb: {
-            // marginBottom: -theme.dimensions.windowHeight * 0.06
         },
         emptySpace: {
             minHeight: theme.dimensions.windowHeight * 0.06,

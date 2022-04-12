@@ -25,8 +25,7 @@ const ProjectSelectionButton = (props) => {
 
         },
         whiteText: {
-            color: theme.colors.secondary[50],
-
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50],
         },
         name: {
             fontSize: 24,

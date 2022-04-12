@@ -33,7 +33,8 @@ export const ThemeContext = createContext({
     },
     styles: {
         modal: {}
-    }
+    },
+    colorScheme: ""
 })
 
 const ThemeManager = (props) => {
@@ -113,55 +114,55 @@ const ThemeManager = (props) => {
     };
     let darkThemeColors = {
         primary: {
-            "50": "#F7F7FD",
-            "100": "#ECEBF9",
-            "200": "#D5D4F2",
-            "300": "#BAB8EA",
-            "400": "#9895DF",
-            "500": "#6C69D2",
-            "600": "#5E5ACE",
-            "700": "#4F4BC9",
-            "800": "#3C37B8",
-            "900": "#2C2989"
+            "50": "#181B20",
+            "100": "#181B20",
+            "200": "#2C303A",
+            "300": "#323743",
+            "400": "#393F4C",
+            "500": "#404756",
+            "600": "#7E899F",
+            "700": "#AAB1C0",
+            "800": "#CDD1DA",
+            "900": "#E8EAEE"
         },
         secondary:
         {
-            "50": "#F6F7F9",
-            "100": "#EDEFF2",
-            "200": "#DCDEE5",
-            "300": "#CACED8",
-            "400": "#B5BBC9",
-            "500": "#A4ABBD",
-            "600": "#7A849E",
-            "700": "#5A647C",
-            "800": "#3C4253",
-            "900": "#1E2129"
+            "50": "#05070A",
+            "100": "#0B0E14",
+            "200": "#151C28",
+            "300": "#202A3C",
+            "400": "#2A3850",
+            "500": "#354765",
+            "600": "#4D6793",
+            "700": "#728BB5",
+            "800": "#A1B2CE",
+            "900": "#D0D8E6"
         },
         tertiary:
         {
-            "50": "#F1F8FD",
-            "100": "#DFEEFB",
-            "200": "#BBDBF6",
-            "300": "#8EC3F1",
-            "400": "#53A3E9",
-            "500": "#1A78CC",
-            "600": "#176BB5",
-            "700": "#1561A3",
-            "800": "#114E83",
-            "900": "#0D3B64"
+            "50": "#FCF6E8",
+            "100": "#F9EDD2",
+            "200": "#F3DAA0",
+            "300": "#EEC972",
+            "400": "#E7B540",
+            "500": "#DAA21B",
+            "600": "#AC7F15",
+            "700": "#846110",
+            "800": "#56400B",
+            "900": "#2D2106"
         },
         quartiary:
         {
-            "50": "#FDF2F6",
-            "100": "#FBE9F0",
-            "200": "#F6CADB",
-            "300": "#F1A7C3",
-            "400": "#E97CA6",
-            "500": "#DC2A6D",
-            "600": "#C52060",
-            "700": "#B41D57",
-            "800": "#911846",
-            "900": "#6E1235"
+            "50": "#6E1235",
+            "100": "#911846",
+            "200": "#B41D57",
+            "300": "#C52060",
+            "400": "#DC2A6D",
+            "500": "#E97CA6",
+            "600": "#F1A7C3",
+            "700": "#F6CADB",
+            "800": "#FBE9F0",
+            "900": "#FDF2F6"
         },
         transparent: {
             50: '#1a78cc00'
@@ -231,7 +232,7 @@ const ThemeManager = (props) => {
             },
             modalText: {
                 fontSize: dimensions.methods.moderateScale(18),
-                color: colorTheme.primary[50]
+                color: colorTheme.primary[900]
             }
         }
     }
@@ -240,7 +241,8 @@ const ThemeManager = (props) => {
         <ThemeContext.Provider value={{
             colors: colorTheme,
             dimensions: dimensions,
-            styles: standardStyles
+            styles: standardStyles,
+            colorScheme: colorScheme
         }} >
             {props.children}
         </ThemeContext.Provider>
