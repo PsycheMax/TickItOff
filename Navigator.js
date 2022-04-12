@@ -1,20 +1,20 @@
-import { LoggedUserContext } from './utils/UserManager';
+import React, { useContext, useState } from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, ScrollViewComponent, StyleSheet, Text, View } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { Link, NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import ProjectSelector from "./components/projects/ProjectSelector";
 import ViewProject from "./components/projects/ViewProject";
 import UserPanel from "./components/users/UserPanel/UserPanel";
-import React, { useContext } from 'react';
 
-import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from './utils/ThemeManager';
+import { LoggedUserContext } from './utils/UserManager';
 
 import ProfilePicture from './components/users/UserPanel/ProfilePicture';
 import LoginForm from './components/users/UserForms/LoginForm';
 import SignUpForm from './components/users/UserForms/SignUpForm';
 import LoadingWholeApp from './components/LoadingWholeApp';
-import { Link } from '@react-navigation/native';
 import { ProjectContext } from './utils/ProjectManager';
 
 export default function Navigator(props) {
@@ -26,16 +26,22 @@ export default function Navigator(props) {
 
     const styles = StyleSheet.create({
         backgroundColored: {
-            backgroundColor: theme.colors.transparent[50],
+            backgroundColor: theme.colors.primary[50],
+            minHeight: theme.dimensions.windowHeight,
+            height: "100%"
+            // minHeight: "100%"
+            // flex: 1
         },
         appContainer: {
             minWidth: theme.dimensions.windowWidth,
             minHeight: theme.dimensions.windowHeight,
-            backgroundColor: theme.colors.primary[800],
+            // backgroundColor: theme.colors.transparent[50],
         },
         header: {
-            minHeight: 15,
-            height: theme.dimensions.screenHeight * 0.06,
+            flex: 1,
+            minHeight: 50,
+            height: theme.dimensions.windowHeight * 0.06,
+            // height: 250,
             backgroundColor: theme.colors.tertiary[500],
             borderBottomLeftRadius: theme.dimensions.methods.scale(10),
             borderBottomRightRadius: theme.dimensions.methods.scale(10)
@@ -51,6 +57,13 @@ export default function Navigator(props) {
             // minWidth: 70,
             // minHeight: 70,
             marginRight: 10
+        },
+        headerOnWeb: {
+            // marginBottom: -theme.dimensions.windowHeight * 0.06
+        },
+        emptySpace: {
+            minHeight: theme.dimensions.windowHeight * 0.06,
+            paddingBottom: theme.dimensions.windowHeight * 0.06,
         }
     })
 
@@ -58,7 +71,7 @@ export default function Navigator(props) {
 
     function headerTitle({ navigation, route, options, back }) {
 
-        return <View style={[styles.backgroundColored]}>
+        return <View style={[styles.headerOnWeb]}>
 
             <Link style={[styles.logoContainer, styles.link]} to={{ screen: 'UserPanel' }} >
                 {LoggedUserData && LoggedUserData.username
@@ -81,17 +94,31 @@ export default function Navigator(props) {
         }
     }
 
-    return (
+    const personalizedThemeForNavigator = {
+        ...DefaultTheme,
+        colors: {
+            ...DefaultTheme.colors,
+            background: theme.colors.secondary[50]
+        }
+    }
 
-        <View style={[styles.appContainer, styles.backgroundColored]}>
+    function renderNavigator() {
+        return (
+
             <NavigationContainer
+                // theme={personalizedThemeForNavigator}
                 linking={linking} fallback={LoadingWholeApp}
             >
 
                 {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
                     <Stack.Navigator initialRouteName={'Home'}
+                        style={styles.backgroundColored}
 
-                        screenOptions={{ headerRight: headerTitle, headerStyle: styles.header, headerTitleStyle: { color: theme.colors.secondary[50] } }}
+                        screenOptions={{
+                            headerRight: headerTitle, headerStyle: styles.header,
+                            headerTitleStyle: { color: theme.colors.secondary[50] },
+                            // contentStyle: styles.backgroundColored,
+                        }}
                     >
 
                         <Stack.Screen name="Home" component={ProjectSelector} />
@@ -110,46 +137,27 @@ export default function Navigator(props) {
                     </Stack.Navigator>
                 }
             </NavigationContainer >
-        </View>
+        )
+    }
 
 
+    return (
+        Platform.OS === "android" ?
+            <View style={[styles.appContainer, styles.backgroundColored]}
+            // behavior={'padding'}
+            >
+                {renderNavigator()}
+            </View>
+            :
+            <ScrollView
+                // StickyHeaderComponent={headerTitle}
+                // stickyHeaderHiddenOnScroll={false}
+                // stickyHeaderIndices={[0]}
+                style={[styles.appContainer, styles.backgroundColored]}
+
+            >
+                <View style={[styles.emptySpace]} pointerEvents="none" />
+                {renderNavigator()}
+            </ScrollView>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-// export default function Navigator(props) {
-
-//     const Stack = createNativeStackNavigator();
-//     const LoggedUserData = useContext(LoggedUserContext).userData;
-
-//     return (
-
-//         <NavigationContainer>
-
-//             <Stack.Navigator initialRouteName={LoggedUserData && LoggedUserData.token > 0 ? "ProjectSelector" : "LoginSignupPanel"}>
-//                 <Stack.Screen name="LoginSignupPanel" component={LoginSignupPanel} options={{ title: "Tick It Off" }} />
-//                 {/* <Stack.Group navigationKey={LoggedUserData && LoggedUserData.token ? "user" : "guest"}> */}
-//                 <Stack.Group >
-//                     <Stack.Screen name="UserPanel" component={UserPanel} options={{ title: "Profile" }} />
-//                     <Stack.Screen name="ProjectSelector" component={ProjectSelector} options={{ title: "Select your project" }} />
-//                     <Stack.Screen name="ViewProject" component={ViewProject} options={{ title: "Project Details" }} />
-//                     <Stack.Screen name="LogoutView" component={LogoutView} options={{ title: "Logout" }} />
-//                     <Stack.Screen name="LoadingSpinner" component={LoadingSpinner} options={{ title: "Loading..." }} />
-//                 </Stack.Group>
-
-//             </Stack.Navigator>
-
-//         </NavigationContainer >
-
-
-//     );
-// }

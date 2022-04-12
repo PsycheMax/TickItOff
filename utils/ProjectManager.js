@@ -26,12 +26,6 @@ const ProjectManager = (props) => {
 
     const loggedUserData = useContext(LoggedUserContext).userData;
 
-    // // The following functions are to be passed down as context.functions()
-    // async function getProjectListForLoggedUser() {
-    //     setUserProjects(loggedUserData.projects);
-    //     return loggedUserData.projects;
-    // }
-
     /**
      * This function reloads the CurrentProjectData in the context - useful when the project has been updated and the updates need to be used in the app
      * @returns The api response, in case it's necessary
@@ -55,9 +49,6 @@ const ProjectManager = (props) => {
      * @returns the api response, in case it's necessary
      */
     async function setCurrentProjectDataFunc(projectID) {
-        // if (projectID === null) {
-        //     setCurrentProjectData({});
-        // }
         let response = await axiosGet(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("In status 200");
@@ -235,12 +226,6 @@ const ProjectManager = (props) => {
             return response;
         }
     }
-
-    useEffect(() => {
-        // if (!currentProjectData._id || currentProjectData._id.length === 0) {
-        //     setCurrentProjectData(tempProjectData);
-        // }
-    }, [])
 
     return (
         <ProjectContext.Provider value={{

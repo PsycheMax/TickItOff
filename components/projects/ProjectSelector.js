@@ -14,7 +14,7 @@ const ProjectSelector = (props) => {
 
     const styles = StyleSheet.create({
         container: {
-
+            // backgroundColor: "red",
             alignSelf: "center",
             minWidth: theme.dimensions.windowWidth,
             width: theme.dimensions.windowWidth,
@@ -37,7 +37,7 @@ const ProjectSelector = (props) => {
             borderTopRightRadius: 25,
         },
         activeListContainerBG: {
-            backgroundColor: theme.colors.secondary[50],
+            // backgroundColor: theme.colors.primary[50],
         },
         archivedListContainerBG: {
             backgroundColor: theme.colors.primary[800]

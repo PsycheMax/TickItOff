@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ThemeContext } from '../../../utils/ThemeManager';
@@ -20,10 +20,14 @@ const UserPanel = (props) => {
         pageContainer: {
             width: "100%",
             backgroundColor: theme.colors.primary[700],
-            alignItems: "center"
+            alignItems: "center",
+            paddingBottom: 20,
+            flex: 1,
+            minHeight: "100%"
         },
         logoutContainer: {
             display: "flex",
+            flex: 1,
             flexDirection: "column",
             alignItems: "center",
             marginVertical: theme.dimensions.methods.moderateVerticalScale(24)
@@ -51,47 +55,60 @@ const UserPanel = (props) => {
         ...theme.styles.modal
     })
 
-    return (
-        <ScrollView contentContainerStyle={styles.pageContainer}>
-
-            <EditUserForm />
-
-            <View style={styles.logoutContainer}>
-                <Text style={styles.whiteText}>Logout</Text>
-                <TouchableOpacity onPress={() => { setShowLogoutModal(true) }} >
-                    <View style={styles.iconContainer}
-                        onTouchStart={() => { setLogoutButtonTouched(true) }}
-                        onTouchEnd={() => { setLogoutButtonTouched(false) }}
-                        onTouchCancel={() => { setLogoutButtonTouched(false) }} >
-                        <MaterialIcons name='logout' color={theme.colors.secondary[100]} size={27} style={styles.icon} />
-                    </View>
-                </TouchableOpacity>
-                <Modal visible={showLogoutModal} transparent={true} >
-
-                    <View style={styles.modalCenteredView}>
-                        <View style={styles.backgroundForModal}>
-                        </View>
-                        <View style={styles.modalWindow}>
-                            <Text style={styles.modalText} >Want to logout?</Text>
-                            <View style={styles.modalButtonsContainer}>
-                                <TouchableOpacity onPress={userDataContext.logoutUserFunc} >
-                                    <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
-                                        <Text style={styles.modalText} >Yes</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { setShowLogoutModal(false) }} >
-                                    <View style={[styles.modalButtons, { backgroundColor: theme.colors.secondary[500] }]}>
-                                        <Text style={styles.modalText} >No</Text>
-                                    </View>
-                                </TouchableOpacity>
+    function renderContent() {
+        return (<>
+            <ScrollView>
+                <KeyboardAvoidingView behavior='position'>
+                    <EditUserForm />
+                    <View style={styles.logoutContainer}>
+                        <Text style={styles.whiteText}>Logout</Text>
+                        <TouchableOpacity onPress={() => { setShowLogoutModal(true) }} >
+                            <View style={styles.iconContainer}
+                                onTouchStart={() => { setLogoutButtonTouched(true) }}
+                                onTouchEnd={() => { setLogoutButtonTouched(false) }}
+                                onTouchCancel={() => { setLogoutButtonTouched(false) }} >
+                                <MaterialIcons name='logout' color={theme.colors.secondary[100]} size={27} style={styles.icon} />
                             </View>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAvoidingView>
+            </ScrollView>
+
+            <Modal visible={showLogoutModal} transparent={true} >
+
+                <View style={styles.modalCenteredView}>
+                    <View style={styles.backgroundForModal}>
+                    </View>
+                    <View style={styles.modalWindow}>
+                        <Text style={styles.modalText} >Want to logout?</Text>
+                        <View style={styles.modalButtonsContainer}>
+                            <TouchableOpacity onPress={userDataContext.logoutUserFunc} >
+                                <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
+                                    <Text style={styles.modalText} >Yes</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { setShowLogoutModal(false) }} >
+                                <View style={[styles.modalButtons, { backgroundColor: theme.colors.secondary[500] }]}>
+                                    <Text style={styles.modalText} >No</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
+                </View>
+            </Modal>
+        </>
+        )
+    }
 
+    return (
+        Platform.OS === "web" ?
+            <View contentContainerStyle={styles.pageContainer}>
+                {renderContent()}
             </View>
-
-        </ScrollView>
+            :
+            <ScrollView contentContainerStyle={styles.pageContainer}>
+                {renderContent()}
+            </ScrollView>
     )
 }
 

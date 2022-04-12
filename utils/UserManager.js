@@ -164,15 +164,6 @@ const UserManager = (props) => {
 
     }
 
-    // TODO remove this when deploying, this logs in the admin user for test purposes
-    useEffect(async () => {
-        // await loginUserFunc("AdminMax", "AdminMax");
-
-        return () => {
-            // This only runs on componentDestroy
-        }
-    }, []) //when empty, it only runs once
-
     return (
         <LoggedUserContext.Provider value={{
             loginUserFunc: loginUserFunc,

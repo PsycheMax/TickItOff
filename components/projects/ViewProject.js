@@ -106,7 +106,7 @@ const ViewProject = (props) => {
             display: showArchivedTasks ? "flex" : "none"
         },
         activeListContainerBG: {
-            backgroundColor: theme.colors.secondary[50],
+            // backgroundColor: theme.colors.secondary[50],
         },
         archivedListContainerBG: {
             backgroundColor: theme.colors.primary[800]

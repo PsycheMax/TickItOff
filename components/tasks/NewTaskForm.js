@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, Platform } from 'react-native';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -49,7 +49,10 @@ const NewTaskForm = (props) => {
             maxWidth: "100%",
             width: "100%",
             minWidth: "100%",
-            maxHeight: theme.dimensions.methods.moderateVerticalScale(48),
+            minHeight: Platform.OS === "android" ? theme.dimensions.methods.moderateVerticalScale(52) : 52,
+            height: Platform.OS === "android" ? theme.dimensions.methods.moderateVerticalScale(52) : 52,
+            maxHeight: Platform.OS === "android" ? theme.dimensions.methods.moderateVerticalScale(52) : 52,
+            justifyContent: "center",
             marginVertical: theme.dimensions.methods.moderateVerticalScale(4.8),
             borderRadius: 16,
             borderWidth: 2,
@@ -67,7 +70,7 @@ const NewTaskForm = (props) => {
             minWidth: "90%",
             justifyContent: "center",
             alignItems: "center",
-            maxHeight: theme.dimensions.methods.moderateScale(48),
+            maxHeight: Platform.OS === "android" ? theme.dimensions.methods.moderateVerticalScale(52) : 52,
             height: "100%"
         },
         inputForm: {

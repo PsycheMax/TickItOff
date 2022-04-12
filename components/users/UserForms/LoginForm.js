@@ -26,7 +26,7 @@ const LoginForm = (props) => {
         loginFormContainer: {
             height: theme.dimensions.screenHeight,
             width: "100%",
-            backgroundColor: theme.colors.secondary[50],
+            // backgroundColor: theme.colors.secondary[50],
             alignItems: "center"
         },
         loginFormBackground: {
