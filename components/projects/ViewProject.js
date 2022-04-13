@@ -186,14 +186,6 @@ const ViewProject = (props) => {
         await setShowProjectEditForm(!showProjectEditForm);
     }
 
-    async function toggleUserManagement() {
-        await setShowUserManagement(!showUserManagement);
-    }
-
-    async function toggleArchivedTasks() {
-        await setShowArchivedTasks(!showArchivedTasks);
-    }
-
     function toggleDeletePrompt() {
         setShowDeletePrompt(!showDeletePrompt);
     }
@@ -269,13 +261,11 @@ const ViewProject = (props) => {
         "stale": true,
         "routes": [
             {
-                "name": "Home",
+                "name": "Home"
             },
             {
                 "name": "ViewProject",
-                "params": {
-                    "id": ProjectData._id
-                }
+                "params": { "id": ProjectData._id }
             }
         ]
     }

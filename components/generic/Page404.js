@@ -33,13 +33,7 @@ const Page404 = (props) => {
     return (
         <View style={[styles.centralContainer]}>
             <Logo color="color" size="full" />
-            <TouchableOpacity
-                onPress={() => {
-                    userData && userData.token && userData.token.length > 10
-                        ? props.navigation.navigate('Home')
-                        : props.navigation.navigate('Login')
-                }}
-            >
+            <TouchableOpacity onPress={() => { props.navigation.navigate('Home') }}>
                 <Text>Something went wrong</Text>
                 <Text>The page you are looking for does not exist.</Text>
                 <Text>Click here to go to the homepage</Text>

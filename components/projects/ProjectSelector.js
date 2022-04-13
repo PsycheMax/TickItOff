@@ -7,6 +7,7 @@ import { ThemeContext } from '../../utils/ThemeManager';
 import NewProjectForm from './NewProjectForm';
 import LoadingSpinner from '../generic/LoadingSpinner';
 import ProjectSelectionButton from './ProjectSelectionButton';
+import { CommonActions } from '@react-navigation/native';
 
 const ProjectSelector = (props) => {
 
@@ -110,10 +111,6 @@ const ProjectSelector = (props) => {
         props.navigation.navigate('ViewProject', { id: targetID });
     }
 
-    async function toggleShowArchivedProjects() {
-        setShowArchivedProjects(!showArchivedProjects);
-    }
-
     async function onRefreshFunction() {
         setIsRefreshing(true);
         LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) })
@@ -121,6 +118,22 @@ const ProjectSelector = (props) => {
 
     useEffect(() => {
         LoggedUserFunctions.updateLoggedUserDataFunc();
+    }, [])
+
+    const artificialNavState = { "stale": true, "routes": [{ "name": "Home" }] }
+
+    // The following useEffect runs only on componentLoad
+    useEffect(() => {
+        // It checks the navigation state
+        let navState = props.navigation.getState();
+        // IF the navigation state is not as "artificialNavState" (when it comes to pages visited)
+        if (navState.routes[0].name !== artificialNavState.routes[0].name) {
+            // It sets a new state, corresponding to the wanted NavigationState
+            props.navigation.dispatch((state) => {
+                return CommonActions.reset(artificialNavState);
+            })
+        }
+
     }, [])
 
     if (UserData._id !== undefined) {

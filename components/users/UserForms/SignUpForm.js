@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, TextInput, Button, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { LoggedUserContext } from '../../../utils/UserManager';
@@ -45,29 +45,28 @@ const SignUpForm = (props) => {
         formBox: {
             // paddingTop: "5%",
         },
-        heading: {
-            color: theme.colors.secondary[50],
-            fontSize: theme.dimensions.methods.moderateScale(16),
-            paddingTop: theme.dimensions.methods.moderateScale(16),
-            paddingBottom: theme.dimensions.methods.moderateScale(8),
-            minWidth: theme.dimensions.methods.moderateScale(275)
+        textBoxDimensions: {
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50],
+            fontSize: Platform.OS === "web" ? 26 : 22,
+            paddingTop: 8,
+            paddingBottom: 4,
+            minWidth: 275
         },
         signUp: {
-            fontSize: theme.dimensions.methods.moderateScale(18),
+            fontSize: Platform.OS === "web" ? 28 : 24,
             fontWeight: "600"
         },
         inputField: {
             maxWidth: theme.dimensions.windowWidth * 0.80,
-            color: theme.colors.secondary[50],
-            borderColor: theme.colors.secondary[300],
-            backgroundColor: theme.colors.primary[600],
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50],
+            borderColor: theme.colors.quartiary[300],
             borderWidth: 2,
             fontSize: 18,
-            height: theme.dimensions.methods.moderateVerticalScale(48),
-            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
-            marginTop: theme.dimensions.methods.moderateVerticalScale(12),
-            marginBottom: theme.dimensions.methods.moderateVerticalScale(12),
-            padding: 16
+            height: 48,
+            minHeight: 48,
+            paddingLeft: 16,
+            marginTop: 14,
+            marginBottom: 14
         },
         passwordContainer: {
             display: "flex",
@@ -83,10 +82,11 @@ const SignUpForm = (props) => {
             color: theme.colors.secondary[50],
             width: "100%",
             height: "100%",
-            minHeight: theme.dimensions.methods.moderateVerticalScale(48),
+            minHeight: 48,
+            marginLeft: -3
         },
         showPasswordButtonContainer: {
-
+            marginLeft: -8
         },
         errorMessage: {
             color: theme.colors.tertiary[300],
@@ -219,108 +219,110 @@ const SignUpForm = (props) => {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.loginFormContainer}>
-            <View style={styles.loginFormBackground}>
-                <View style={styles.logoContainer}>
-                    <Logo size="full" color="white" />
-                </View>
-
-                <View style={styles.formBox}>
-                    <Text style={[styles.heading, styles.signUp]}>
-                        Sign up, it's free!
-                    </Text>
-                    <Text style={styles.heading}>
-                        Insert your email address
-                    </Text>
-                    <TextInput autoFocus={true} autoComplete='email'
-                        placeholder={"Email address"} placeholderTextColor={theme.colors.secondary[300]}
-                        textContentType={"emailAddress"}
-                        style={styles.inputField}
-                        value={newUser.email}
-                        onChangeText={(value) => { handleChange(value, "email") }}
-                    />
-                    {alertMessages.email.show ? <Text style={styles.errorMessage} >
-                        <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
-                        {alertMessages.email.content ? alertMessages.email.content : undefined}
-                    </Text> : undefined}
-                    <Text style={styles.heading}>
-                        Insert your preferred username
-                    </Text>
-                    <TextInput autoFocus={true} autoComplete={"username-new"}
-                        placeholder={"Username"} placeholderTextColor={theme.colors.secondary[300]}
-                        textContentType={"username"}
-                        style={styles.inputField}
-                        value={newUser.username}
-                        onChangeText={(value) => { handleChange(value, "username") }}
-                    />
-                    {alertMessages.username.show ? <Text style={styles.errorMessage} >
-                        <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
-                        {alertMessages.username.content ? alertMessages.username.content : undefined}
-                    </Text> : undefined}
-                    <Text style={styles.heading}>
-                        Insert your new password
-                    </Text>
-                    <View style={[styles.inputField, styles.passwordContainer]}>
-                        <TextInput
-                            autoComplete='password-new'
-                            placeholder={"Password"} placeholderTextColor={theme.colors.secondary[300]}
-                            textContentType={"newPassword"}
-                            style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
-                            value={newUser.password}
-                            onChangeText={(value) => { handleChange(value, "password") }}
-                        />
-                        {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
-                        <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
-                            name="remove-red-eye" color={theme.colors.primary[100]}
-                            onPress={() => { setShowPassword(!showPassword) }}
-                        />
+        <KeyboardAvoidingView behavior='padding'>
+            <ScrollView contentContainerStyle={styles.loginFormContainer}>
+                <View style={styles.loginFormBackground}>
+                    <View style={styles.logoContainer}>
+                        <Logo size="full" color="white" />
                     </View>
 
-                    <Text style={styles.heading}>
-                        Repeat the password
-                    </Text>
-                    <View style={[styles.inputField, styles.passwordContainer]}>
-                        <TextInput
-                            autoComplete={'password-new'}
-                            placeholder={"Repeat password"} placeholderTextColor={theme.colors.secondary[300]}
-                            textContentType={"newPassword"}
-                            style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
-                            value={newUser.passwordRepeat}
-                            onChangeText={(value) => { handleChange(value, "passwordRepeat") }}
-                        />
-                        {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
-                        <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
-                            name="remove-red-eye" color={theme.colors.primary[100]}
-                            onPress={() => { setShowPassword(!showPassword) }}
-                        />
-                    </View>
-                    {alertMessages.password.show ? <Text style={styles.errorMessage}>
-                        <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
-                        {alertMessages.password.content ? alertMessages.password.content : undefined}
-                    </Text> : undefined}
-
-                    {alertMessages.genericForm.show ? <Text style={styles.errorMessage}>
-                        <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
-                        {alertMessages.genericForm.content ? alertMessages.genericForm.content : undefined}
-                    </Text> : undefined}
-
-                    <View style={styles.buttonContainer}>
-                        <Button
-                            title='Create new account' color={theme.colors.tertiary[600]}
-                            accessibilityLabel="Submit Form for user creation"
-                            onPress={handleRegistration}
-                        />
-                    </View>
-
-                    <View style={styles.linkContainer}>
-                        <Text style={styles.link} onPress={handleLinkClick}>
-                            Already have an account? Click here!
+                    <View style={styles.formBox}>
+                        <Text style={[styles.textBoxDimensions, styles.signUp]}>
+                            Sign up, it's free!
                         </Text>
-                    </View>
-                </View>
+                        <Text style={styles.textBoxDimensions}>
+                            Insert your email address
+                        </Text>
+                        <TextInput autoFocus={true} autoComplete='email'
+                            placeholder={"Email address"} placeholderTextColor={theme.colors.secondary[300]}
+                            textContentType={"emailAddress"}
+                            style={styles.inputField}
+                            value={newUser.email}
+                            onChangeText={(value) => { handleChange(value, "email") }}
+                        />
+                        {alertMessages.email.show ? <Text style={styles.errorMessage} >
+                            <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
+                            {alertMessages.email.content ? alertMessages.email.content : undefined}
+                        </Text> : undefined}
+                        <Text style={styles.textBoxDimensions}>
+                            Insert your preferred username
+                        </Text>
+                        <TextInput autoFocus={true} autoComplete={"username-new"}
+                            placeholder={"Username"} placeholderTextColor={theme.colors.secondary[300]}
+                            textContentType={"username"}
+                            style={styles.inputField}
+                            value={newUser.username}
+                            onChangeText={(value) => { handleChange(value, "username") }}
+                        />
+                        {alertMessages.username.show ? <Text style={styles.errorMessage} >
+                            <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
+                            {alertMessages.username.content ? alertMessages.username.content : undefined}
+                        </Text> : undefined}
+                        <Text style={styles.textBoxDimensions}>
+                            Insert your new password
+                        </Text>
+                        <View style={[styles.inputField, styles.passwordContainer]}>
+                            <TextInput
+                                autoComplete='password-new'
+                                placeholder={"Password"} placeholderTextColor={theme.colors.secondary[300]}
+                                textContentType={"newPassword"}
+                                style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
+                                value={newUser.password}
+                                onChangeText={(value) => { handleChange(value, "password") }}
+                            />
+                            {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
+                            <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
+                                name="remove-red-eye" color={theme.colors.primary[100]}
+                                onPress={() => { setShowPassword(!showPassword) }}
+                            />
+                        </View>
 
-            </View>
-        </ScrollView>
+                        <Text style={styles.textBoxDimensions}>
+                            Repeat the password
+                        </Text>
+                        <View style={[styles.inputField, styles.passwordContainer]}>
+                            <TextInput
+                                autoComplete={'password-new'}
+                                placeholder={"Repeat password"} placeholderTextColor={theme.colors.secondary[300]}
+                                textContentType={"newPassword"}
+                                style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
+                                value={newUser.passwordRepeat}
+                                onChangeText={(value) => { handleChange(value, "passwordRepeat") }}
+                            />
+                            {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
+                            <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
+                                name="remove-red-eye" color={theme.colors.primary[100]}
+                                onPress={() => { setShowPassword(!showPassword) }}
+                            />
+                        </View>
+                        {alertMessages.password.show ? <Text style={styles.errorMessage}>
+                            <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
+                            {alertMessages.password.content ? alertMessages.password.content : undefined}
+                        </Text> : undefined}
+
+                        {alertMessages.genericForm.show ? <Text style={styles.errorMessage}>
+                            <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
+                            {alertMessages.genericForm.content ? alertMessages.genericForm.content : undefined}
+                        </Text> : undefined}
+
+                        <View style={styles.buttonContainer}>
+                            <Button
+                                title='Create new account' color={theme.colors.tertiary[600]}
+                                accessibilityLabel="Submit Form for user creation"
+                                onPress={handleRegistration}
+                            />
+                        </View>
+
+                        <View style={styles.linkContainer}>
+                            <Text style={styles.link} onPress={handleLinkClick}>
+                                Already have an account? Click here!
+                            </Text>
+                        </View>
+                    </View>
+
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 
