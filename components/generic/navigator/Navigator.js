@@ -19,8 +19,6 @@ import { ProjectContext } from '../../../utils/ProjectManager';
 
 import * as Linking from 'expo-linking';
 import Page404 from '../Page404';
-import LoggedInStack from './LoggedInStack';
-import LoggedOutStack from './LoggedOutStack';
 
 
 export default function Navigator(props) {
@@ -110,15 +108,41 @@ export default function Navigator(props) {
             return (
                 <NavigationContainer
                     theme={personalizedThemeForNavigator}
-                    linking={linking} fallback={<Text>Loading</Text>}
+                    linking={linking} fallback={SplashScreen}
                 // onStateChange={(state) => { stateNavState(state) }}
                 >
                     {isLoggedIn ?
-                        <LoggedInStack />
+                        <Stack.Navigator
+                            // initialRouteName={'Home'}
+                            style={styles.backgroundColored}
+
+                            screenOptions={{
+                                headerRight: headerTitle, headerStyle: styles.header,
+                                headerTitleStyle: { color: theme.colors.secondary[50] },
+                                // contentStyle: styles.backgroundColored,
+                            }}
+
+
+                        >
+
+                            <Stack.Screen name="Home" component={ProjectSelector} />
+                            <Stack.Screen name="ViewProject" component={ViewProject} />
+                            <Stack.Screen name="UserPanel" component={UserPanel} />
+                            <Stack.Screen options={{ headerShown: false }} name='404' component={Page404} />
+
+                        </Stack.Navigator>
                         :
-                        <LoggedOutStack />
+                        <Stack.Navigator
+                            screenOptions={{ headerShown: false }}
+                        >
+                            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                            <Stack.Screen name="Home" component={LoginForm} />
+                            <Stack.Screen name="SignUp" component={SignUpForm} />
+                            <Stack.Screen name='404' component={Page404} />
+
+                        </Stack.Navigator>
                     }
-                </NavigationContainer>
+                </NavigationContainer >
             )
         } else {
             return (
@@ -126,6 +150,8 @@ export default function Navigator(props) {
                 // <Text>Mammeta</Text>
             )
         }
+
+
     }
 
     return (
@@ -134,7 +160,6 @@ export default function Navigator(props) {
             // behavior={'padding'}
             >
                 {renderNavigator(props)}
-
             </View>
             :
             <ScrollView
@@ -146,7 +171,6 @@ export default function Navigator(props) {
             >
                 <View style={[styles.emptySpace]} pointerEvents="none" />
                 {renderNavigator(props)}
-
             </ScrollView>
     );
 }
