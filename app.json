@@ -3,6 +3,13 @@
         "name":"Tick It Off!",
         "slug":"Tick-It-Off",
         "scheme":"tick",
-        "icon":"./img/logo/logo-small-color.png"
+        "icon":"./img/icon.png",
+        "splash":{
+            "image":"./img/logo/logo-full-color.png",
+            "backgroundColor":"#FFFFFF",
+            "resizeMode":"contain"
+        },
+        "orientation":"portrait",
+        "primaryColor":"#1A78CC"
     }
 }

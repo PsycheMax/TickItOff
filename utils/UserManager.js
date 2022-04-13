@@ -25,11 +25,12 @@ const UserManager = (props) => {
     useEffect(async () => {
         if (loggedUserData !== undefined) {
             await setInStorage('loggedUserData', loggedUserData);
-            setIsLoggedIn(true);
         } else {
             return setIsLoggedIn(false);
         }
-        setHasCheckedLocalStorage(true);
+        // if (!hasCheckedLocalStorage) {
+        //     setHasCheckedLocalStorage(true);
+        // }
     }, [loggedUserData]);
 
     // This runs only on launch
@@ -45,6 +46,7 @@ const UserManager = (props) => {
                     let decodedJWT = await jwtDecode(userDataInStorage.token);
                     // then the data found in storage can be used in the state
                     await setLoggedUserData(userDataInStorage);
+                    await setIsLoggedIn(true);
                     // setHasCheckedLocalStorage(true);
                 }
             }
@@ -53,9 +55,8 @@ const UserManager = (props) => {
             }
         } else {
             console.log("NOT FOUND, GOTTA LOGIN");
-            // setHasCheckedLocalStorage(true);
         }
-
+        setHasCheckedLocalStorage(true);
     }, [])
 
     // The following functions are to be passed down as context.functions()
@@ -77,8 +78,7 @@ const UserManager = (props) => {
         if (response.status === 200) {
             setLoggedUserData(response.data);
             await setInStorage('loggedUserData', response.data);
-            console.log("LoggedUserLOGIN")
-            console.log(response.data);
+            setIsLoggedIn(true);
             return (response);
         } else {
             return (response);
@@ -100,6 +100,7 @@ const UserManager = (props) => {
                 "image": null,
                 "token": ""
             });
+            setIsLoggedIn(false);
         } else {
             console.log("NOT stat 200");
             return response;

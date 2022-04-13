@@ -68,6 +68,12 @@ const UserPanel = (props) => {
         ...theme.styles.modal
     })
 
+    async function onLogoutConfirm() {
+        await userDataContext.logoutUserFunc();
+        props.navigation.navigate('Home');
+    }
+
+
     // The following object is a NavigationState for React Navigation, to be used with the command RESET https://reactnavigation.org/docs/navigation-actions/#reset 
     const artificialNavState = { "stale": true, "routes": [{ "name": "Home" }, { "name": "UserPanel" }] }
 
@@ -110,7 +116,7 @@ const UserPanel = (props) => {
                     <View style={styles.modalWindow}>
                         <Text style={styles.modalText} >Want to logout?</Text>
                         <View style={styles.modalButtonsContainer}>
-                            <TouchableOpacity onPress={userDataContext.logoutUserFunc} >
+                            <TouchableOpacity onPress={onLogoutConfirm} >
                                 <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
                                     <Text style={styles.modalText} >Yes</Text>
                                 </View>
