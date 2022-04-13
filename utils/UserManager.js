@@ -12,17 +12,22 @@ export const LoggedUserContext = React.createContext({
     getUserDataFunc: (target) => { },
     updateLoggedUserDataFunc: () => { },
     userData: {},
-    hasCheckedLocalStorage: true
+    hasCheckedLocalStorage: true,
+    isLoggedIn: false
 });
 
 const UserManager = (props) => {
 
     const [loggedUserData, setLoggedUserData] = useState();
     const [hasCheckedLocalStorage, setHasCheckedLocalStorage] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState();
 
     useEffect(async () => {
         if (loggedUserData !== undefined) {
             await setInStorage('loggedUserData', loggedUserData);
+            setIsLoggedIn(true);
+        } else {
+            return setIsLoggedIn(false);
         }
         setHasCheckedLocalStorage(true);
     }, [loggedUserData]);
@@ -183,7 +188,8 @@ const UserManager = (props) => {
             getUserDataFunc: getUserDataFunc,
             updateLoggedUserDataFunc: updateLoggedUserDataFunc,
             userData: loggedUserData,
-            hasCheckedLocalStorage: hasCheckedLocalStorage
+            hasCheckedLocalStorage: hasCheckedLocalStorage,
+            isLoggedIn: isLoggedIn
         }}>
             {props.children}
         </LoggedUserContext.Provider>

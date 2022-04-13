@@ -22,6 +22,8 @@ const ViewProject = (props) => {
     const [showProjectEditForm, setShowProjectEditForm] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
+    const [isFetchGoneWrong, setIsFetchGoneWrong] = useState(false);
+
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
     const styles = StyleSheet.create({
@@ -127,6 +129,12 @@ const ViewProject = (props) => {
             // paddingTop: 32,
             borderTopLeftRadius: 25,
             borderTopRightRadius: 25,
+        },
+        redirectMessage: {
+            display: isFetchGoneWrong ? "flex" : "none",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 20
         },
         ...theme.styles.modal
     })
@@ -257,15 +265,26 @@ const ViewProject = (props) => {
         ProjectFunctions.reloadCurrentProjectDataFunc().then((result) => { setIsRefreshing(false) });
     }
 
+    function goToHomePage() {
+        props.navigation.navigate('Home');
+    }
+
+
     useEffect(async () => {
         if (props.route && props.route.params.id) {
             if (ProjectData._id === undefined || ProjectData._id !== props.route.params.id) {
-                await ProjectFunctions.setCurrentProjectDataFunc(props.route.params.id);
+                const response = await ProjectFunctions.setCurrentProjectDataFunc(props.route.params.id);
+                if (response.status !== 200) {
+                    setIsFetchGoneWrong(true);
+                    setTimeout(() => {
+                        goToHomePage();
+                    }, 1500);
+                }
             }
         }
 
         return async () => {
-            await ProjectFunctions.setCurrentProjectDataFunc()
+            // await ProjectFunctions.setCurrentProjectDataFunc()
         }
 
     }, [])
@@ -273,7 +292,20 @@ const ViewProject = (props) => {
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
         ProjectData._id === undefined
-            ? <LoadingSpinner marginTop={"5%"} /> :
+            ? <>
+                <LoadingSpinner marginTop={"5%"} />
+                <View style={styles.redirectMessage}>
+                    <Text>
+                        The page you are trying to open is pointing to a non-existing project - you'll be redirected to the homepage soon.
+                    </Text>
+                    <TouchableOpacity onPress={goToHomePage} >
+                        <Text>
+                            If you want to go to the homepage now, please click here.
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </>
+            :
             ProjectData._id !== props.route.params.id ? <LoadingSpinner marginTop={"5%"} /> :
                 <View style={styles.maxWidth}>
                     <SectionList

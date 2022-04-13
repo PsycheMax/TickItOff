@@ -29,7 +29,7 @@ const SplashScreen = (props) => {
             console.log(props.navigation)
             let toCancel = () => {
                 return setTimeout(() => {
-                    props.navigation.navigate('Login');
+                    props.navigation.navigate('Home');
                 }, 1200)
             };
             toCancel();

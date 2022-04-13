@@ -111,7 +111,7 @@ export default function Navigator(props) {
                     theme={personalizedThemeForNavigator}
                     linking={linking} fallback={SplashScreen}
                 >
-                    {LoggedUserData && LoggedUserData.token && LoggedUserData.token.length > 0 ?
+                    {UserContextManager.isLoggedIn ?
                         <Stack.Navigator
                             // initialRouteName={'Home'}
                             style={styles.backgroundColored}
@@ -134,7 +134,7 @@ export default function Navigator(props) {
                             screenOptions={{ headerShown: false }}
                         >
                             <Stack.Screen name="SplashScreen" component={SplashScreen} />
-                            <Stack.Screen name="Login" component={LoginForm} />
+                            <Stack.Screen name="Home" component={LoginForm} />
                             <Stack.Screen name="SignUp" component={SignUpForm} />
                             <Stack.Screen name='404' component={Page404} />
 
