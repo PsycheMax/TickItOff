@@ -152,11 +152,6 @@ const LoginForm = (props) => {
         }
     }
 
-    function handleAdminLogin() {
-        userDataContext.loginUserFunc("AdminMax", "AdminMax");
-        // props.navigation.navigate('ProjectSelector');
-    }
-
     function handleLinkClick() {
         props.navigation.navigate('SignUp');
     }
@@ -222,14 +217,6 @@ const LoginForm = (props) => {
                             title='Login' color={theme.colors.tertiary[600]}
                             accessibilityLabel="Submit Form"
                             onPress={handleLogin}
-                        />
-                    </View>
-
-                    <View style={styles.buttonContainer}>
-                        <Button
-                            title='AdminLogin' color={theme.colors.tertiary[600]}
-                            accessibilityLabel="Submit Form for user creation"
-                            onPress={handleAdminLogin}
                         />
                     </View>
 
