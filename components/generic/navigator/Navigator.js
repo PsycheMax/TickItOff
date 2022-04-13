@@ -4,29 +4,28 @@ import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link, NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import ProjectSelector from "./components/projects/ProjectSelector";
-import ViewProject from "./components/projects/ViewProject";
-import UserPanel from "./components/users/UserPanel/UserPanel";
+import ProjectSelector from "../../projects/ProjectSelector";
+import ViewProject from "../../projects/ViewProject";
+import UserPanel from "../../users/UserPanel/UserPanel";
 
-import { ThemeContext } from './utils/ThemeManager';
-import { LoggedUserContext } from './utils/UserManager';
+import { ThemeContext } from '../../../utils/ThemeManager';
+import { LoggedUserContext } from '../../../utils/UserManager';
 
-import ProfilePicture from './components/users/UserPanel/ProfilePicture';
-import LoginForm from './components/users/UserForms/LoginForm';
-import SignUpForm from './components/users/UserForms/SignUpForm';
-import SplashScreen from './components/generic/SplashScreen';
-import { ProjectContext } from './utils/ProjectManager';
+import ProfilePicture from '../../users/UserPanel/ProfilePicture';
+import LoginForm from '../../users/UserForms/LoginForm';
+import SignUpForm from '../../users/UserForms/SignUpForm';
+import SplashScreen from '../SplashScreen';
+import { ProjectContext } from '../../../utils/ProjectManager';
 
 import * as Linking from 'expo-linking';
-import Page404 from './components/generic/Page404';
-import { useNavigationContainerRef } from '@react-navigation/native';
+import Page404 from '../Page404';
+
 
 export default function Navigator(props) {
 
     const Stack = createNativeStackNavigator();
     const UserContextManager = useContext(LoggedUserContext);
     const LoggedUserData = UserContextManager.userData;
-    const ProjectContextData = useContext(ProjectContext).currentProjectData;
     const theme = useContext(ThemeContext);
 
     const styles = StyleSheet.create({
@@ -104,16 +103,15 @@ export default function Navigator(props) {
     }
 
     function renderNavigator(props) {
-        return (
-
-            UserContextManager.hasCheckedLocalStorage
-                ?
+        const { hasCheckedLocalStorage, isLoggedIn } = UserContextManager;
+        if (hasCheckedLocalStorage) {
+            return (
                 <NavigationContainer
                     theme={personalizedThemeForNavigator}
                     linking={linking} fallback={SplashScreen}
                 // onStateChange={(state) => { stateNavState(state) }}
                 >
-                    {UserContextManager.isLoggedIn ?
+                    {isLoggedIn ?
                         <Stack.Navigator
                             // initialRouteName={'Home'}
                             style={styles.backgroundColored}
@@ -145,11 +143,16 @@ export default function Navigator(props) {
                         </Stack.Navigator>
                     }
                 </NavigationContainer >
-                :
+            )
+        } else {
+            return (
                 <SplashScreen shouldRedirect={false} />
-        )
-    }
+                // <Text>Mammeta</Text>
+            )
+        }
 
+
+    }
 
     return (
         Platform.OS === "android" ?
