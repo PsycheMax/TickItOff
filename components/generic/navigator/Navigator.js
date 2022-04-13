@@ -108,7 +108,7 @@ export default function Navigator(props) {
             return (
                 <NavigationContainer
                     theme={personalizedThemeForNavigator}
-                    linking={linking} fallback={SplashScreen}
+                    linking={linking} fallback={<Text>Loading</Text>}
                 // onStateChange={(state) => { stateNavState(state) }}
                 >
                     {isLoggedIn ?
