@@ -28,13 +28,13 @@ const ProjectSelector = (props) => {
             height: 32,
             maxHeight: 32,
             minHeight: 32,
-            // borderBottomLeftRadius: 25,
-            // borderBottomRightRadius: 25,
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
         },
         topListContainer: {
             paddingTop: 32,
-            // borderTopLeftRadius: 25,
-            // borderTopRightRadius: 25,
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
         },
         activeListContainerBG: {
             // backgroundColor: theme.colors.primary[50],
@@ -59,6 +59,7 @@ const ProjectSelector = (props) => {
     const LoggedUserFunctions = useContext(LoggedUserContext);
     const UserData = LoggedUserFunctions.userData;
 
+    const [showArchivedProjects, setShowArchivedProjects] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false)
 
     let projects = UserData.projects;
@@ -107,6 +108,10 @@ const ProjectSelector = (props) => {
     async function selectProject(targetID) {
         // await ProjectFunctions.setCurrentProjectDataFunc(targetID);
         props.navigation.navigate('ViewProject', { id: targetID });
+    }
+
+    async function toggleShowArchivedProjects() {
+        setShowArchivedProjects(!showArchivedProjects);
     }
 
     async function onRefreshFunction() {

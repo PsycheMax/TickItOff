@@ -18,19 +18,19 @@ export const LoggedUserContext = React.createContext({
 
 const UserManager = (props) => {
 
-    const [loggedUserData, setLoggedUserData] = useState({});
-
+    const [loggedUserData, setLoggedUserData] = useState();
     const [hasCheckedLocalStorage, setHasCheckedLocalStorage] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState();
 
     useEffect(async () => {
         if (loggedUserData !== undefined) {
             await setInStorage('loggedUserData', loggedUserData);
         } else {
-            setIsLoggedIn(false);
+            return setIsLoggedIn(false);
         }
-        await setHasCheckedLocalStorage(true);
-        return (setIsLoggedIn(false));
+        // if (!hasCheckedLocalStorage) {
+        //     setHasCheckedLocalStorage(true);
+        // }
     }, [loggedUserData]);
 
     // This runs only on launch
@@ -47,9 +47,7 @@ const UserManager = (props) => {
                     // then the data found in storage can be used in the state
                     await setLoggedUserData(userDataInStorage);
                     await setIsLoggedIn(true);
-                } else {
-                    await setLoggedUserData({});
-                    await setIsLoggedIn(false);
+                    // setHasCheckedLocalStorage(true);
                 }
             }
             catch (error) {
@@ -57,8 +55,8 @@ const UserManager = (props) => {
             }
         } else {
             console.log("NOT FOUND, GOTTA LOGIN");
-            await setHasCheckedLocalStorage(true);
         }
+        setHasCheckedLocalStorage(true);
     }, [])
 
     // The following functions are to be passed down as context.functions()
@@ -126,7 +124,6 @@ const UserManager = (props) => {
             return response;
         } else {
             console.log("NOT stat 201");
-            console.log(response);
             return response;
         }
     }
@@ -178,8 +175,6 @@ const UserManager = (props) => {
             })
         } else {
             console.log("Status not 200 - please login again");
-            setIsLoggedIn(false);
-            setLoggedUserData({});
             return response;
         }
 
