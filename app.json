@@ -2,6 +2,7 @@
     "expo":{
         "name":"Tick It Off!",
         "slug":"Tick-It-Off",
-        "scheme":"tick"
+        "scheme":"tick",
+        "icon":"./img/logo/logo-small-color.png"
     }
 }

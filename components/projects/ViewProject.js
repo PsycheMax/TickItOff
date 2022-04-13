@@ -9,6 +9,7 @@ import NewTaskForm from '../tasks/NewTaskForm';
 import EditProjectForm from './EditProjectForm';
 import StandardDivider from '../generic/StandardDivider';
 import LoadingSpinner from '../generic/LoadingSpinner';
+import { CommonActions } from '@react-navigation/native';
 
 const ViewProject = (props) => {
 
@@ -22,6 +23,7 @@ const ViewProject = (props) => {
     const [showProjectEditForm, setShowProjectEditForm] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
+    const [isFetchDone, setIsFetchDone] = useState(false);
     const [isFetchGoneWrong, setIsFetchGoneWrong] = useState(false);
 
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
@@ -223,17 +225,14 @@ const ViewProject = (props) => {
             if (response.status !== 204) {
                 // ERROR
                 // toSetInAlertMessages.genericForm = { show: true, content: response.data };
-                console.log(response)
                 props.navigation.push('Home');
             } else {
                 // Code 204!
-                console.log(response)
                 props.navigation.push('Home');
 
             }
         } else {
-            // Code 200
-            console.log(response)
+            // Code 200            
             props.navigation.push('Home');
         }
         setShowDeletePrompt(false);
@@ -245,16 +244,13 @@ const ViewProject = (props) => {
             if (response.status !== 204) {
                 // ERROR
                 // toSetInAlertMessages.genericForm = { show: true, content: response.data };
-                console.log(response)
                 props.navigation.push('Home');
             } else {
                 // Code 204!
-                console.log(response)
                 props.navigation.push('Home');
             }
         } else {
             // Code 200
-            console.log(response)
             props.navigation.push('Home');
         }
         setShowDeletePrompt(false);
@@ -269,6 +265,27 @@ const ViewProject = (props) => {
         props.navigation.navigate('Home');
     }
 
+    const artificialNavState = {
+        "stale": true,
+        "routes": [
+            {
+                "name": "Home",
+            },
+            {
+                "name": "ViewProject",
+                "params": {
+                    "id": ProjectData._id
+                }
+            }
+        ]
+    }
+
+    useEffect(() => {
+        if (isFetchDone) {
+            props.navigation.dispatch(CommonActions.reset(artificialNavState));
+        }
+    }, [isFetchDone])
+
 
     useEffect(async () => {
         if (props.route && props.route.params.id) {
@@ -279,14 +296,14 @@ const ViewProject = (props) => {
                     setTimeout(() => {
                         goToHomePage();
                     }, 1500);
+                } else {
+                    setIsFetchDone(true);
                 }
             }
         }
-
         return async () => {
             // await ProjectFunctions.setCurrentProjectDataFunc()
         }
-
     }, [])
 
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better

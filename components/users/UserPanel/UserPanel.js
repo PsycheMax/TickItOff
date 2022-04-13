@@ -1,16 +1,17 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { ThemeContext } from '../../../utils/ThemeManager';
 import { LoggedUserContext } from '../../../utils/UserManager';
 
 import EditUserForm from '../UserForms/EditUserForm';
+import { CommonActions } from '@react-navigation/native';
 
 const UserPanel = (props) => {
 
     const [logoutButtonTouched, setLogoutButtonTouched] = useState(false);
-    const [showLogoutModal, setShowLogoutModal] = useState(false)
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const userDataContext = useContext(LoggedUserContext);
 
@@ -67,6 +68,24 @@ const UserPanel = (props) => {
         ...theme.styles.modal
     })
 
+    // The following object is a NavigationState for React Navigation, to be used with the command RESET https://reactnavigation.org/docs/navigation-actions/#reset 
+    const artificialNavState = { "stale": true, "routes": [{ "name": "Home" }, { "name": "UserPanel" }] }
+
+    // The following useEffect runs only on componentLoad
+    useEffect(() => {
+        // It checks the navigation state
+        let navState = props.navigation.getState();
+        // IF the navigation state is not as "artificialNavState" (when it comes to pages visited)
+        if (navState.routes[0].name !== artificialNavState.routes[0].name || navState.routes[1].name !== artificialNavState.routes[1].name) {
+            // It sets a new state, corresponding to the wanted NavigationState
+            props.navigation.dispatch((state) => {
+                return CommonActions.reset(artificialNavState);
+            })
+        }
+
+    }, [])
+
+    // This dirty trick was necessary to make sure that on android the page is scrollable, but on Web the background is rendered properly
     function renderContent() {
         return (<>
             <View style={[styles.coloredBackground, styles.roundBot, styles.roundTop]}>
@@ -83,7 +102,6 @@ const UserPanel = (props) => {
                     </TouchableOpacity>
                 </View>
             </View>
-
             <Modal visible={showLogoutModal} transparent={true} >
 
                 <View style={styles.modalCenteredView}>
@@ -110,6 +128,7 @@ const UserPanel = (props) => {
         )
     }
 
+    // Based on the User's device, it will either render a View (for web, it has the proper background) or a Scrollview for android
     return (
         Platform.OS === "web" ?
             <View contentContainerStyle={[styles.pageContainer, styles.coloredBackground]}>

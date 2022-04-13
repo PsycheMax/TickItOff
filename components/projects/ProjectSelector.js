@@ -58,7 +58,6 @@ const ProjectSelector = (props) => {
 
     const LoggedUserFunctions = useContext(LoggedUserContext);
     const UserData = LoggedUserFunctions.userData;
-    const ProjectFunctions = useContext(ProjectContext);
 
     const [showArchivedProjects, setShowArchivedProjects] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false)

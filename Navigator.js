@@ -19,6 +19,7 @@ import { ProjectContext } from './utils/ProjectManager';
 
 import * as Linking from 'expo-linking';
 import Page404 from './components/generic/Page404';
+import { useNavigationContainerRef } from '@react-navigation/native';
 
 export default function Navigator(props) {
 
@@ -110,6 +111,7 @@ export default function Navigator(props) {
                 <NavigationContainer
                     theme={personalizedThemeForNavigator}
                     linking={linking} fallback={SplashScreen}
+                // onStateChange={(state) => { stateNavState(state) }}
                 >
                     {UserContextManager.isLoggedIn ?
                         <Stack.Navigator
@@ -121,10 +123,12 @@ export default function Navigator(props) {
                                 headerTitleStyle: { color: theme.colors.secondary[50] },
                                 // contentStyle: styles.backgroundColored,
                             }}
+
+
                         >
 
                             <Stack.Screen name="Home" component={ProjectSelector} />
-                            <Stack.Screen name="ViewProject" component={ViewProject} initialParams={ProjectContextData._id} />
+                            <Stack.Screen name="ViewProject" component={ViewProject} />
                             <Stack.Screen name="UserPanel" component={UserPanel} />
                             <Stack.Screen options={{ headerShown: false }} name='404' component={Page404} />
 

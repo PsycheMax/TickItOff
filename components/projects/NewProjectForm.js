@@ -119,7 +119,6 @@ const NewProjectForm = (props) => {
             if (newProject.description.length >= inputRules.description.minLength) {
                 const response = await ProjectFunctions.createProjectFunc(newProject);
                 if (response.status !== 201) {
-                    console.log(response.data);
                     toSetInAlertMessages.genericForm = { show: true, content: response.data }
                 } else {
                     // The project has already been set by the Projectfunction CreateProjectFunc function

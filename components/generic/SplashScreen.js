@@ -26,7 +26,6 @@ const SplashScreen = (props) => {
 
     useEffect(() => {
         if (props.shouldRedirect) {
-            console.log(props.navigation)
             let toCancel = () => {
                 return setTimeout(() => {
                     props.navigation.navigate('Home');
@@ -34,7 +33,7 @@ const SplashScreen = (props) => {
             };
             toCancel();
 
-            return clearTimeout(toCancel);
+            // return clearTimeout(toCancel);
         }
     }, [])
 
