@@ -167,10 +167,10 @@ const ProjectSelector = (props) => {
                         </View>
                     }}
 
-                    renderSectionFooter={({ section: { title, data } }) => {
+                    renderSectionFooter={({ section: { title, data, tag } }) => {
                         return <View style={[
                             styles.listContainerStandardPadding, styles.bottomListContainer,
-                            data[0] && data[0].active ? styles.activeListContainerBG : styles.archivedListContainerBG
+                            tag === "activeProjects" ? styles.activeListContainerBG : styles.archivedListContainerBG
                         ]}>
 
                         </View>
