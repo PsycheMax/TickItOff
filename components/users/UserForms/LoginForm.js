@@ -9,11 +9,11 @@ import Logo from '../../logo/Logo';
 // MoveThis into some UserManagemetn Context, - same in SIGNUPFORM
 const inputRules = {
     email: {
-        minLength: 8,
+        minLength: 4,
         regEx: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
     },
     password: {
-        minLength: 8,
+        minLength: 4,
         regEx: ``
     }
 }

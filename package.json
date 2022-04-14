@@ -32,5 +32,6 @@
   },
   "version": "1.0.0",
   "private": true,
-  "name": "task-manager"
+  "name": "task-manager",
+  "homepage": "/tickitoff"
 }

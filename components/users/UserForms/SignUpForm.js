@@ -9,15 +9,15 @@ import Logo from '../../logo/Logo';
 // Move this into some UserAction or UserManagement Context
 const inputRules = {
     email: {
-        minLength: 8,
+        minLength: 4,
         regEx: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
     },
     username: {
-        minLength: 8,
+        minLength: 4,
         regEx: `^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$`
     },
     password: {
-        minLength: 8,
+        minLength: 4,
         regEx: ``
     }
 }
@@ -104,7 +104,7 @@ const SignUpForm = (props) => {
     })
 
     // The loginUserObj for the API is newUser:{username:"",email:"", password:"", image:""}
-    const [newUser, setNewUser] = useState({ email: "", password: "", passwordRepeat: "", username: "", image: "" });
+    const [newUser, setNewUser] = useState({ email: "", password: "", passwordRepeat: "", username: "" });
     const [showPassword, setShowPassword] = useState(false);
     const [identicalPasswords, setIdenticalPasswords] = useState(false);
 
@@ -184,18 +184,11 @@ const SignUpForm = (props) => {
             if (newUser.username.length >= inputRules.username.minLength) {
                 if (newUser.password.length >= inputRules.password.minLength) {
                     if (identicalPasswords) {
-                        if (newUser.image.length !== 0) {
+                        const response = await userDataContext.registerNewUserFunc(newUser);
+                        if (response.status !== 201) {
 
-
-                            const response = await userDataContext.registerNewUserFunc(newUser);
-                            if (response.status !== 201) {
-
-                                toSetInAlertMessages.email = { show: true, content: response.data };
-                                toSetInAlertMessages.genericForm = { show: true, content: response.data }
-                            }
-
-                        } else {
-                            toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                            toSetInAlertMessages.email = { show: true, content: response.data };
+                            toSetInAlertMessages.genericForm = { show: true, content: response.data }
                         }
                     } else {
                         toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
