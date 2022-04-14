@@ -1,15 +1,19 @@
 {
-    "expo":{
-        "name":"Tick It Off!",
-        "slug":"Tick-It-Off",
-        "scheme":"tick",
-        "icon":"./img/icon.png",
-        "splash":{
-            "image":"./img/logo/logo-full-color.png",
-            "backgroundColor":"#FFFFFF",
-            "resizeMode":"contain"
-        },
-        "orientation":"portrait",
-        "primaryColor":"#1A78CC"
+  "expo": {
+    "name": "Tick It Off!",
+    "slug": "Tick-it-off",
+    "owner": "psychemax",
+    "scheme": "tick",
+    "icon": "./img/icon.png",
+    "splash": {
+      "image": "./img/logo/logo-full-color.png",
+      "backgroundColor": "#FFFFFF",
+      "resizeMode": "contain"
+    },
+    "orientation": "portrait",
+    "primaryColor": "#1A78CC",
+    "android": {
+      "package": "com.psychemax.Tickitoff"
     }
+  }
 }

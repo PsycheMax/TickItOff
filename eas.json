@@ -1,0 +1,38 @@
+{
+  "cli": {
+    "version": ">= 0.50.0"
+  },
+  "build": {
+    "preview": {
+      "env":{
+            "API_SERVER": "http://maxpace.ns0.it:2001"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview2": {
+      "env":{
+            "API_SERVER": "http://maxpace.ns0.it:2001"
+      },
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "env":{
+            "API_SERVER": "http://maxpace.ns0.it:2001"
+      },
+      "developmentClient": true
+    },
+    "production": {
+
+      "env":{
+            "API_SERVER": "http://maxpace.ns0.it:2001"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
