@@ -225,13 +225,13 @@ const LoginForm = (props) => {
                         />
                     </View>
 
-                    <View style={styles.buttonContainer}>
+                    {/* <View style={styles.buttonContainer}>
                         <Button
                             title='AdminLogin' color={theme.colors.tertiary[600]}
                             accessibilityLabel="Submit Form for user creation"
                             onPress={handleAdminLogin}
                         />
-                    </View>
+                    </View> */}
 
                 </View>
 
