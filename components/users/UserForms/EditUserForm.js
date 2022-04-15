@@ -124,10 +124,6 @@ const EditUserForm = (props) => {
             show: false,
             content: "Alert goes here"
         },
-        image: {
-            show: false,
-            content: "Alert goes here"
-        },
         username: {
             show: false,
             content: "Alert goes here"
@@ -154,9 +150,6 @@ const EditUserForm = (props) => {
             show: true,
             content: `Username must be at least ${inputRules.username.minLength} characters long`
         } : toSetInAlertMessages.username = { show: false, content: "Alert goes here" };
-        patchedUser.image.length === 0 ? toSetInAlertMessages.image = {
-            show: true, content: "Image cannot be empty"
-        } : toSetInAlertMessages.image = { show: false, content: "Alert goes here" };
         if (patchedUser.password.length !== 0 && patchedUser.passwordRepeat.length !== 0) {
             patchedUser.password.length < inputRules.password.minLength ? toSetInAlertMessages.password = {
                 show: true,
@@ -199,30 +192,26 @@ const EditUserForm = (props) => {
             if (patchedUser.username.length >= inputRules.username.minLength) {
                 if ((patchedUser.password.length === 0 && patchedUser.passwordRepeat.length === 0) || patchedUser.password.length >= inputRules.password.minLength) {
                     if (identicalPasswords) {
-                        if (patchedUser.image.length !== 0) {
-                            const response = await userDataContext.patchUserFunc(patchedUser, userDataContext.userData._id);
-                            if (response.status !== 200) {
-                                switch (response.status) {
-                                    case 401:
-                                        toSetInAlertMessages.oldPassword = { show: true, content: response.data, success: false };
-                                        toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
-                                        break;
-                                    case 403:
-                                        toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
-                                        break;
-                                    case 404:
-                                        toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
-                                        break;
-                                    case 500:
-                                    default:
-                                        toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
-                                        break;
-                                }
-                            } else {
-                                toSetInAlertMessages.genericForm = { show: true, content: "You successfully updated your profile", success: true };
+                        const response = await userDataContext.patchUserFunc(patchedUser, userDataContext.userData._id);
+                        if (response.status !== 200) {
+                            switch (response.status) {
+                                case 401:
+                                    toSetInAlertMessages.oldPassword = { show: true, content: response.data, success: false };
+                                    toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
+                                    break;
+                                case 403:
+                                    toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
+                                    break;
+                                case 404:
+                                    toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
+                                    break;
+                                case 500:
+                                default:
+                                    toSetInAlertMessages.genericForm = { show: true, content: response.data, success: false };
+                                    break;
                             }
                         } else {
-                            toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                            toSetInAlertMessages.genericForm = { show: true, content: "You successfully updated your profile", success: true };
                         }
                     } else {
                         toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };

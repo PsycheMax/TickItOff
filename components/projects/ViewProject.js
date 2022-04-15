@@ -90,6 +90,9 @@ const ViewProject = (props) => {
         paddingLeft: {
             paddingLeft: 12
         },
+        marginTop: {
+            marginTop: 18
+        },
         formContainer: {
 
         },
@@ -196,15 +199,15 @@ const ViewProject = (props) => {
             if (response.status !== 204) {
                 // ERROR
                 // toSetInAlertMessages.genericForm = { show: true, content: response.data };
-                props.navigation.push('Home');
+                props.navigation.navigate('Home');
             } else {
                 // Code 204!
-                props.navigation.push('Home');
+                props.navigation.navigate('Home');
 
             }
         } else {
             // Code 200
-            props.navigation.push('Home');
+            props.navigation.navigate('Home');
         }
         setShowDeletePrompt(false);
     }
@@ -236,14 +239,14 @@ const ViewProject = (props) => {
             if (response.status !== 204) {
                 // ERROR
                 // toSetInAlertMessages.genericForm = { show: true, content: response.data };
-                props.navigation.push('Home');
+                props.navigation.navigate('Home');
             } else {
                 // Code 204!
-                props.navigation.push('Home');
+                props.navigation.navigate('Home');
             }
         } else {
             // Code 200
-            props.navigation.push('Home');
+            props.navigation.navigate('Home');
         }
         setShowDeletePrompt(false);
     }
@@ -298,19 +301,21 @@ const ViewProject = (props) => {
 
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
-        ProjectData._id === undefined
+        isFetchDone
             ? <>
                 <LoadingSpinner marginTop={"5%"} />
-                <View style={styles.redirectMessage}>
-                    <Text>
-                        The page you are trying to open is pointing to a non-existing project - you'll be redirected to the homepage soon.
-                    </Text>
-                    <TouchableOpacity onPress={goToHomePage} >
+                {isFetchGoneWrong ?
+                    <View style={styles.redirectMessage}>
                         <Text>
-                            If you want to go to the homepage now, please click here.
+                            The page you are trying to open is pointing to a non-existing project - you'll be redirected to the homepage soon.
                         </Text>
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity onPress={goToHomePage} >
+                            <Text>
+                                If you want to go to the homepage now, please click here.
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    : <></>}
             </>
             :
             ProjectData._id !== props.route.params.id ? <LoadingSpinner marginTop={"5%"} /> :
@@ -407,7 +412,7 @@ const ViewProject = (props) => {
                                 tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                             ]}>
                                 <Text style={[
-                                    styles.name, styles.paddingLeft,
+                                    styles.name, styles.paddingLeft, styles.marginTop,
                                     tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}</Text>
                             </View>
                         }}

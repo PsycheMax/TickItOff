@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { ThemeContext } from '../../../utils/ThemeManager';
-import { LoggedUserContext } from '../../../utils/UserManager';
+import { ThemeContext } from '../../utils/ThemeManager';
+import { LoggedUserContext } from '../../utils/UserManager';
 
-import EditUserForm from '../UserForms/EditUserForm';
+import EditUserForm from './UserForms/EditUserForm';
 import { CommonActions } from '@react-navigation/native';
 
 const UserPanel = (props) => {

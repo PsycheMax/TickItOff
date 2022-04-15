@@ -278,14 +278,12 @@ const ViewTask = (props) => {
                     {showEditTaskForm ? <EditTaskForm task={props.task} updateTaskFunc={updateTaskFunc} maxHeight={heightForEditForm} /> :
                         <>
                             <View style={styles.rightColumnTextContainer}>
-                                <Text style={styles.rightColumnTextName}
-                                    lineBreakMode="head" numberOfLines={1}>
+                                <Text style={styles.rightColumnTextName} >
                                     {props.task.name}
                                 </Text>
                                 <View style={styles.detailedTaskContainer}>
                                     <StandardDivider color={theme.colors.tertiary[300]} />
-                                    <Text style={styles.rightColumnTextDescription}
-                                        lineBreakMode="head" numberOfLines={1}>
+                                    <Text style={styles.rightColumnTextDescription} >
                                         {props.task.description && props.task.description.length > 0 ? props.task.description : "Add description"}
                                     </Text>
                                     <StandardDivider color={theme.colors.tertiary[300]} />

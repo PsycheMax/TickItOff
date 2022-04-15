@@ -117,10 +117,6 @@ const SignUpForm = (props) => {
             show: false,
             content: "Alert goes here"
         },
-        image: {
-            show: false,
-            content: "Alert goes here"
-        },
         username: {
             show: false,
             content: "Alert goes here"
@@ -148,9 +144,6 @@ const SignUpForm = (props) => {
             show: true,
             content: `Username must be at least ${inputRules.username.minLength} characters long`
         } : toSetInAlertMessages.username = { show: false, content: "Alert goes here" };
-        newUser.image.length === 0 ? toSetInAlertMessages.image = {
-            show: true, content: "Image cannot be empty"
-        } : toSetInAlertMessages.image = { show: false, content: "Alert goes here" };
         setAlertMessages(toSetInAlertMessages);
     }
 
@@ -189,6 +182,9 @@ const SignUpForm = (props) => {
 
                             toSetInAlertMessages.email = { show: true, content: response.data };
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }
+                        } else {
+                            // Status 201 - user registered successfully!
+                            props.navigation.navigate('Home');
                         }
                     } else {
                         toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };

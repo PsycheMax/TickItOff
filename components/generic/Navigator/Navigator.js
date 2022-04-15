@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
@@ -12,7 +12,7 @@ import UnAuthStack from './UnAuthStack';
 
 export default function Navigator(props) {
 
-    const UserContextManager = useContext(LoggedUserContext);
+    const { isLoggedIn, hasCheckedLocalStorage } = useContext(LoggedUserContext);
 
     const theme = useContext(ThemeContext);
 
@@ -45,11 +45,15 @@ export default function Navigator(props) {
         // prefixes: ['http://192.168.68.131:19006'],
         prefixes: [prefix, 'http://192.168.68.131:19006', 'https://maxpace.net/tickitoff'],
         config: {
-            screens: {
+            screens: isLoggedIn ? {
                 Home: '/',
-                Home: '',
                 ViewProject: "project/:id",
                 UserPanel: "userPanel",
+                404: '*'
+            } : {
+                Home: '/',
+                SignUp: 'SignUp',
+                Login: 'Login',
                 404: '*'
             }
         }
@@ -66,13 +70,13 @@ export default function Navigator(props) {
     function renderNavigator(props) {
         return (
 
-            UserContextManager.hasCheckedLocalStorage
+            hasCheckedLocalStorage
                 ?
                 <NavigationContainer
                     theme={personalizedThemeForNavigator}
                     linking={linking} fallback={<Text>Loading</Text>}
                 >
-                    {UserContextManager.isLoggedIn ?
+                    {isLoggedIn ?
                         <AuthStack />
                         :
                         <UnAuthStack />

@@ -92,13 +92,13 @@ const ProjectSelector = (props) => {
         // Create an object containing a section title, and an array at the key "data", for each category/section.
         let active = {
             data: activeArray,
-            title: "Your active Projects",
+            title: "Active Projects",
             tag: "activeProjects",
             requiresFullHeader: true
         };
         let archived = {
             data: archivedArray,
-            title: "Your archived Projects",
+            title: "Archived Projects",
             tag: "archivedProjects",
             requiresFullHeader: false
         };
