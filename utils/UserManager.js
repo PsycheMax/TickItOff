@@ -25,6 +25,7 @@ const UserManager = (props) => {
     useEffect(async () => {
         if (loggedUserData !== undefined) {
             await setInStorage('loggedUserData', loggedUserData);
+            if (!isLoggedIn) { setIsLoggedIn(true) }
         } else {
             return setIsLoggedIn(false);
         }
@@ -121,6 +122,7 @@ const UserManager = (props) => {
             setLoggedUserData({
                 ...toSetInState
             });
+            setIsLoggedIn(true);
             return response;
         } else {
             console.log("NOT stat 201");

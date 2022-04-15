@@ -16,6 +16,7 @@ export default function UnAuthStack(props) {
         >
             <Stack.Screen name="SplashScreen" component={SplashScreen} />
             <Stack.Screen name="Home" component={LoginForm} />
+            <Stack.Screen name="Login" component={LoginForm} />
             <Stack.Screen name="SignUp" component={SignUpForm} />
             <Stack.Screen name='404' component={Page404} />
 

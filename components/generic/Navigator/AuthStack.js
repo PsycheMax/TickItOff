@@ -6,10 +6,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ThemeContext } from '../../../utils/ThemeManager';
 import { LoggedUserContext } from '../../../utils/UserManager';
 
-import ProfilePicture from '../../users/UserPanel/ProfilePicture';
+import ProfilePicture from '../../users/ProfilePicture';
 import ProjectSelector from '../../projects/ProjectSelector';
 import ViewProject from '../../projects/ViewProject';
-import UserPanel from '../../users/UserPanel/UserPanel';
+import UserPanel from '../../users/UserPanel';
 import Page404 from '../Page404';
 
 export default function AuthStack(props) {

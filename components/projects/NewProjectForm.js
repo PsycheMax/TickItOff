@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { ProjectContext } from '../../utils/ProjectManager';
 import { ThemeContext } from '../../utils/ThemeManager';
+import { useNavigation } from '@react-navigation/native';
 
 const inputRules = {
     name: {
@@ -23,6 +24,7 @@ const inputRules = {
 const NewProjectForm = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
+    const navigator = useNavigation();
 
     const [newProject, setNewProject] = useState({ name: "", description: "" });
 
@@ -123,8 +125,9 @@ const NewProjectForm = (props) => {
                 } else {
                     // The project has already been set by the Projectfunction CreateProjectFunc function
                     props.updateProjectSelectorFunc();
-                    newProject = { name: "", description: "" };
-                    props.navigation.navigate('ViewProject');
+                    console.log(response.data)
+                    setNewProject({ name: "", description: "" });
+                    navigator.navigate('ViewProject', { id: response.data._id });
                 }
             } else {
                 toSetInAlertMessages.genericForm = { show: true, content: `Descriptions must be at least ${inputRules.description.minLength} characters long` };
