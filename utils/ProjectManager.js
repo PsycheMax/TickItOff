@@ -85,7 +85,7 @@ const ProjectManager = (props) => {
         let response = await axiosPost(`/project`, { newProject }, loggedUserData.token);
         if (response.status === 201) {
             console.log("Status 201");
-            setCurrentProjectData(response.data);
+            await setCurrentProjectData(response.data);
             return response;
         } else {
             console.log("Status not 200");
@@ -171,6 +171,7 @@ const ProjectManager = (props) => {
         let response = await axiosPost(`/project/${projectID}/task`, { newTask }, loggedUserData.token);
         if (response.status === 201) {
             console.log("Status 201");
+            await reloadCurrentProjectDataFunc();
             return response;
         } else {
             console.log("Status not 200");
@@ -188,6 +189,7 @@ const ProjectManager = (props) => {
         let response = await axiosPatch(`/project/${projectID}/task/${taskID}`, { patchedTask }, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
+            await reloadCurrentProjectDataFunc();
             return response;
         } else {
             console.log("Status not 200");
@@ -204,6 +206,7 @@ const ProjectManager = (props) => {
         let response = await axiosDelete(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
+            await reloadCurrentProjectDataFunc();
             return response;
         } else {
             console.log("Status not 200");
@@ -220,6 +223,7 @@ const ProjectManager = (props) => {
         let response = await axiosDelete(`/project/${projectID}/task/permanentlyDelete/${taskID}`, loggedUserData.token);
         if (response.status === 200) {
             console.log("Status 200");
+            await reloadCurrentProjectDataFunc();
             return response;
         } else {
             console.log("Status not 200");

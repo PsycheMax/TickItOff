@@ -27,6 +27,7 @@ const NewTaskForm = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
 
     const [newTask, setNewTask] = useState({ name: "", description: "", active: true, completion: false, image: "" });
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
 
     const [alertMessages, setAlertMessages] = useState({
         genericForm: {
@@ -34,7 +35,6 @@ const NewTaskForm = (props) => {
             content: "Alert goes here"
         }
     })
-
 
     const theme = useContext(ThemeContext);
 
@@ -117,6 +117,7 @@ const NewTaskForm = (props) => {
     }
 
     async function handleSubmit() {
+        setIsWaitingForAPI(true);
         let toSetInAlertMessages = {};
         toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
         if (newTask.name.length >= inputRules.name.minLength) {
@@ -130,7 +131,6 @@ const NewTaskForm = (props) => {
                     // SUCCESS HERE
                     setNewTask({ name: "", description: "", active: true, completion: false, image: "" });
                     toSetInAlertMessages = { genericForm: { show: false, content: "Alert goes here" } };
-                    await ProjectFunctions.reloadCurrentProjectDataFunc();
                 }
             } else {
                 toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task description should be at least ${inputRules.description.minLength} characters long` };
@@ -139,6 +139,7 @@ const NewTaskForm = (props) => {
             toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task name should be at least ${inputRules.name.minLength} characters long` };
         }
         setAlertMessages(toSetInAlertMessages);
+        setIsWaitingForAPI(false);
     }
 
     return (
@@ -153,7 +154,7 @@ const NewTaskForm = (props) => {
                     </View>
                     <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit} >
                         <View style={styles.button}>
-                            <MaterialIcons style={styles.buttonIcon} name="playlist-add" size={32} />
+                            <MaterialIcons style={styles.buttonIcon} name={isWaitingForAPI ? 'update' : 'playlist-add'} size={32} />
                         </View>
                     </TouchableOpacity>
                 </View>

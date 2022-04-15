@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { Pressable, StyleSheet, TextInput, TouchableOpacity, View, Text, Alert, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { ProjectContext } from '../../utils/ProjectManager';
-import { ThemeContext } from '../../utils/ThemeManager';
+import { ProjectContext } from '../../../utils/ProjectManager';
+import { ThemeContext } from '../../../utils/ThemeManager';
 import { useNavigation } from '@react-navigation/native';
 
 const inputRules = {
@@ -27,6 +27,7 @@ const NewProjectForm = (props) => {
     const navigator = useNavigation();
 
     const [newProject, setNewProject] = useState({ name: "", description: "" });
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
 
     const [alertMessages, setAlertMessages] = useState({
         genericForm: {
@@ -115,6 +116,7 @@ const NewProjectForm = (props) => {
     }
 
     async function handleSubmit() {
+        setIsWaitingForAPI(true);
         let toSetInAlertMessages = {};
         toSetInAlertMessages.genericForm = { show: true, content: "Please fill the form correctly" }
         if (newProject.name.length >= inputRules.name.minLength) {
@@ -124,9 +126,9 @@ const NewProjectForm = (props) => {
                     toSetInAlertMessages.genericForm = { show: true, content: response.data }
                 } else {
                     // The project has already been set by the Projectfunction CreateProjectFunc function
-                    props.updateProjectSelectorFunc();
                     console.log(response.data)
                     setNewProject({ name: "", description: "" });
+                    toSetInAlertMessages = {};
                     navigator.navigate('ViewProject', { id: response.data._id });
                 }
             } else {
@@ -136,6 +138,7 @@ const NewProjectForm = (props) => {
             toSetInAlertMessages.genericForm = { show: true, content: `Name must be at least ${inputRules.name.minLength} characters long` };
         }
         setAlertMessages(toSetInAlertMessages);
+        setIsWaitingForAPI(false);
     }
 
     return (
@@ -159,7 +162,7 @@ const NewProjectForm = (props) => {
                     <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} >
 
                         <MaterialIcons style={styles.submitLogo}
-                            name="playlist-add"
+                            name={isWaitingForAPI ? 'update' : 'playlist-add'}
                             size={Platform.OS === "web" ? 48 : 28} />
 
                     </TouchableOpacity>

@@ -108,6 +108,8 @@ const SignUpForm = (props) => {
     const [showPassword, setShowPassword] = useState(false);
     const [identicalPasswords, setIdenticalPasswords] = useState(false);
 
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
+
     const [alertMessages, setAlertMessages] = useState({
         email: {
             show: false,
@@ -172,6 +174,7 @@ const SignUpForm = (props) => {
 
 
     async function handleRegistration() {
+        setIsWaitingForAPI(true);
         let toSetInAlertMessages = alertMessages;
         if (newUser.email.length >= inputRules.email.minLength) {
             if (newUser.username.length >= inputRules.username.minLength) {
@@ -187,20 +190,20 @@ const SignUpForm = (props) => {
                             props.navigation.navigate('Home');
                         }
                     } else {
-                        toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                        toSetInAlertMessages.genericForm = { show: true, content: "The password must be repeated correctly" };
                     }
                 } else {
-                    toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                    toSetInAlertMessages.genericForm = { show: true, content: `The password is too short. Please make it at least ${inputRules.password.minLength} characters long` };
                 }
             } else {
-                toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+                toSetInAlertMessages.genericForm = { show: true, content: `The username is too short. Please make it at least ${inputRules.username.minLength} characters long` };
             }
         } else {
-            toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
+            toSetInAlertMessages.genericForm = { show: true, content: `The email address is too short. Please make it at least ${inputRules.email.minLength} characters long` };
         }
         setAlertMessages(toSetInAlertMessages);
+        setIsWaitingForAPI(false);
         checkFields();
-
     }
 
     function handleLinkClick() {
@@ -296,7 +299,8 @@ const SignUpForm = (props) => {
 
                         <View style={styles.buttonContainer}>
                             <Button
-                                title='Create new account' color={theme.colors.tertiary[600]}
+                                title={isWaitingForAPI ? 'Please wait' : 'Create new account'}
+                                color={theme.colors.tertiary[600]}
                                 accessibilityLabel="Submit Form for user creation"
                                 onPress={handleRegistration}
                             />

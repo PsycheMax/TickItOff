@@ -6,21 +6,24 @@ import LoadingSpinner from '../generic/LoadingSpinner';
 import { CommonActions } from '@react-navigation/native';
 import SectionListProject from './SectionListProject';
 
-const ViewProject = (props) => {
+const ViewProjectBCK = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
 
     const [sortBy, setSortBy] = useState({ ascending: true, fieldToSortBy: "creationDate" });
+
+    const [processedProjectData, setProcessedProjectData] = useState(processProjectDataForSectionList());
+
+    const [wasDataFetched, setWasDataFetched] = useState(false);
+    const [fetchHasErrors, setFetchHasErrors] = useState(false);
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
-    const [hasDataBeenFetched, setHasDataBeenFetched] = useState(false);
-    const [fetchHasErrors, setFetchHasErrors] = useState(false);
-
+    const [requiresUpdate, setRequiresUpdate] = useState(false);
 
     const styles = StyleSheet.create({
         redirectMessage: {
-            display: "flex",
+            display: fetchHasErrors ? "flex" : "none",
             justifyContent: "center",
             alignItems: "center",
             marginTop: 20
@@ -140,59 +143,89 @@ const ViewProject = (props) => {
         props.navigation.navigate('Home');
     }
 
+    const artificialNavState = {
+        "stale": true,
+        "routes": [
+            {
+                "name": "Home"
+            },
+            {
+                "name": "ViewProject",
+                "params": { "id": props.route.params.id }
+            }
+        ]
+    }
 
-    // useEffect(() => {
-    //     props.navigation.dispatch(CommonActions.reset(artificialNavState));
-    // }, [])
+    useEffect(() => {
+        if (wasDataFetched) {
+            props.navigation.dispatch(CommonActions.reset(artificialNavState));
+        }
+    }, [wasDataFetched])
+
+    useEffect(() => {
+        processProjectDataForSectionList();
+    }, [])
 
     useEffect(async () => {
-        if (!hasDataBeenFetched) {
-            const response = await ProjectFunctions.setCurrentProjectDataFunc(props.route.params.id);
-            if (response.status === 200) {
-                setHasDataBeenFetched(true);
-            } else {
-                setFetchHasErrors(true);
-                setTimeout(() => {
-                    goToHomePage();
-                }, 1500);
+        if (props.route && props.route.params.id) {
+            if (ProjectData._id === undefined || ProjectData._id !== props.route.params.id) {
+                if (requiresUpdate) {
+
+
+                    const response = await ProjectFunctions.setCurrentProjectDataFunc(props.route.params.id);
+                    if (response.status !== 200) {
+                        setFetchHasErrors(true);
+                        setTimeout(() => {
+                            goToHomePage();
+                        }, 1500);
+                    } else {
+                        setWasDataFetched(true);
+                    }
+                    setRequiresUpdate(false);
+                }
             }
-        } else {
-            await ProjectFunctions.reloadCurrentProjectDataFunc();
         }
-    }, [])
+
+
+    })
 
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
-        !hasDataBeenFetched ? <>
-            <LoadingSpinner marginTop={"5%"} />
-            {fetchHasErrors ?
-                <View style={styles.redirectMessage}>
-                    <Text>
-                        The page you are trying to open is pointing to a non-existing project - you'll be redirected to the homepage soon.
-                    </Text>
-                    <TouchableOpacity onPress={goToHomePage} >
+        wasDataFetched
+            ? <>
+                <LoadingSpinner marginTop={"5%"} />
+                {fetchHasErrors ?
+                    <View style={styles.redirectMessage}>
                         <Text>
-                            If you want to go to the homepage now, please click here.
+                            The page you are trying to open is pointing to a non-existing project - you'll be redirected to the homepage soon.
                         </Text>
-                    </TouchableOpacity>
-                </View>
-                : <></>}
-        </> :
-            <SectionListProject
-                ProjectData={ProjectData}
-                processedProjectData={processProjectDataForSectionList()}
+                        <TouchableOpacity onPress={goToHomePage} >
+                            <Text>
+                                If you want to go to the homepage now, please click here.
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    : <></>}
+            </>
+            :
+            ProjectData._id !== props.route.params.id ? <LoadingSpinner marginTop={"5%"} /> :
 
-                processFunctions={{
-                    handleProjectPermanentDeletion: handleProjectPermanentDeletion,
-                    handleProjectDeactivation: handleProjectDeactivation,
-                    handleProjectReactivation: handleProjectReactivation
-                }}
+                <SectionListProject
+                    ProjectData={ProjectData}
+                    processedProjectData={processedProjectData}
 
-                sortBy={sortBy} setSortBy={setSortBy}
-                showDeletePrompt={showDeletePrompt} setShowDeletePrompt={setShowDeletePrompt}
+                    processFunctions={{
+                        handleProjectPermanentDeletion: handleProjectPermanentDeletion,
+                        handleProjectDeactivation: handleProjectDeactivation,
+                        handleProjectReactivation: handleProjectReactivation
+                    }}
 
-            />
+                    sortBy={sortBy} setSortBy={setSortBy}
+                    showDeletePrompt={showDeletePrompt} setShowDeletePrompt={setShowDeletePrompt}
+                    setRequiresUpdate={setRequiresUpdate}
+
+                />
     )
 }
 
-export default ViewProject;
+export default ViewProjectBCK;

@@ -111,6 +111,8 @@ const EditUserForm = (props) => {
     const [showPassword, setShowPassword] = useState(false);
     const [identicalPasswords, setIdenticalPasswords] = useState(false);
 
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
+
     const [alertMessages, setAlertMessages] = useState({
         email: {
             show: false,
@@ -186,6 +188,7 @@ const EditUserForm = (props) => {
 
 
     async function handlePatching() {
+        setIsWaitingForAPI(true);
         let toSetInAlertMessages = alertMessages;
         toSetInAlertMessages.genericForm = { show: false, content: "Alert goes here" };
         if (patchedUser.email.length >= inputRules.email.minLength) {
@@ -227,6 +230,7 @@ const EditUserForm = (props) => {
         }
         setAlertMessages(toSetInAlertMessages);
         checkFields();
+        setIsWaitingForAPI(false);
     }
 
     return (
@@ -338,7 +342,7 @@ const EditUserForm = (props) => {
 
                     <View style={styles.buttonContainer}>
                         <Button
-                            title='Save changes' color={theme.colors.tertiary[600]}
+                            title={isWaitingForAPI ? 'Please wait' : 'Save changes'} color={theme.colors.tertiary[600]}
                             accessibilityLabel="Submit form to edit your user account"
                             onPress={handlePatching}
                         />

@@ -1,0 +1,388 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Modal, Platform, Pressable, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
+
+import { ProjectContext } from '../../utils/ProjectManager';
+import { ThemeContext } from '../../utils/ThemeManager';
+import ViewTask from '../tasks/ViewTask';
+import NewTaskForm from '../tasks/NewTaskForm';
+import EditProjectForm from './forms/EditProjectForm';
+import StandardDivider from '../generic/StandardDivider';
+import { Picker } from '@react-native-picker/picker';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+
+const SectionListProject = (props) => {
+
+    const theme = useContext(ThemeContext);
+
+    const navigation = useNavigation();
+
+    const ProjectFunctions = useContext(ProjectContext);
+
+    const { ProjectData, processedProjectData, sortBy, setSortBy, showDeletePrompt, setShowDeletePrompt } = props;
+
+    const { handleProjectDeactivation, handleProjectPermanentDeletion, handleProjectReactivation } = props.processFunctions;
+
+    const [showProjectEditForm, setShowProjectEditForm] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const styles = StyleSheet.create({
+        maxWidth: {
+            maxWidth: theme.dimensions.screenWidth,
+            width: theme.dimensions.screenWidth,
+            minWidth: theme.dimensions.screenWidth,
+            alignSelf: "center"
+        },
+        columnContainer: {
+            flexDirection: "column"
+        },
+        rowContainer: {
+            flexDirection: "row"
+        },
+        darkText: {
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[700],
+        },
+        whiteText: {
+            color: theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.secondary[50],
+        },
+        spaceBetween: {
+            alignContent: "space-between",
+            justifyContent: "space-between"
+        },
+        centered: {
+            justifyContent: "center",
+            alignItems: "center"
+        },
+        mainHMarginSize: {
+            marginHorizontal: 18
+        },
+        mainHPaddingSize: {
+            paddingHorizontal: 18
+        },
+        topSection: {
+            // minHeight: methods.moderateVerticalScale(48),
+            justifyContent: "space-between",
+            alignContent: "space-between"
+        },
+        nameContainer: {
+            flexGrow: 8,
+            maxWidth: "87%",
+            minWidth: "87%"
+        },
+        buttonsContainer: {
+            flexGrow: 1,
+            minWidth: "10%"
+        },
+        name: {
+            fontSize: 32,
+            fontWeight: "700"
+        },
+        description: {
+            fontSize: 18,
+            fontWeight: "500"
+        },
+        projectIcons: {
+            width: 32 - 1,
+            height: 32 - 1
+        },
+        paddingLeft: {
+            paddingLeft: 12
+        },
+        marginTop: {
+            marginTop: 18
+        },
+        formContainer: {
+
+        },
+        showOnProjectEditForm: {
+            display: showProjectEditForm ? "flex" : "none"
+        },
+        hideOnProjectEditForm: {
+            display: showProjectEditForm ? "none" : "flex"
+        },
+        projectListContainer: {
+            marginTop: 16,
+            maxWidth: "100%",
+            width: "100%",
+            minWidth: "100%",
+        },
+        archivedTasksList: {
+            borderRadius: 32,
+            paddingHorizontal: 18,
+            // paddingVertical: 18,
+        },
+        showOnArchivedTasks: {
+            display: "flex"
+        },
+        activeListContainerBG: {
+            // backgroundColor: theme.colors.secondary[50],
+        },
+        archivedListContainerBG: {
+            backgroundColor: theme.colorScheme === "dark" ? theme.colors.primary[200] : theme.colors.primary[800]
+        },
+        bottomListContainer: {
+            paddingBottom: 32,
+            height: 32,
+            maxHeight: 32,
+            minHeight: 32,
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+        },
+        topListContainer: {
+            // paddingTop: 32,
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
+        },
+        orderSelectionContainer: {
+            // backgroundColor: "red",
+            width: "100%",
+            minWidth: "100%",
+            justifyContent: "space-between",
+            alignItems: "center"
+        },
+        leftColumnTitle: {
+            maxWidth: "65%",
+            minWidth: "65%",
+            width: "65%",
+        },
+        rightColumnTitle: {
+            maxWidth: "50%",
+            minWidth: Platform.OS === "web" ? 100 : "35%",
+            width: "20%",
+        },
+        picker: {
+            borderColor: theme.colors.transparent[50],
+            color: theme.colors.primary[700],
+            marginVertical: Platform.OS === "web" ? 5 : -10,
+        },
+        ...theme.styles.modal
+    })
+
+    async function toggleEditProjectForm() {
+        setShowProjectEditForm(!showProjectEditForm);
+        if (showProjectEditForm === false) {
+            // await reloadAndProcessProjectData();
+        }
+    }
+
+    function toggleDeletePrompt() {
+        setShowDeletePrompt(!showDeletePrompt);
+    }
+
+    async function onRefreshFunction() {
+        setIsRefreshing(true);
+        ProjectFunctions.reloadCurrentProjectDataFunc().then((result) => { setIsRefreshing(false) });
+    }
+
+
+
+    // const artificialNavState = {
+    //     "stale": true,
+    //     "routes": [
+    //         {
+    //             "name": "Home"
+    //         },
+    //         {
+    //             "name": "ViewProject",
+    //             "params": { "id": ProjectData._id }
+    //         }
+    //     ]
+    // }
+    // useEffect(() => {
+    //     // It checks the navigation state
+    //     let navState = navigation.getState();
+    //     // IF the navigation state is not as "artificialNavState" (when it comes to pages visited)
+    //     if (navState.routes.length === 1) {
+    //         // It sets a new state, corresponding to the wanted NavigationState
+    //         navigation.reset(artificialNavState);
+    //         // navigation.dispatch((state) => {
+    //         //     return CommonActions.reset(artificialNavState);
+
+    //         // })
+    //     }
+    // }, []);
+
+
+    // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
+    return (
+        <View style={styles.maxWidth}>
+            <SectionList
+                //The data is obtained by a method that parses the ProjectData in a SectionList readable form
+                sections={processedProjectData}
+
+                onRefresh={onRefreshFunction}
+                refreshing={isRefreshing}
+
+                // This is the header of this whole component
+                renderSectionHeader={({ section: { title, data, tag, requiresFullHeader } }) => {
+                    // The following if statement creates the header only if the data array being represented is the first one, the "active" array
+                    if (requiresFullHeader) {
+                        return <>
+                            <View style={[styles.columnContainer, styles.mainHMarginSize]}>
+                                <View style={[styles.columnContainer, styles.topSection, styles.hideOnProjectEditForm]}>
+                                    <View style={[styles.rowContainer, styles.spaceBetween]}>
+                                        <View style={[styles.nameContainer]}>
+                                            <Text style={[styles.name, styles.darkText]}>
+                                                {ProjectData.name}
+                                            </Text>
+                                        </View>
+                                        <View style={[styles.rowContainer, styles.buttonsContainer]}>
+                                            <View style={[styles.centered]}>
+                                                {ProjectData.active ?
+                                                    <Pressable onPress={toggleEditProjectForm} >
+                                                        <MaterialIcons name="edit" size={32}
+                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                        />
+                                                    </Pressable>
+                                                    : <Pressable onPress={handleProjectReactivation}>
+                                                        <MaterialIcons name="power" size={32}
+                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                        />
+                                                    </Pressable>
+                                                }
+                                            </View>
+                                            <View style={styles.centered}>
+                                                <Pressable onPress={toggleDeletePrompt} >
+                                                    <MaterialIcons name="delete-outline" size={32}
+                                                        color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                    />
+                                                </Pressable>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <StandardDivider color={theme.colors.tertiary[500]} />
+                                    <Text style={[styles.description, styles.darkText]}>
+                                        {ProjectData.description}
+                                    </Text>
+                                    <StandardDivider color={theme.colors.tertiary[500]} />
+                                    <Text style={[styles.description, styles.darkText]}>
+                                        <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
+                                    </Text>
+                                    <Text style={[styles.description, styles.darkText]}>
+                                        <MaterialIcons name="edit" size={18} />: {ProjectData.modificationDate}
+                                    </Text>
+                                </View>
+
+                                <View style={[styles.columnContainer, styles.formContainer, styles.showOnProjectEditForm]} >
+                                    <EditProjectForm toggleFormFunc={toggleEditProjectForm} />
+                                    <StandardDivider color={theme.colors.tertiary[500]} />
+                                    <Text style={[styles.description, styles.darkText]}>
+                                        <MaterialIcons name="more-time" size={18} />:{ProjectData.creationDate}
+                                    </Text>
+                                    <Text style={[styles.description, styles.darkText]}>
+                                        <MaterialIcons name="edit" size={18} />: {ProjectData.modificationDate}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={[
+                                styles.projectListContainer, styles.topListContainer,
+                                tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
+                            ]}>
+
+                                <View style={[styles.rowContainer, styles.orderSelectionContainer]}>
+                                    <View style={[styles.leftColumnTitle]} >
+                                        <Text style={[
+                                            styles.name,
+                                            styles.paddingLeft,
+                                            tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}
+                                        </Text>
+                                    </View>
+                                    <View style={[styles.rightColumnTitle]} >
+                                        <Picker selectedValue={sortBy.fieldToSortBy} mode="dropdown"
+                                            style={[styles.picker]}
+                                            onValueChange={(itemValue, itemIndex) => {
+                                                setSortBy({ ascending: sortBy.ascending, fieldToSortBy: itemValue })
+                                            }} >
+                                            <Picker.Item label="Name" value="name" />
+                                            <Picker.Item label="Date" value="creationDate" />
+                                            <Picker.Item label="Completion" value="completion" />
+                                        </Picker>
+                                        <Picker selectedValue={sortBy.ascending} mode="dropdown"
+                                            style={[styles.picker]}
+                                            onValueChange={(itemValue, itemIndex) => {
+                                                setSortBy({ ascending: !itemIndex, fieldToSortBy: sortBy.fieldToSortBy })
+                                            }} >
+                                            <Picker.Item label="Ascending" value={true} />
+                                            <Picker.Item label="Descending" value={false} />
+                                        </Picker>
+                                    </View>
+                                </View>
+                                {/* Considering it's the header, the NewTaskForm goes here */}
+                                {ProjectData.active ?
+                                    <View style={styles.mainHPaddingSize}>
+                                        <NewTaskForm />
+                                    </View>
+                                    : <></>}
+
+                            </View>
+                        </>
+                        // For every other category, create a regular heading (after checking what color should be used)
+                    } else return <View style={[
+                        styles.projectListContainer, styles.topListContainer,
+                        tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
+                    ]}>
+                        <Text style={[
+                            styles.name, styles.paddingLeft, styles.marginTop,
+                            tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}</Text>
+                    </View>
+                }}
+
+                // RenderItem is the method that renders every object found in the sections array objects. See above for the JSON format of these objects
+                // Please note that here the BG is dictated by the status of the section: if the section is about active tasks, it'll be lightly colored behind - if archived, dark.
+                renderItem={({ item }) => {
+                    return <View
+                        style={[
+                            styles.mainHPaddingSize,
+                            item.active ? styles.activeListContainerBG : styles.archivedListContainerBG]}>
+                        <ViewTask task={item} />
+                    </View>
+                }}
+
+                // This renders a simple rounded footer for each section
+                renderSectionFooter={({ section: { tag } }) => {
+                    return <View style={[
+                        styles.bottomListContainer,
+                        tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
+                    ]}>
+                    </View>
+                }}
+            />
+
+            {/* The following modal will work both for deletion and reactivation, based on the actual status of the project being viewed */}
+            <Modal visible={showDeletePrompt} transparent={true} >
+                <View style={styles.modalCenteredView}>
+                    <View style={styles.backgroundForModal}>
+                    </View>
+                    <View style={styles.modalWindow}>
+
+                        {/* If the project is active, it asks "want to archive it" otherwise "want to permanently delete it?" */}
+                        {ProjectData.active ? <Text style={styles.modalText} >Want to archive this project?</Text> :
+                            <Text style={styles.modalText} >Want to permanently delete this project? PLEASE note this process is not revertible</Text>}
+
+                        <View style={styles.modalButtonsContainer}>
+                            <TouchableOpacity
+                                // Based on the activation status, it handles the deletion in different ways
+                                onPress={ProjectData.active ? handleProjectDeactivation : handleProjectPermanentDeletion}
+                            >
+                                <View style={[styles.modalButtons, { backgroundColor: theme.colors.tertiary[500] }]}>
+                                    <Text style={styles.modalText} >Yes</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={toggleDeletePrompt}
+                            >
+                                <View style={[styles.modalButtons, { backgroundColor: theme.colors.secondary[500] }]}>
+                                    <Text style={styles.modalText} >No</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                </View>
+
+            </Modal>
+        </View>
+    )
+}
+
+export default SectionListProject;

@@ -3,14 +3,16 @@ import { StyleSheet, View } from 'react-native';
 import { Link } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { MaterialIcons } from '@expo/vector-icons';
+
 import { ThemeContext } from '../../../utils/ThemeManager';
 import { LoggedUserContext } from '../../../utils/UserManager';
 
 import ProfilePicture from '../../users/ProfilePicture';
-import ProjectSelector from '../../projects/ProjectSelector';
-import ViewProject from '../../projects/ViewProject';
+import ProjectSelector from '../../projects/selector/ProjectSelector';
 import UserPanel from '../../users/UserPanel';
 import Page404 from '../Page404';
+import ViewProject from '../../projects/ViewProject';
 
 export default function AuthStack(props) {
 
@@ -31,7 +33,9 @@ export default function AuthStack(props) {
             minHeight: theme.dimensions.windowHeight,
         },
         headerOnWeb: {
-            minHeight: 50
+            minHeight: 50,
+            display: 'flex',
+            flexDirection: 'row'
         },
         header: {
             minHeight: 50,
@@ -50,11 +54,24 @@ export default function AuthStack(props) {
         link: {
             marginRight: 10
         },
+        homeLink: {
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            backgroundColor: theme.colors.secondary[50],
+            minHeight: 50,
+            maxHeight: 50,
+            minWidth: 50,
+            maxWidth: 50,
+            borderRadius: 100
+        },
         emptySpace: {
             minHeight: theme.dimensions.windowHeight * 0.06,
             paddingBottom: theme.dimensions.windowHeight * 0.06,
         }
     })
+
+
 
     function headerTitle({ navigation, route, options, back }) {
 
@@ -63,6 +80,11 @@ export default function AuthStack(props) {
                 {LoggedUserData && LoggedUserData.username
                     ? <ProfilePicture username={LoggedUserData.username} />
                     : <React.Fragment />}
+            </Link>
+            <Link style={[styles.link]} to={{ screen: 'Home' }} >
+                <View style={[styles.homeLink]}>
+                    <MaterialIcons name='home' size={32} color={theme.colors.primary[500]} />
+                </View>
             </Link>
         </View>
     }

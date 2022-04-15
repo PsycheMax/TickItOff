@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, SectionList } from 'react-native';
 
-import { LoggedUserContext } from '../../utils/UserManager';
-import { ProjectContext } from '../../utils/ProjectManager';
-import { ThemeContext } from '../../utils/ThemeManager';
-import NewProjectForm from './NewProjectForm';
-import LoadingSpinner from '../generic/LoadingSpinner';
+import { LoggedUserContext } from '../../../utils/UserManager';
+import { ProjectContext } from '../../../utils/ProjectManager';
+import { ThemeContext } from '../../../utils/ThemeManager';
+import NewProjectForm from '../forms/NewProjectForm';
+import LoadingSpinner from '../../generic/LoadingSpinner';
 import ProjectSelectionButton from './ProjectSelectionButton';
 import { CommonActions } from '@react-navigation/native';
 

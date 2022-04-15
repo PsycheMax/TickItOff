@@ -32,6 +32,8 @@ const EditTaskForm = (props) => {
 
     const [patchedTask, setPatchedTask] = useState({ name: props.task.name, description: props.task.description });
 
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
+
     const [alertMessages, setAlertMessages] = useState({
         genericForm: {
             show: false,
@@ -137,6 +139,7 @@ const EditTaskForm = (props) => {
     }
 
     async function handleSubmit() {
+        setIsWaitingForAPI(true);
         let toSetInAlertMessages = {};
         toSetInAlertMessages.genericForm = { show: true, content: "Please fill in the form correctly" };
         if (patchedTask.name.length >= inputRules.name.minLength) {
@@ -158,6 +161,7 @@ const EditTaskForm = (props) => {
             toSetInAlertMessages.genericForm = { show: true, content: `Please fill in the form correctly - the task name should be at least ${inputRules.name.minLength} characters long` };
         }
         setAlertMessages(toSetInAlertMessages);
+        setIsWaitingForAPI(false);
     }
 
 
@@ -186,7 +190,7 @@ const EditTaskForm = (props) => {
                 <View style={[styles.rightColumn]} >
                     <TouchableOpacity style={styles.rightColumnButtonContainer} onPress={handleSubmit}>
                         <View style={styles.rightColumnButton}>
-                            <MaterialIcons name="edit" size={32} style={styles.rightColumnButtonIcon} color={theme.colors.secondary[50]} />
+                            <MaterialIcons name={isWaitingForAPI ? 'update' : 'edit'} size={32} style={styles.rightColumnButtonIcon} color={theme.colors.secondary[50]} />
                         </View>
                     </TouchableOpacity>
                 </View>

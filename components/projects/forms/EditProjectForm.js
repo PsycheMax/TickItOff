@@ -2,9 +2,9 @@ import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { ProjectContext } from '../../utils/ProjectManager';
-import { ThemeContext } from '../../utils/ThemeManager';
-import StandardDivider from '../generic/StandardDivider';
+import { ProjectContext } from '../../../utils/ProjectManager';
+import { ThemeContext } from '../../../utils/ThemeManager';
+import StandardDivider from '../../generic/StandardDivider';
 
 const inputRules = {
     name: {
@@ -112,6 +112,7 @@ const EditProjectForm = (props) => {
     const ProjectData = ProjectFunctions.currentProjectData;
 
     const [patchedProject, setPatchedProject] = useState({ name: ProjectData.name, description: ProjectData.description });
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
 
     const [alertMessages, setAlertMessages] = useState({
         name: {
@@ -133,6 +134,7 @@ const EditProjectForm = (props) => {
     }
 
     async function handleSubmitEdit() {
+        setIsWaitingForAPI(true);
         let toSetInAlertMessages = {};
         toSetInAlertMessages.genericForm = { show: true, content: "Please fill the form correctly" }
         if (patchedProject.name.length >= inputRules.name.minLength) {
@@ -142,7 +144,7 @@ const EditProjectForm = (props) => {
                     toSetInAlertMessages.genericForm = { show: true, content: response.data }
                 } else {
                     toSetInAlertMessages.genericForm = { show: false, content: "" };
-                    props.toggleFormFunc();
+                    await props.toggleFormFunc();
                 }
             } else {
                 toSetInAlertMessages.genericForm = { show: true, content: "Description not long enough" };
@@ -151,6 +153,7 @@ const EditProjectForm = (props) => {
             toSetInAlertMessages.genericForm = { show: true, content: "Name not long enough" };
         }
         setAlertMessages(toSetInAlertMessages);
+        setIsWaitingForAPI(false);
     }
 
     return (
@@ -175,7 +178,7 @@ const EditProjectForm = (props) => {
             </View>
             <View style={styles.rightColumn}>
                 <TouchableOpacity onPress={handleSubmitEdit} style={styles.submitButton}>
-                    <MaterialIcons style={styles.submitLogo} size={32} name="done" />
+                    <MaterialIcons style={styles.submitLogo} size={32} name={isWaitingForAPI ? 'update' : 'done'} />
                 </TouchableOpacity>
             </View>
         </View>
