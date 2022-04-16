@@ -33,12 +33,12 @@ const ProjectManager = (props) => {
     async function reloadCurrentProjectDataFunc() {
         let response = await axiosGet(`/project/${currentProjectData._id}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("In status 200");
+            console.log("PM - refresh - Status === 200");
             console.log(response.data);
             setCurrentProjectData(response.data);
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - refresh - Status !== 200");
             return response;
         }
     }
@@ -51,11 +51,11 @@ const ProjectManager = (props) => {
     async function setCurrentProjectDataFunc(projectID) {
         let response = await axiosGet(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("In status 200");
+            console.log("PM - set data - Status === 200");
             setCurrentProjectData(response.data);
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - set data - Status !== 200");
             return response;
         }
     }
@@ -68,10 +68,10 @@ const ProjectManager = (props) => {
     async function getProjectDataFunc(projectID) {
         let response = await axiosGet(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("In status 200");
+            console.log("PM - get data - Status === 200");
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - get data - Status !== 200");
             return response;
         }
     }
@@ -84,11 +84,11 @@ const ProjectManager = (props) => {
     async function createProjectFunc(newProject) {
         let response = await axiosPost(`/project`, { newProject }, loggedUserData.token);
         if (response.status === 201) {
-            console.log("Status 201");
+            console.log("PM - create project - Status === 200");
             await setCurrentProjectData(response.data);
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - create project - Status !== 200");
             return response;
         }
     }
@@ -102,11 +102,11 @@ const ProjectManager = (props) => {
     async function patchProjectFunc(projectID, patchedProject) {
         let response = await axiosPatch(`/project/${projectID}`, { patchedProject }, loggedUserData.token);
         if (response.status === 200) {
-            console.log("Status 200");
+            console.log("PM - patch project - Status === 200");
             setCurrentProjectData(response.data);
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - patch project - Status !== 200");
             return response;
         }
     }
@@ -119,11 +119,11 @@ const ProjectManager = (props) => {
     async function deactivateProjectFunc(projectID) {
         let response = await axiosDelete(`/project/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("Status 200");
+            console.log("PM - deactivate project - Status === 200");
             // setCurrentProjectData(null);
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - deactivate project - Status !== 200");
             return response;
         }
     }
@@ -135,11 +135,11 @@ const ProjectManager = (props) => {
     async function permanentlyDeleteProjectFunc(projectID) {
         let response = await axiosDelete(`/project/permanentlyDelete/${projectID}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("Status 200");
+            console.log("PM - delete completely project - Status === 200");
             // setCurrentProjectData(null);
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - delete completely project - Status !== 200");
             return response;
         }
     }
@@ -153,10 +153,10 @@ const ProjectManager = (props) => {
     async function getTaskInProjectFunc(projectID, taskID) {
         let response = await axiosGet(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("In status 200");
+            console.log("PM - get task from project - Status === 200");
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - get task from project - Status !== 200");
             return response;
         }
     }
@@ -170,11 +170,11 @@ const ProjectManager = (props) => {
     async function createTaskInProjectFunc(projectID, newTask) {
         let response = await axiosPost(`/project/${projectID}/task`, { newTask }, loggedUserData.token);
         if (response.status === 201) {
-            console.log("Status 201");
+            console.log("PM - TM - create task in project - Status === 200");
             await reloadCurrentProjectDataFunc();
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - TM - create task in project - Status !== 200");
             return response;
         }
     }
@@ -188,11 +188,11 @@ const ProjectManager = (props) => {
     async function patchTaskInProjectFunc(projectID, taskID, patchedTask) {
         let response = await axiosPatch(`/project/${projectID}/task/${taskID}`, { patchedTask }, loggedUserData.token);
         if (response.status === 200) {
-            console.log("Status 200");
+            console.log("PM - TM - patch task in project - Status === 200");
             await reloadCurrentProjectDataFunc();
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - TM - patch task in project - Status !== 200");
             return response;
         }
     }
@@ -205,11 +205,11 @@ const ProjectManager = (props) => {
     async function deactivateTaskInProjectFunc(projectID, taskID) {
         let response = await axiosDelete(`/project/${projectID}/task/${taskID}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("Status 200");
+            console.log("PM - TM - deactivate task in project - Status === 200");
             await reloadCurrentProjectDataFunc();
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - TM - deactivate task in project - Status !== 200");
             return response;
         }
     }
@@ -222,11 +222,11 @@ const ProjectManager = (props) => {
     async function permanentlyDeleteTaskInProjectFunc(projectID, taskID) {
         let response = await axiosDelete(`/project/${projectID}/task/permanentlyDelete/${taskID}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("Status 200");
+            console.log("PM - TM - delete task from project - Status === 200");
             await reloadCurrentProjectDataFunc();
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("PM - TM - delete task from project - Status !== 200");
             return response;
         }
     }

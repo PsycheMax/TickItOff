@@ -1,9 +1,6 @@
 import axios from 'axios';
-// import dotEnv from "../.env.js";
 
 const APIDestination = "http://maxpace.ns0.it:2001";
-
-// TODO I can change this, make it get the ACCESS TOKEN from the context
 
 export async function axiosGet(pathDestination, accessToken) {
     try {

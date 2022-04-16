@@ -55,7 +55,7 @@ const UserManager = (props) => {
                 console.log(error);
             }
         } else {
-            console.log("NOT FOUND, GOTTA LOGIN");
+            console.log("UM - Local Storage not found");
         }
         setHasCheckedLocalStorage(true);
     }, [])
@@ -82,7 +82,9 @@ const UserManager = (props) => {
             setIsLoggedIn(true);
             return (response);
         } else {
+            await removeStorage('loggedUserData');
             return (response);
+
         }
     }
 
@@ -92,7 +94,6 @@ const UserManager = (props) => {
     async function logoutUserFunc() {
         let response = await axiosPost('/user/logout', {}, loggedUserData.token);
         if (response.status === 200) {
-            await removeStorage('loggedUserData');
             setLoggedUserData({
                 "_id": "",
                 "username": "",
@@ -101,9 +102,11 @@ const UserManager = (props) => {
                 "image": null,
                 "token": ""
             });
+            await removeStorage('loggedUserData');
             setIsLoggedIn(false);
         } else {
-            console.log("NOT stat 200");
+            await removeStorage('loggedUserData');
+            console.log("UM - logout - Status !== 200");
             return response;
         }
     }
@@ -116,7 +119,7 @@ const UserManager = (props) => {
     async function registerNewUserFunc(newUser) {
         let response = await axiosPost('/user', { newUser });
         if (response.status === 201) {
-            console.log("In stat 201");
+            console.log("UM - registerUser - Status === 201");
             let toSetInState = response.data;
             toSetInState.password = "HIDDEN";
             setLoggedUserData({
@@ -125,7 +128,8 @@ const UserManager = (props) => {
             setIsLoggedIn(true);
             return response;
         } else {
-            console.log("NOT stat 201");
+            console.log("UM - registerUser - Status !== 201");
+            console.log("The API Server could be offline - get in touch with the developer to fix this")
             return response;
         }
     }
@@ -139,7 +143,7 @@ const UserManager = (props) => {
     async function patchUserFunc(patchedUser, targetID) {
         let response = await axiosPatch(`/user/${targetID}`, { patchedUser }, loggedUserData.token);
         if (response.status === 200) {
-            console.log("In status 200");
+            console.log("UM - patchUser - Status === 200");
             let toSetInState = response.data;
             toSetInState.password = "Hidden";
             setLoggedUserData({
@@ -147,7 +151,7 @@ const UserManager = (props) => {
             });
             return response;
         } else {
-            console.log("Status not 200");
+            console.log("UM - patchUser - Status !== 200");
             return response;
         }
     }
@@ -168,7 +172,7 @@ const UserManager = (props) => {
     async function updateLoggedUserDataFunc() {
         let response = await axiosGet(`/user/${loggedUserData._id}`, loggedUserData.token);
         if (response.status === 200) {
-            console.log("In Status 200");
+            console.log("UM - refresh - Status === 200");
             let toSetInState = response.data;
             toSetInState.password = "Hidden";
             toSetInState.token = loggedUserData.token;
@@ -176,7 +180,8 @@ const UserManager = (props) => {
                 ...toSetInState
             })
         } else {
-            console.log("Status not 200 - please login again");
+            console.log("UM - refresh - Status !== 200");
+            removeStorage('loggedUserData');
             return response;
         }
 
