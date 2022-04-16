@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal, Platform, Pressable, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ProjectContext } from '../../utils/ProjectManager';
 import LoadingSpinner from '../generic/LoadingSpinner';
-import { CommonActions } from '@react-navigation/native';
 import SectionListProject from './SectionListProject';
 
 const ViewProject = (props) => {
@@ -11,12 +10,13 @@ const ViewProject = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
 
+    // The SortBy state is used to change the way the ProjectData is displayed - it has a boolean (ascending), and the name of the field to use as a sorter for the array.sort function
     const [sortBy, setSortBy] = useState({ ascending: true, fieldToSortBy: "creationDate" });
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
+    // The following states are used to decide what to show, based on the fetching status
     const [hasDataBeenFetched, setHasDataBeenFetched] = useState(false);
     const [fetchHasErrors, setFetchHasErrors] = useState(false);
-
 
     const styles = StyleSheet.create({
         redirectMessage: {
@@ -67,15 +67,7 @@ const ViewProject = (props) => {
             requiresFullHeader: false
         }
         // Return the newly created objects in an array;
-        // setProcessedProjectData([active, archived]);
         return [active, archived];
-    }
-
-
-    async function reloadAndProcessProjectData() {
-        const response = await ProjectFunctions.reloadCurrentProjectDataFunc();
-        setProcessedProjectData(processProjectDataForSectionList());
-        console.log(response);
     }
 
     async function handleProjectDeactivation() {
@@ -140,17 +132,14 @@ const ViewProject = (props) => {
         props.navigation.navigate('Home');
     }
 
-
-    // useEffect(() => {
-    //     props.navigation.dispatch(CommonActions.reset(artificialNavState));
-    // }, [])
-
+    // The following function will be called only when the project is viewed, to reduce the number of useless API calls
     useEffect(async () => {
         if (!hasDataBeenFetched) {
             const response = await ProjectFunctions.setCurrentProjectDataFunc(props.route.params.id);
             if (response.status === 200) {
                 setHasDataBeenFetched(true);
             } else {
+                // In case there are errors, the user gets redirected to the homepage
                 setFetchHasErrors(true);
                 setTimeout(() => {
                     goToHomePage();
@@ -163,21 +152,24 @@ const ViewProject = (props) => {
 
     // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
+        // If the API is taking time to reply, the user is shown a LoadingSpinner
         !hasDataBeenFetched ? <>
             <LoadingSpinner marginTop={"5%"} />
+            {/* In case there are errors with the API call - e.g. a wrong ID in the address bar - the user is shown an error message*/}
             {fetchHasErrors ?
                 <View style={styles.redirectMessage}>
                     <Text>
-                        The page you are trying to open is pointing to a non-existing project - you'll be redirected to the homepage soon.
+                        The page you are trying to open is pointing to a project you cannot open (it's possible you lack authorization, or you're trying to access a non-existing project) - you'll be redirected to the homepage soon.
                     </Text>
                     <TouchableOpacity onPress={goToHomePage} >
                         <Text>
-                            If you want to go to the homepage now, please click here.
+                            If you want to go to the homepage right now, please click on this message.
                         </Text>
                     </TouchableOpacity>
                 </View>
                 : <></>}
         </> :
+            // For readability, I moved the whole SectionList to a different component - even if it has too many props, this file got WAY shorter thanks to this choice
             <SectionListProject
                 ProjectData={ProjectData}
                 processedProjectData={processProjectDataForSectionList()}

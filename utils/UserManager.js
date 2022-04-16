@@ -129,7 +129,7 @@ const UserManager = (props) => {
             return response;
         } else {
             console.log("UM - registerUser - Status !== 201");
-            console.log("The API Server could be offline - get in touch with the developer to fix this")
+            console.log("UM - The API Server could be offline - get in touch with the developer to fix this")
             return response;
         }
     }
@@ -182,6 +182,7 @@ const UserManager = (props) => {
         } else {
             console.log("UM - refresh - Status !== 200");
             removeStorage('loggedUserData');
+            await logoutUserFunc();
             return response;
         }
 

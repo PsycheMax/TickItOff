@@ -116,8 +116,8 @@ const ProjectSelector = (props) => {
         LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) })
     }
 
-    useEffect(() => {
-        LoggedUserFunctions.updateLoggedUserDataFunc();
+    useEffect(async () => {
+        await LoggedUserFunctions.updateLoggedUserDataFunc();
     }, [])
 
     const artificialNavState = { "stale": true, "routes": [{ "name": "Home" }] }

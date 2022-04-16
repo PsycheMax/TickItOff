@@ -56,7 +56,7 @@ ProjectSelectionButton.defaultProps = {
     name: "Project 1",
     description: "Description 1",
     bgColor: undefined,
-    selectProjectFunc: () => { console.log("ProjectSelectionButton pressed") }
+    selectProjectFunc: () => { }
 }
 
 export default ProjectSelectionButton;

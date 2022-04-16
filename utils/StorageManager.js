@@ -17,7 +17,7 @@ export async function getFromStorage(key) {
             let toReturn = JSON.parse(rawStorageData);
             return toReturn;
         } else {
-            console.log("No local storage");
+            console.log("SM - 404");
             return null;
         }
     } catch (error) {
@@ -31,12 +31,13 @@ export async function removeStorage(key) {
             if (error) {
                 console.log(error);
                 AsyncStorage.clear((error) => {
+                    console.log("SM - 500");
                     console.log(error);
                 });
             }
         })
     } catch (error) {
-        console.log("Error in Storage Management");
+        console.log("SM - 500");
         console.log(error);
     }
 }

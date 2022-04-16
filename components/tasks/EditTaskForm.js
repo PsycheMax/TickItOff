@@ -147,10 +147,8 @@ const EditTaskForm = (props) => {
                 const response = await ProjectFunctions.patchTaskInProjectFunc(ProjectFunctions.currentProjectData._id, props.task._id, patchedTask);
 
                 if (response.status !== 200) {
-                    console.log("NOT 200!")
                     toSetInAlertMessages.genericForm = { show: true, content: response.data }
                 } else {
-                    console.log("200")
                     toSetInAlertMessages.genericForm = { show: false, content: "Alert goes here" };
                     await props.updateTaskFunc();
                 }

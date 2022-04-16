@@ -174,36 +174,6 @@ const SectionListProject = (props) => {
         ProjectFunctions.reloadCurrentProjectDataFunc().then((result) => { setIsRefreshing(false) });
     }
 
-
-
-    // const artificialNavState = {
-    //     "stale": true,
-    //     "routes": [
-    //         {
-    //             "name": "Home"
-    //         },
-    //         {
-    //             "name": "ViewProject",
-    //             "params": { "id": ProjectData._id }
-    //         }
-    //     ]
-    // }
-    // useEffect(() => {
-    //     // It checks the navigation state
-    //     let navState = navigation.getState();
-    //     // IF the navigation state is not as "artificialNavState" (when it comes to pages visited)
-    //     if (navState.routes.length === 1) {
-    //         // It sets a new state, corresponding to the wanted NavigationState
-    //         navigation.reset(artificialNavState);
-    //         // navigation.dispatch((state) => {
-    //         //     return CommonActions.reset(artificialNavState);
-
-    //         // })
-    //     }
-    // }, []);
-
-
-    // In order to make it scrollable and efficient, I decided to convert the whole view in a big SectionList. It lacks readability, sadly, but it works better
     return (
         <View style={styles.maxWidth}>
             <SectionList
@@ -287,6 +257,9 @@ const SectionListProject = (props) => {
                                             tag === "activeTasks" ? styles.darkText : styles.whiteText]}>{title}
                                         </Text>
                                     </View>
+
+                                    {/* The following Picker is used in combo with the SortBy state (in this object's parent, ViewProject) to change the way
+                                     tasks are shown to the user. Selecting an item from this droplist changes the SortBy State in this object's parent. */}
                                     <View style={[styles.rightColumnTitle]} >
                                         <Picker selectedValue={sortBy.fieldToSortBy} mode="dropdown"
                                             style={[styles.picker]}
