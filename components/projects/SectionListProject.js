@@ -377,8 +377,9 @@ const SectionListProject = (props) => {
                                                 setSortBy({ ascending: sortBy.ascending, fieldToSortBy: itemValue })
                                             }} >
                                             <Picker.Item label="Name" value="name" />
-                                            <Picker.Item label="Date" value="creationDate" />
                                             <Picker.Item label="Completion" value="completion" />
+                                            <Picker.Item label="Date" value="creationDateParsed" />
+                                            <Picker.Item label="Update" value="modificationDateParsed" />
                                         </Picker>
                                         <Picker selectedValue={sortBy.ascending} mode="dropdown"
                                             style={[styles.picker]}
