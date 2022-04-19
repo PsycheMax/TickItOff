@@ -127,7 +127,12 @@ const NewProjectForm = (props) => {
                 } else {
                     // The project has already been set by the Projectfunction CreateProjectFunc function
                     setNewProject({ name: "", description: "" });
-                    toSetInAlertMessages = {};
+                    toSetInAlertMessages = {
+                        genericForm: {
+                            show: false,
+                            content: "Alert goes here"
+                        }
+                    };
                     navigator.navigate('ViewProject', { id: response.data._id });
                 }
             } else {

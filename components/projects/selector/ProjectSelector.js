@@ -82,10 +82,10 @@ const ProjectSelector = (props) => {
                 archivedArray.push(projectWithKey);
             });
         }
-        // For each project in the UserData.projects.active, add a key to it, and push it in the previously created array
+        // For each project in the UserData.projects.managed, add a key to it, and push it in the previously created array according to its .active status
         if (projects && projects.managed && projects.managed.length !== 0) {
-            projects.managed.forEach(activeProject => {
-                let projectWithKey = { ...activeProject, key: activeProject._id };
+            projects.managed.forEach(project => {
+                let projectWithKey = { ...project, key: project._id };
                 activeArray.push(projectWithKey);
             });
         }
@@ -113,11 +113,12 @@ const ProjectSelector = (props) => {
 
     async function onRefreshFunction() {
         setIsRefreshing(true);
-        LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) })
+        LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) });
     }
 
     useEffect(async () => {
-        await LoggedUserFunctions.updateLoggedUserDataFunc();
+        setIsRefreshing(true);
+        LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) });
     }, [])
 
     const artificialNavState = { "stale": true, "routes": [{ "name": "Home" }] }
@@ -136,7 +137,7 @@ const ProjectSelector = (props) => {
 
     }, [])
 
-    if (UserData._id !== undefined) {
+    if (LoggedUserFunctions.isLoggedIn && !isRefreshing) {
         return (
             <View style={styles.container}>
 
@@ -182,7 +183,7 @@ const ProjectSelector = (props) => {
         )
     } else {
         return (
-            <LoadingSpinner />
+            <LoadingSpinner marginTop={32} />
         );
     }
 

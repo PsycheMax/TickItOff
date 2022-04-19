@@ -5,13 +5,15 @@ import { ProjectContext } from '../../utils/ProjectManager';
 import LoadingSpinner from '../generic/LoadingSpinner';
 import SectionListProject from './SectionListProject';
 
+import date from 'date-and-time';
+
 const ViewProject = (props) => {
 
     const ProjectFunctions = useContext(ProjectContext);
     const ProjectData = ProjectFunctions.currentProjectData;
 
     // The SortBy state is used to change the way the ProjectData is displayed - it has a boolean (ascending), and the name of the field to use as a sorter for the array.sort function
-    const [sortBy, setSortBy] = useState({ ascending: true, fieldToSortBy: "creationDate" });
+    const [sortBy, setSortBy] = useState({ ascending: true, fieldToSortBy: "creationDateParsed" });
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
     // The following states are used to decide what to show, based on the fetching status
@@ -43,16 +45,60 @@ const ViewProject = (props) => {
             activeArray.forEach(task => {
                 task.key = task._id;
             });
-            // The following line sorts the array according to the sortBy state object, where "type"
-            activeArray.sort((a, b) => { return a[sortBy.fieldToSortBy] > b[sortBy.fieldToSortBy] ? (sortBy.ascending ? 1 : -1) : (sortBy.ascending ? -1 : 1) })
+        };
+        try {
+            activeArray.forEach((task) => {
+                // console.log(task.creationDate);
+                let creationDateParsed = date.parse(task.creationDate, "hh:mm A [-] MMM DD YYYY");
+                let modificationDateParsed = date.parse(task.modificationDate, "hh:mm A [-] MMM DD YYYY");
+                // Check date-and-time docs - if the date is invalid, it returns a wrong Date object - to check if it happens, isNaN is used
+                if (isNaN(creationDateParsed)) {
+                    task.creationDateParsed = task.creationDate;
+                } else {
+                    task.creationDateParsed = creationDateParsed;
+                }
+                if (isNaN(modificationDateParsed)) {
+                    task.modificationDateParsed = task.modificationDate;
+                } else {
+                    task.modificationDateParsed = modificationDateParsed;
+                }
+            })
+        } catch (error) {
+            console.log(error);
         }
+
+        // The following line sorts the array according to the sortBy state object, where "type"
+        activeArray.sort((a, b) => { return a[sortBy.fieldToSortBy] > b[sortBy.fieldToSortBy] ? (sortBy.ascending ? 1 : -1) : (sortBy.ascending ? -1 : 1) });
+
         if (ProjectData.archivedTasks && ProjectData.archivedTasks.length > 0) {
             archivedArray = [...ProjectData.archivedTasks];
             archivedArray.forEach(task => {
                 task.key = task._id;
             });
-            archivedArray.sort((a, b) => { return a[sortBy.fieldToSortBy] > b[sortBy.fieldToSortBy] ? (sortBy.ascending ? 1 : -1) : (sortBy.ascending ? -1 : 1) })
         }
+
+        try {
+            archivedTasks.forEach((task) => {
+                // console.log(task.creationDate);
+                let creationDateParsed = date.parse(task.creationDate, "hh:mm A [-] MMM DD YYYY");
+                let modificationDateParsed = date.parse(task.modificationDate, "hh:mm A [-] MMM DD YYYY");
+                // Check date-and-time docs - if the date is invalid, it returns a wrong Date object - to check if it happens, isNaN is used
+                if (isNaN(creationDateParsed)) {
+                    task.creationDateParsed = task.creationDate;
+                } else {
+                    task.creationDateParsed = creationDateParsed;
+                }
+                if (isNaN(modificationDateParsed)) {
+                    task.modificationDateParsed = task.modificationDate;
+                } else {
+                    task.modificationDateParsed = modificationDateParsed;
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+
+        archivedArray.sort((a, b) => { return a[sortBy.fieldToSortBy] > b[sortBy.fieldToSortBy] ? (sortBy.ascending ? 1 : -1) : (sortBy.ascending ? -1 : 1) });
         // Create an object containing a section title, and an array at the key "data", a tag and a boolean requiring the "NewTaskForm" for each category/section.
         let active = {
             data: activeArray,
@@ -79,6 +125,7 @@ const ViewProject = (props) => {
                 props.navigation.navigate('Home');
             } else {
                 // Code 204!
+
                 props.navigation.navigate('Home');
 
             }

@@ -287,7 +287,7 @@ const ViewTask = (props) => {
                                     </Text>
                                     <StandardDivider color={theme.colors.tertiary[300]} />
                                     <Text style={[styles.rightColumnTextDescription]}>
-                                        <MaterialIcons name="more-time" size={18} />:{props.task.creationDate}
+                                        <MaterialIcons name="more-time" size={18} />: {props.task.creationDate}
                                     </Text>
                                     <Text style={[styles.rightColumnTextDescription]}>
                                         <MaterialIcons name="edit" size={18} />: {props.task.modificationDate}

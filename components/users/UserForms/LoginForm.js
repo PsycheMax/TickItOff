@@ -144,7 +144,7 @@ const LoginForm = (props) => {
             const response = await userDataContext.loginUserFunc(loginUser.email, loginUser.password);
             if (response.status !== 200) {
 
-                setAlertMessages({ ...toSetInAlertMessages, genericForm: { show: true, content: response.data } });
+                setAlertMessages({ ...toSetInAlertMessages, genericForm: { show: true, content: response.data.message } });
             } else {
 
                 // props.navigation.navigate('ProjectSelector');
