@@ -34,8 +34,7 @@ const ViewTask = (props) => {
             maxWidth: "100%",
             width: "100%",
             minWidth: "100%",
-            marginVertical: theme.dimensions.methods.moderateVerticalScale(4.8),
-
+            marginVertical: 10,
         },
         leftColumn: {
             flexGrow: 1,

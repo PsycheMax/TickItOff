@@ -149,6 +149,7 @@ const NewTaskForm = (props) => {
                     <View style={styles.inputFormContainer}>
                         <TextInput
                             placeholder="Add a new task" value={newTask.name} autocorrect={true}
+                            multiline={true}
                             onChangeText={(value) => { handleChange(value, "name") }}
                             style={styles.inputForm} />
                     </View>

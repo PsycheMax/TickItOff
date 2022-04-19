@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Modal, Platform, Pressable, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Modal, Platform, Pressable, SectionList, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import * as Clipboard from 'expo-clipboard';
 
 import { ProjectContext } from '../../utils/ProjectManager';
 import { ThemeContext } from '../../utils/ThemeManager';
@@ -9,13 +10,14 @@ import NewTaskForm from '../tasks/NewTaskForm';
 import EditProjectForm from './forms/EditProjectForm';
 import StandardDivider from '../generic/StandardDivider';
 import { Picker } from '@react-native-picker/picker';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+
 
 const SectionListProject = (props) => {
 
     const theme = useContext(ThemeContext);
 
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
     const ProjectFunctions = useContext(ProjectContext);
 
@@ -72,6 +74,14 @@ const SectionListProject = (props) => {
         buttonsContainer: {
             flexGrow: 1,
             minWidth: "10%"
+        },
+        singleButton: {
+            // padding: 10,
+            // marginLeft: -20
+        },
+        buttonsContainerSecondRow: {
+            marginTop: 8,
+            marginBottom: -8
         },
         name: {
             fontSize: 32,
@@ -169,6 +179,88 @@ const SectionListProject = (props) => {
         setShowDeletePrompt(!showDeletePrompt);
     }
 
+    function onCopyToClipboardPress() {
+        let toCopy = "";
+        toCopy += `${ProjectData.name} - a list on Tick It Off!`;
+        toCopy += "\n";
+        toCopy += `Created by ${ProjectData.users.creators[0].username}`
+        toCopy += "\n";
+        toCopy += `http://maxpace.ns0.it:8425/project/${ProjectData._id}`;
+        toCopy += "\n";
+        toCopy += "\n";
+        toCopy += "📝 ACTIVE TASKS";
+        toCopy += "\n";
+        for (let i = 0; i < ProjectData.tasks.length; i++) {
+            const task = ProjectData.tasks[i];
+            let finalLine;
+            let checkStatus = task.completion ? `-✔️ ` : `-⭕ `;
+            let name = task.name;
+            let lineEnd = "\n";
+            finalLine = checkStatus + name + lineEnd;
+            toCopy += finalLine;
+        }
+        if (ProjectData.tasks.length === 0) {
+            toCopy += "---No Active Tasks---";
+            toCopy += "\n";
+        }
+        toCopy += "\n";
+        toCopy += "📕 ARCHIVED TASKS";
+        toCopy += "\n";
+        for (let i = 0; i < ProjectData.archivedTasks.length; i++) {
+            const task = ProjectData.archivedTasks[i];
+            let finalLine;
+            let checkStatus = task.completion ? `-✔️ ` : `-⭕ `;
+            let name = task.name;
+            let lineEnd = "\n";
+            finalLine = checkStatus + name + lineEnd;
+            toCopy += finalLine;
+        }
+        if (ProjectData.archivedTasks.length === 0) {
+            toCopy += "---No Archived Tasks---";
+        }
+        // console.log(toCopy);
+        Clipboard.setString(toCopy);
+        showMessage({
+            message: "The whole list has been copied in your clipboard.",
+            type: "success"
+        });
+    }
+
+    async function onShareButtonPress() {
+        if (Platform.OS === "web") {
+            Clipboard.setString(`http://maxpace.ns0.it:8425/project/${ProjectData._id}`);
+            showMessage({
+                message: "The URL of this page has been copied in your clipboard.",
+                type: "info"
+            });
+            // ALERT somehow of the effective copy
+        } else {
+
+            try {
+                const result = await Share.share({
+                    title: `${ProjectData.name} - a list on TickItOff`,
+                    message: `http://maxpace.ns0.it:8425/project/${ProjectData._id}`,
+                    url: `http://maxpace.ns0.it:8425/project/${ProjectData._id}`
+                })
+                if (result.action === Share.sharedAction) {
+                    if (result.activityType) {
+                        // console.log("SHARED ACTIVITY TYPE");
+                    } else {
+                        // console.log("SHARED NOT AT");
+                    }
+                    showMessage({
+                        message: "List shared successfully",
+                        type: "success"
+                    });
+                } else if (result.action === Share.dismissedAction) {
+                    // console.log("DISMISSED")
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
     async function onRefreshFunction() {
         setIsRefreshing(true);
         ProjectFunctions.reloadCurrentProjectDataFunc().then((result) => { setIsRefreshing(false) });
@@ -196,27 +288,45 @@ const SectionListProject = (props) => {
                                                 {ProjectData.name}
                                             </Text>
                                         </View>
-                                        <View style={[styles.rowContainer, styles.buttonsContainer]}>
-                                            <View style={[styles.centered]}>
-                                                {ProjectData.active ?
-                                                    <Pressable onPress={toggleEditProjectForm} >
-                                                        <MaterialIcons name="edit" size={32}
+                                        <View style={[styles.columnContainer]}>
+                                            <View style={[styles.rowContainer, styles.buttonsContainer]}>
+                                                <View style={[styles.centered]}>
+                                                    {ProjectData.active ?
+                                                        <Pressable onPress={toggleEditProjectForm} >
+                                                            <MaterialIcons name="edit" size={32} style={[styles.singleButton]}
+                                                                color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                            />
+                                                        </Pressable>
+                                                        : <Pressable onPress={handleProjectReactivation}>
+                                                            <MaterialIcons name="power" size={32} style={[styles.singleButton]}
+                                                                color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                            />
+                                                        </Pressable>
+                                                    }
+                                                </View>
+                                                <View style={styles.centered}>
+                                                    <Pressable onPress={toggleDeletePrompt} >
+                                                        <MaterialIcons name="delete-outline" size={32} style={[styles.singleButton]}
                                                             color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
                                                         />
                                                     </Pressable>
-                                                    : <Pressable onPress={handleProjectReactivation}>
-                                                        <MaterialIcons name="power" size={32}
-                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
-                                                        />
-                                                    </Pressable>
-                                                }
+                                                </View>
                                             </View>
-                                            <View style={styles.centered}>
-                                                <Pressable onPress={toggleDeletePrompt} >
-                                                    <MaterialIcons name="delete-outline" size={32}
-                                                        color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
-                                                    />
-                                                </Pressable>
+                                            <View style={[styles.rowContainer, styles.buttonsContainer, styles.buttonsContainerSecondRow]}>
+                                                <View style={[styles.centered]}>
+                                                    <Pressable onPress={onCopyToClipboardPress} >
+                                                        <MaterialIcons name='content-copy' size={32} style={[styles.singleButton]}
+                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                        />
+                                                    </Pressable>
+                                                </View>
+                                                <View style={styles.centered}>
+                                                    <Pressable onPress={onShareButtonPress} >
+                                                        <MaterialIcons name="share" size={32} style={[styles.singleButton]}
+                                                            color={theme.colorScheme === "dark" ? theme.colors.primary[900] : theme.colors.primary[500]}
+                                                        />
+                                                    </Pressable>
+                                                </View>
                                             </View>
                                         </View>
                                     </View>
@@ -354,6 +464,7 @@ const SectionListProject = (props) => {
                 </View>
 
             </Modal>
+            <FlashMessage position={"top"} />
         </View>
     )
 }

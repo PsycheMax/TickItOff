@@ -168,13 +168,13 @@ const EditTaskForm = (props) => {
             <View style={[styles.formContainer, styles.rowContainer]}>
                 <View style={[styles.columnContainer, styles.leftColumn]} >
                     <TextInput style={[styles.inputColors, styles.inputForm, styles.nameInput]}
-                        placeholder="Edit task name"
+                        placeholder="Edit task name" multiline={true}
                         onChangeText={(value) => { handleChange(value, "name") }}
                         value={patchedTask.name} autocorrect={true}
                     />
                     <StandardDivider color={theme.colors.tertiary[300]} />
                     <TextInput style={[styles.inputColors, styles.inputForm, styles.descriptionInput]}
-                        placeholder="Edit task Description"
+                        placeholder="Edit task Description" multiline={true}
                         onChangeText={(value) => { handleChange(value, "description") }} value={patchedTask.description} autocorrect={true}
                     />
                     <StandardDivider color={theme.colors.tertiary[300]} />
