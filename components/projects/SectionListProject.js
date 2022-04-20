@@ -193,7 +193,7 @@ const SectionListProject = (props) => {
         for (let i = 0; i < ProjectData.tasks.length; i++) {
             const task = ProjectData.tasks[i];
             let finalLine;
-            let checkStatus = task.completion ? `-✔️ ` : `-⭕ `;
+            let checkStatus = task.completion ? `-✅ ` : `-❎ `;
             let name = task.name;
             let lineEnd = "\n";
             finalLine = checkStatus + name + lineEnd;

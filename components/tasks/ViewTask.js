@@ -313,13 +313,15 @@ const ViewTask = (props) => {
                                 }>
                                     <View style={styles.rightColumnButton}>
                                         <MaterialIcons
-                                            name={props.task.active ? "edit" : "power"}
+                                            name={props.task.active ? "edit" : "north"}
                                             size={32} style={styles.rightColumnButtonIcon} />
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={props.task.active ? handleTaskDeactivation : toggleDeletePrompt}>
                                     <View style={styles.rightColumnButton}>
-                                        <MaterialIcons name="delete" size={32} style={styles.rightColumnButtonIcon} />
+                                        <MaterialIcons
+                                            name={props.task.active ? "south" : "delete"}
+                                            size={32} style={styles.rightColumnButtonIcon} />
                                     </View>
                                 </TouchableOpacity>
                             </View>
