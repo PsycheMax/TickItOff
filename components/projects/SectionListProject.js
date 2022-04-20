@@ -378,7 +378,7 @@ const SectionListProject = (props) => {
                                             }} >
                                             <Picker.Item label="Name" value="name" />
                                             <Picker.Item label="Completion" value="completion" />
-                                            <Picker.Item label="Date" value="creationDateParsed" />
+                                            <Picker.Item label="Creation" value="creationDateParsed" />
                                             <Picker.Item label="Update" value="modificationDateParsed" />
                                         </Picker>
                                         <Picker selectedValue={sortBy.ascending} mode="dropdown"

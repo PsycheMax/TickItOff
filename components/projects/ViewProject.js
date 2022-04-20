@@ -13,7 +13,7 @@ const ViewProject = (props) => {
     const ProjectData = ProjectFunctions.currentProjectData;
 
     // The SortBy state is used to change the way the ProjectData is displayed - it has a boolean (ascending), and the name of the field to use as a sorter for the array.sort function
-    const [sortBy, setSortBy] = useState({ ascending: true, fieldToSortBy: "creationDateParsed" });
+    const [sortBy, setSortBy] = useState({ ascending: false, fieldToSortBy: "creationDateParsed" });
     const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
     // The following states are used to decide what to show, based on the fetching status
@@ -78,7 +78,7 @@ const ViewProject = (props) => {
         }
 
         try {
-            archivedTasks.forEach((task) => {
+            archivedArray.forEach((task) => {
                 // console.log(task.creationDate);
                 let creationDateParsed = date.parse(task.creationDate, "hh:mm A [-] MMM DD YYYY");
                 let modificationDateParsed = date.parse(task.modificationDate, "hh:mm A [-] MMM DD YYYY");
@@ -99,6 +99,7 @@ const ViewProject = (props) => {
         }
 
         archivedArray.sort((a, b) => { return a[sortBy.fieldToSortBy] > b[sortBy.fieldToSortBy] ? (sortBy.ascending ? 1 : -1) : (sortBy.ascending ? -1 : 1) });
+
         // Create an object containing a section title, and an array at the key "data", a tag and a boolean requiring the "NewTaskForm" for each category/section.
         let active = {
             data: activeArray,

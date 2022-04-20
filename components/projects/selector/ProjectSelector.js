@@ -7,7 +7,7 @@ import { ThemeContext } from '../../../utils/ThemeManager';
 import NewProjectForm from '../forms/NewProjectForm';
 import LoadingSpinner from '../../generic/LoadingSpinner';
 import ProjectSelectionButton from './ProjectSelectionButton';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, useFocusEffect } from '@react-navigation/native';
 
 const ProjectSelector = (props) => {
 
@@ -61,7 +61,8 @@ const ProjectSelector = (props) => {
     const UserData = LoggedUserFunctions.userData;
 
     const [showArchivedProjects, setShowArchivedProjects] = useState(false);
-    const [isRefreshing, setIsRefreshing] = useState(false)
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [shouldRefresh, setShouldRefresh] = useState(true);
 
     let projects = UserData.projects;
 
@@ -114,12 +115,21 @@ const ProjectSelector = (props) => {
     async function onRefreshFunction() {
         setIsRefreshing(true);
         LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) });
+        console.log("Used ")
     }
 
     useEffect(async () => {
-        setIsRefreshing(true);
-        LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) });
+        await onRefreshFunction();
     }, [])
+
+    // This useEffect snippet makes sure that the component gets the most up-to-date loggedUserData 
+    // https://reactnavigation.org/docs/function-after-focusing-screen/
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log("Use focus effect callback")
+            onRefreshFunction();
+        }, [])
+    );
 
     const artificialNavState = { "stale": true, "routes": [{ "name": "Home" }] }
 
