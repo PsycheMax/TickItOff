@@ -134,7 +134,6 @@ const ProjectSelector = (props) => {
                 return CommonActions.reset(artificialNavState);
             })
         }
-
     }, [])
 
     if (LoggedUserFunctions.isLoggedIn && !isRefreshing) {
