@@ -78,7 +78,7 @@ const ViewProject = (props) => {
         }
 
         try {
-            archivedTasks.forEach((task) => {
+            archivedArray.forEach((task) => {
                 // console.log(task.creationDate);
                 let creationDateParsed = date.parse(task.creationDate, "hh:mm A [-] MMM DD YYYY");
                 let modificationDateParsed = date.parse(task.modificationDate, "hh:mm A [-] MMM DD YYYY");
@@ -99,6 +99,7 @@ const ViewProject = (props) => {
         }
 
         archivedArray.sort((a, b) => { return a[sortBy.fieldToSortBy] > b[sortBy.fieldToSortBy] ? (sortBy.ascending ? 1 : -1) : (sortBy.ascending ? -1 : 1) });
+
         // Create an object containing a section title, and an array at the key "data", a tag and a boolean requiring the "NewTaskForm" for each category/section.
         let active = {
             data: activeArray,
