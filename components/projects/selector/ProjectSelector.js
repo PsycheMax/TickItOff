@@ -62,7 +62,6 @@ const ProjectSelector = (props) => {
 
     const [showArchivedProjects, setShowArchivedProjects] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [shouldRefresh, setShouldRefresh] = useState(true);
 
     let projects = UserData.projects;
 

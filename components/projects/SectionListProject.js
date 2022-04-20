@@ -383,6 +383,7 @@ const SectionListProject = (props) => {
                                         </Picker>
                                         <Picker selectedValue={sortBy.ascending} mode="dropdown"
                                             style={[styles.picker]}
+                                            // The following !itemIndex is used as a boolean because 0 == false and 1 == false in JS - so in order to get TRUE out of selecting Ascending, the a true boolean is obtained by selecting !0 and a false bool is obtained by selecting !1
                                             onValueChange={(itemValue, itemIndex) => {
                                                 setSortBy({ ascending: !itemIndex, fieldToSortBy: sortBy.fieldToSortBy })
                                             }} >

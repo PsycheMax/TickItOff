@@ -49,8 +49,8 @@ const ViewProject = (props) => {
         try {
             activeArray.forEach((task) => {
                 // console.log(task.creationDate);
-                let creationDateParsed = date.parse(task.creationDate, "hh:mm A [-] MMM DD YYYY");
-                let modificationDateParsed = date.parse(task.modificationDate, "hh:mm A [-] MMM DD YYYY");
+                let creationDateParsed = date.parse(task.creationDate, "hh:mm:ss A [-] MMM DD YYYY");
+                let modificationDateParsed = date.parse(task.modificationDate, "hh:mm:ss A [-] MMM DD YYYY");
                 // Check date-and-time docs - if the date is invalid, it returns a wrong Date object - to check if it happens, isNaN is used
                 if (isNaN(creationDateParsed)) {
                     task.creationDateParsed = task.creationDate;
@@ -80,8 +80,8 @@ const ViewProject = (props) => {
         try {
             archivedArray.forEach((task) => {
                 // console.log(task.creationDate);
-                let creationDateParsed = date.parse(task.creationDate, "hh:mm A [-] MMM DD YYYY");
-                let modificationDateParsed = date.parse(task.modificationDate, "hh:mm A [-] MMM DD YYYY");
+                let creationDateParsed = date.parse(task.creationDate, "hh:mm:ss A [-] MMM DD YYYY");
+                let modificationDateParsed = date.parse(task.modificationDate, "hh:mm:ss A [-] MMM DD YYYY");
                 // Check date-and-time docs - if the date is invalid, it returns a wrong Date object - to check if it happens, isNaN is used
                 if (isNaN(creationDateParsed)) {
                     task.creationDateParsed = task.creationDate;

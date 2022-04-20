@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const APIDestination = "http://maxpace.ns0.it:2001";
+// const APIDestination = "http://maxpace.ns0.it:2001";
 
 export async function axiosGet(pathDestination, accessToken) {
     try {
