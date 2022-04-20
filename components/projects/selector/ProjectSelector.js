@@ -115,7 +115,6 @@ const ProjectSelector = (props) => {
     async function onRefreshFunction() {
         setIsRefreshing(true);
         LoggedUserFunctions.updateLoggedUserDataFunc().then((result) => { setIsRefreshing(false) });
-        console.log("Used ")
     }
 
     useEffect(async () => {
@@ -126,7 +125,6 @@ const ProjectSelector = (props) => {
     // https://reactnavigation.org/docs/function-after-focusing-screen/
     useFocusEffect(
         React.useCallback(() => {
-            console.log("Use focus effect callback")
             onRefreshFunction();
         }, [])
     );
