@@ -182,7 +182,6 @@ const SignUpForm = (props) => {
                     if (identicalPasswords) {
                         const response = await userDataContext.registerNewUserFunc(newUser);
                         if (response.status !== 201) {
-
                             toSetInAlertMessages.email = { show: true, content: response.data };
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }
                         } else {
