@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ScrollView, Text, TextInput, View, StyleSheet, Button, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -8,15 +8,15 @@ import { ThemeContext } from '../../../utils/ThemeManager';
 // Move this into some UserAction or UserManagement Context
 const inputRules = {
     email: {
-        minLength: 8,
+        minLength: 4,
         regEx: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
     },
     username: {
-        minLength: 8,
+        minLength: 4,
         regEx: `^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$`
     },
     password: {
-        minLength: 8,
+        minLength: 4,
         regEx: ``
     }
 }
@@ -107,6 +107,7 @@ const EditUserForm = (props) => {
         username: userDataContext.userData.username,
         image: userDataContext.userData.image
     });
+
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [identicalPasswords, setIdenticalPasswords] = useState(false);
@@ -250,6 +251,8 @@ const EditUserForm = (props) => {
                         style={styles.inputField}
                         value={patchedUser.email}
                         onChangeText={(value) => { handleChange(value, "email") }}
+                        editable={!isWaitingForAPI}
+                        onSubmitEditing={handlePatching}
                     />
                     {alertMessages.email.show ? <Text style={styles.errorMessage} >
                         <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
@@ -264,6 +267,8 @@ const EditUserForm = (props) => {
                         style={styles.inputField}
                         value={patchedUser.username}
                         onChangeText={(value) => { handleChange(value, "username") }}
+                        editable={!isWaitingForAPI}
+                        onSubmitEditing={handlePatching}
                     />
                     {alertMessages.username.show ? <Text style={styles.errorMessage} >
                         <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
@@ -281,6 +286,8 @@ const EditUserForm = (props) => {
                             style={styles.passwordInput} secureTextEntry={showOldPassword ? false : true}
                             value={patchedUser.oldPassword}
                             onChangeText={(value) => { handleChange(value, "oldPassword") }}
+                            editable={!isWaitingForAPI}
+                            onSubmitEditing={handlePatching}
                         />
                         {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
                         <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
@@ -304,6 +311,8 @@ const EditUserForm = (props) => {
                             style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                             value={patchedUser.password}
                             onChangeText={(value) => { handleChange(value, "password") }}
+                            editable={!isWaitingForAPI}
+                            onSubmitEditing={handlePatching}
                         />
                         {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
                         <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
@@ -323,6 +332,8 @@ const EditUserForm = (props) => {
                             style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                             value={patchedUser.passwordRepeat}
                             onChangeText={(value) => { handleChange(value, "passwordRepeat") }}
+                            editable={!isWaitingForAPI}
+                            onSubmitEditing={handlePatching}
                         />
                         {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
                         <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}

@@ -24,6 +24,13 @@ const inputRules = {
 const EditProjectForm = (props) => {
 
     const theme = useContext(ThemeContext);
+    const ProjectFunctions = useContext(ProjectContext);
+    const ProjectData = ProjectFunctions.currentProjectData;
+
+    const [patchedProject, setPatchedProject] = useState({ name: ProjectData.name, description: ProjectData.description });
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
+
+    const [minHeightDescriptionInputField, setMinHeightDescriptionInputField] = useState(64);
 
     const styles = StyleSheet.create({
         columnContainer: {
@@ -32,8 +39,9 @@ const EditProjectForm = (props) => {
         rowContainer: {
             marginTop: 12,
             flexDirection: "row",
-            maxHeight: theme.dimensions.windowHeight * 0.16,
-            height: theme.dimensions.windowHeight * 0.16
+            maxHeight: (theme.dimensions.windowHeight * 0.12) + minHeightDescriptionInputField,
+            height: (theme.dimensions.windowHeight * 0.12) + minHeightDescriptionInputField,
+            minHeight: (theme.dimensions.windowHeight * 0.12) + minHeightDescriptionInputField
         },
         darkText: {
             color: theme.colors.primary[700]
@@ -55,7 +63,7 @@ const EditProjectForm = (props) => {
         inputField: {
             color: theme.colors.primary[900],
             backgroundColor: theme.colors.secondary[50],
-            height: 32,
+            // height: 32,
             borderRadius: 16,
             borderWidth: 1,
             borderColor: theme.colors.primary[500],
@@ -99,7 +107,8 @@ const EditProjectForm = (props) => {
 
         },
         descriptionInput: {
-            height: 64,
+            height: minHeightDescriptionInputField,
+            minHeight: minHeightDescriptionInputField,
 
         },
         errorMessage: {
@@ -107,12 +116,6 @@ const EditProjectForm = (props) => {
             textAlignVertical: "center"
         }
     })
-
-    const ProjectFunctions = useContext(ProjectContext);
-    const ProjectData = ProjectFunctions.currentProjectData;
-
-    const [patchedProject, setPatchedProject] = useState({ name: ProjectData.name, description: ProjectData.description });
-    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
 
     const [alertMessages, setAlertMessages] = useState({
         name: {
@@ -163,13 +166,18 @@ const EditProjectForm = (props) => {
                     style={[styles.inputField, styles.nameInput, styles.name]}
                     onChangeText={(value) => { handleChange(value, "name") }}
                     value={patchedProject.name} autocorrect={true}
+                    onSubmitEditing={handleSubmitEdit}
+                    editable={!isWaitingForAPI}
                 />
                 <StandardDivider color={theme.colors.tertiary[500]} />
 
                 <TextInput
-                    multiline={true} style={[styles.inputField, styles.descriptionInput, styles.description]}
+                    multiline={true} style={[styles.description, styles.inputField, styles.descriptionInput]}
                     onChangeText={(value) => { handleChange(value, "description") }}
                     value={patchedProject.description} autocorrect={true}
+                    onSubmitEditing={handleSubmitEdit}
+                    onContentSizeChange={({ nativeEvent: { contentSize: { width, height } } }) => { setMinHeightDescriptionInputField(height) }}
+                    editable={!isWaitingForAPI}
                 />
 
                 <Text style={styles.errorMessage}>

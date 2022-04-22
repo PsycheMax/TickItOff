@@ -45,7 +45,7 @@ const NewProjectForm = (props) => {
             backgroundColor: theme.colors.primary[500],
             borderRadius: 16,
             minHeight: Platform.OS === "web" ? 150 : 120,
-            height: Platform.OS === "web" ? 150 : 120,
+            height: (Platform.OS === "web" ? 150 : 120),
             alignItems: "center"
         },
         leftColumn: {
@@ -69,6 +69,10 @@ const NewProjectForm = (props) => {
             paddingVertical: 4,
             fontSize: 18,
             fontWeight: "500"
+        },
+        descriptionInputField: {
+            minHeight: Platform.OS === "web" ? 48 : 40,
+            height: Platform.OS === "web" ? 48 : 40
         },
         rightColumn: {
             flexGrow: 1,
@@ -152,15 +156,20 @@ const NewProjectForm = (props) => {
                     <TextInput
                         placeholder="New Project Title" placeholderTextColor={theme.colors.primary[500]}
                         accessibilityLabel='New Project Title Form'
-                        onChangeText={(value) => { handleChange(value, "name") }}
                         value={newProject.name} autocorrect={true}
+                        onChangeText={(value) => { handleChange(value, "name") }}
+                        onSubmitEditing={handleSubmit}
+                        editable={!isWaitingForAPI}
                         style={styles.inputField} />
                     <TextInput
                         placeholder="New Project Description" placeholderTextColor={theme.colors.primary[500]}
                         accessibilityLabel='New Project description Form'
-                        onChangeText={(value) => { handleChange(value, "description") }}
                         value={newProject.description} autocorrect={true}
-                        style={styles.inputField} />
+                        onChangeText={(value) => { handleChange(value, "description") }}
+                        multiline={true}
+                        onSubmitEditing={handleSubmit}
+                        editable={!isWaitingForAPI}
+                        style={[styles.inputField, styles.descriptionInputField]} />
                 </View>
                 <View style={styles.rightColumn} accessibilityLabel="Create new project">
                     <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} >
