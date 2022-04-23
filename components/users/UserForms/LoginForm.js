@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { ThemeContext } from '../../../utils/ThemeManager';
 import Logo from '../../logo/Logo';
+import MoreInfoLink from '../../about/MoreInfoLink';
 
 // MoveThis into some UserManagemetn Context, - same in SIGNUPFORM
 const inputRules = {
@@ -236,6 +237,7 @@ const LoginForm = (props) => {
                 </View>
 
             </View>
+            <MoreInfoLink />
         </View>
 
     )

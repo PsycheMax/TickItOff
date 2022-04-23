@@ -13,6 +13,7 @@ import ProjectSelector from '../../projects/selector/ProjectSelector';
 import UserPanel from '../../users/UserPanel';
 import Page404 from '../Page404';
 import ViewProject from '../../projects/ViewProject';
+import AboutPage from '../../about/AboutPage';
 
 export default function AuthStack(props) {
 
@@ -100,6 +101,7 @@ export default function AuthStack(props) {
             <Stack.Screen name="Home" component={ProjectSelector} />
             <Stack.Screen name="ViewProject" component={ViewProject} />
             <Stack.Screen name="UserPanel" component={UserPanel} />
+            <Stack.Screen name="About" component={AboutPage} />
             <Stack.Screen options={{ headerShown: false }} name='404' component={Page404} />
         </Stack.Navigator>
     );

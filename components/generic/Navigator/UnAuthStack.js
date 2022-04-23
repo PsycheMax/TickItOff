@@ -5,6 +5,7 @@ import LoginForm from '../../users/UserForms/LoginForm';
 import SignUpForm from '../../users/UserForms/SignUpForm';
 import SplashScreen from '../SplashScreen';
 import Page404 from '../Page404';
+import AboutPage from '../../about/AboutPage';
 
 export default function UnAuthStack(props) {
 
@@ -18,6 +19,7 @@ export default function UnAuthStack(props) {
             <Stack.Screen name="Home" component={LoginForm} />
             <Stack.Screen name="Login" component={LoginForm} />
             <Stack.Screen name="SignUp" component={SignUpForm} />
+            <Stack.Screen name="About" component={AboutPage} />
             <Stack.Screen name='404' component={Page404} />
 
         </Stack.Navigator>

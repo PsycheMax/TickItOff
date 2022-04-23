@@ -11,6 +11,7 @@ import EditProjectForm from './forms/EditProjectForm';
 import StandardDivider from '../generic/StandardDivider';
 import { Picker } from '@react-native-picker/picker';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import MoreInfoLink from '../about/MoreInfoLink';
 
 
 const SectionListProject = (props) => {
@@ -429,6 +430,13 @@ const SectionListProject = (props) => {
                         styles.bottomListContainer,
                         tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                     ]}>
+
+                        {tag === "activeTasks" ? <></> :
+                            <View style={[styles.marginTop]}>
+                                <MoreInfoLink />
+                            </View>
+                        }
+
                     </View>
                 }}
             />

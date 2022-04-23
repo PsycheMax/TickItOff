@@ -31,7 +31,7 @@ const EditUserForm = (props) => {
         loginFormContainer: {
             // height: "100%",
             width: "100%",
-            backgroundColor: theme.colors.primary[500],
+            // backgroundColor: theme.colors.primary[500],
             alignItems: "center"
         },
         loginFormBackground: {
