@@ -7,6 +7,7 @@ import { LoggedUserContext } from '../../utils/UserManager';
 
 import EditUserForm from './UserForms/EditUserForm';
 import { CommonActions } from '@react-navigation/native';
+import MoreInfoLink from '../about/MoreInfoLink';
 
 const UserPanel = (props) => {
 
@@ -21,6 +22,11 @@ const UserPanel = (props) => {
         coloredBackground: {
             backgroundColor: theme.colors.primary[500]
         },
+        backgroundElement: {
+            maxWidth: 1024,
+            alignSelf: "center",
+            paddingVertical: 15
+        },
         roundBot: {
             borderBottomEndRadius: 100,
             borderBottomStartRadius: 100
@@ -32,6 +38,7 @@ const UserPanel = (props) => {
         pageContainer: {
             width: "100%",
             alignItems: "center",
+            justifyContent: "center",
             paddingBottom: 20,
             flex: 1,
             minHeight: "100%"
@@ -65,6 +72,12 @@ const UserPanel = (props) => {
             height: 26,
 
         },
+        moreInfoContainer: {
+
+        },
+        moreInfoText: {
+
+        },
         ...theme.styles.modal
     })
 
@@ -94,7 +107,7 @@ const UserPanel = (props) => {
     // This dirty trick was necessary to make sure that on android the page is scrollable, but on Web the background is rendered properly
     function renderContent() {
         return (<>
-            <View style={[styles.coloredBackground, styles.roundBot, styles.roundTop]}>
+            <View style={[styles.coloredBackground, styles.roundBot, styles.roundTop, styles.backgroundElement]}>
                 <EditUserForm />
                 <View style={styles.logoutContainer}>
                     <TouchableOpacity onPress={() => { setShowLogoutModal(true) }} >
@@ -130,6 +143,7 @@ const UserPanel = (props) => {
                     </View>
                 </View>
             </Modal>
+            <MoreInfoLink />
         </>
         )
     }

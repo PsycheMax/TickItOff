@@ -43,17 +43,19 @@ export default function Navigator(props) {
 
     const linking = {
         // prefixes: ['http://192.168.68.131:19006'],
-        prefixes: [prefix, 'http://192.168.68.131:19006', 'https://maxpace.net/tickitoff'],
+        prefixes: [prefix, 'http://192.168.68.131:19006', 'https://maxpace.ns0.it:8425/tickitoff'],
         config: {
             screens: isLoggedIn ? {
                 Home: '/',
                 ViewProject: "project/:id",
                 UserPanel: "userPanel",
+                About: 'About',
                 404: '*'
             } : {
                 Home: '/',
                 SignUp: 'SignUp',
                 Login: 'Login',
+                About: 'About',
                 404: '*'
             }
         }
@@ -89,14 +91,21 @@ export default function Navigator(props) {
 
 
     return (
-        Platform.OS === "android" ?
-            <View style={[styles.appContainer, styles.backgroundColored]}>
-                {renderNavigator(props)}
-            </View>
-            :
-            <ScrollView style={[styles.appContainer, styles.backgroundColored]}>
-                <View style={[styles.emptySpace]} pointerEvents="none" />
-                {renderNavigator(props)}
-            </ScrollView>
+        <>
+            {
+                Platform.OS === "android" ?
+                    <View style={[styles.appContainer, styles.backgroundColored]}>
+                        {renderNavigator(props)}
+                    </View>
+
+                    :
+                    <>
+                        <ScrollView style={[styles.appContainer, styles.backgroundColored]}>
+                            <View style={[styles.emptySpace]} pointerEvents="none" />
+                            {renderNavigator(props)}
+                        </ScrollView>
+                    </>
+            }
+        </>
     );
 }

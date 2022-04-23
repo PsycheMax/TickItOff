@@ -31,6 +31,7 @@ const EditTaskForm = (props) => {
     const ProjectFunctions = useContext(ProjectContext);
 
     const [patchedTask, setPatchedTask] = useState({ name: props.task.name, description: props.task.description });
+    const [minHeightDescriptionInputField, setMinHeightDescriptionInputField] = useState(64);
 
     const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
 
@@ -62,7 +63,7 @@ const EditTaskForm = (props) => {
             width: "100%",
             minWidth: "100%",
             maxWidth: "100%",
-            maxHeight: props.maxHeight < 200 ? 200 : props.maxHeight
+            maxHeight: (props.maxHeight < 200 ? 200 : props.maxHeight) + minHeightDescriptionInputField
         },
         leftColumn: {
             marginLeft: theme.dimensions.methods.moderateScale(8),
@@ -75,7 +76,8 @@ const EditTaskForm = (props) => {
             height: 48,
         },
         descriptionInput: {
-            height: 64,
+            minHeight: minHeightDescriptionInputField,
+            height: minHeightDescriptionInputField
         },
         description: {
             fontSize: 16,
@@ -168,14 +170,20 @@ const EditTaskForm = (props) => {
             <View style={[styles.formContainer, styles.rowContainer]}>
                 <View style={[styles.columnContainer, styles.leftColumn]} >
                     <TextInput style={[styles.inputColors, styles.inputForm, styles.nameInput]}
-                        placeholder="Edit task name" multiline={true}
-                        onChangeText={(value) => { handleChange(value, "name") }}
+                        placeholder="Edit task name"
+                        editable={!isWaitingForAPI}
                         value={patchedTask.name} autocorrect={true}
+                        onChangeText={(value) => { handleChange(value, "name") }}
+                        onSubmitEditing={handleSubmit}
                     />
                     <StandardDivider color={theme.colors.tertiary[300]} />
                     <TextInput style={[styles.inputColors, styles.inputForm, styles.descriptionInput]}
                         placeholder="Edit task Description" multiline={true}
-                        onChangeText={(value) => { handleChange(value, "description") }} value={patchedTask.description} autocorrect={true}
+                        editable={!isWaitingForAPI}
+                        value={patchedTask.description} autocorrect={true}
+                        onChangeText={(value) => { handleChange(value, "description") }}
+                        onSubmitEditing={handleSubmit}
+                        onContentSizeChange={({ nativeEvent: { contentSize: { width, height } } }) => { setMinHeightDescriptionInputField(height) }}
                     />
                     <StandardDivider color={theme.colors.tertiary[300]} />
                     <Text style={[styles.description, styles.textColor]}>

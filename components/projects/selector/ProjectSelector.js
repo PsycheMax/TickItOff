@@ -8,6 +8,7 @@ import NewProjectForm from '../forms/NewProjectForm';
 import LoadingSpinner from '../../generic/LoadingSpinner';
 import ProjectSelectionButton from './ProjectSelectionButton';
 import { CommonActions, useFocusEffect } from '@react-navigation/native';
+import MoreInfoLink from '../../about/MoreInfoLink';
 
 const ProjectSelector = (props) => {
 
@@ -53,15 +54,17 @@ const ProjectSelector = (props) => {
             fontSize: 28,
             fontWeight: "700",
             marginBottom: 12
+        },
+        marginTop: {
+            marginTop: 48
         }
-
     });
 
     const LoggedUserFunctions = useContext(LoggedUserContext);
     const UserData = LoggedUserFunctions.userData;
 
     const [showArchivedProjects, setShowArchivedProjects] = useState(false);
-    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(true);
 
     let projects = UserData.projects;
 
@@ -107,7 +110,6 @@ const ProjectSelector = (props) => {
     }
 
     async function selectProject(targetID) {
-        // await ProjectFunctions.setCurrentProjectDataFunc(targetID);
         props.navigation.navigate('ViewProject', { id: targetID });
     }
 
@@ -118,12 +120,17 @@ const ProjectSelector = (props) => {
 
     useEffect(async () => {
         await onRefreshFunction();
+        return (() => {
+            setIsRefreshing(true);
+        }
+        )
     }, [])
 
     // This useEffect snippet makes sure that the component gets the most up-to-date loggedUserData 
     // https://reactnavigation.org/docs/function-after-focusing-screen/
     useFocusEffect(
         React.useCallback(() => {
+            setIsRefreshing(true);
             onRefreshFunction();
         }, [])
     );
@@ -143,7 +150,7 @@ const ProjectSelector = (props) => {
         }
     }, [])
 
-    if (LoggedUserFunctions.isLoggedIn && !isRefreshing) {
+    if (!isRefreshing && LoggedUserFunctions.isLoggedIn) {
         return (
             <View style={styles.container}>
 
@@ -179,6 +186,11 @@ const ProjectSelector = (props) => {
                             styles.listContainerStandardPadding, styles.bottomListContainer,
                             tag === "activeProjects" ? styles.activeListContainerBG : styles.archivedListContainerBG
                         ]}>
+                            {tag === "activeProjects" ? <></> :
+                                <View style={[styles.marginTop]}>
+                                    <MoreInfoLink />
+                                </View>
+                            }
 
                         </View>
                     }}

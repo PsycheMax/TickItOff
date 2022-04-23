@@ -86,6 +86,9 @@ const NewTaskForm = (props) => {
             borderRadius: theme.dimensions.methods.moderateScale(16),
             color: theme.colors.primary[700],
         },
+        deactivatedForm: {
+            backgroundColor: theme.colors.secondary[500]
+        },
         buttonContainer: {
             width: "10%",
             minWidth: "10%",
@@ -144,14 +147,15 @@ const NewTaskForm = (props) => {
 
     return (
         <>
-            <View style={[styles.formContainer, styles.columnContainer, styles.onShowError]}>
+            <View style={[styles.formContainer, styles.columnContainer, styles.onShowError, isWaitingForAPI ? styles.deactivatedForm : null]}>
                 <View style={[styles.rowContainer, styles.mainRow]}>
                     <View style={styles.inputFormContainer}>
                         <TextInput
                             placeholder="Add a new task" value={newTask.name} autocorrect={true}
-                            multiline={true}
+                            editable={!isWaitingForAPI}
                             onChangeText={(value) => { handleChange(value, "name") }}
-                            style={styles.inputForm} />
+                            onSubmitEditing={handleSubmit}
+                            style={[styles.inputForm]} />
                     </View>
                     <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit} >
                         <View style={styles.button}>

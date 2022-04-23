@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef, createRef } from 'react';
 import { StyleSheet, View, Text, TextInput, Button, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { LoggedUserContext } from '../../../utils/UserManager';
 import { ThemeContext } from '../../../utils/ThemeManager';
 import Logo from '../../logo/Logo';
+import MoreInfoLink from '../../about/MoreInfoLink';
 
 // MoveThis into some UserManagemetn Context, - same in SIGNUPFORM
 const inputRules = {
@@ -102,7 +103,11 @@ const LoginForm = (props) => {
 
     // The loginUserObj for the API is loginUser:{email:"", password:""}
     const [loginUser, setLoginUser] = useState({ email: "", password: "" });
+    const emailField = createRef();
+    const passwordField = createRef();
+
     const [showPassword, setShowPassword] = useState(false);
+    const [isWaitingForAPI, setIsWaitingForAPI] = useState(false);
     const [alertMessages, setAlertMessages] = useState({
         email: {
             show: false,
@@ -126,6 +131,7 @@ const LoginForm = (props) => {
     }
 
     async function handleLogin() {
+        setIsWaitingForAPI(true);
         let toSetInAlertMessages = {};
         toSetInAlertMessages.genericForm = alertMessages.genericForm;
         loginUser.email.length < inputRules.email.minLength ? toSetInAlertMessages.email = {
@@ -141,20 +147,18 @@ const LoginForm = (props) => {
 
         if (loginUser.email.length >= inputRules.email.minLength && loginUser.password.length >= inputRules.password.minLength) {
 
+            // const response = await userDataContext.loginUserFunc(loginUser.email, loginUser.password);
             const response = await userDataContext.loginUserFunc(loginUser.email, loginUser.password);
             if (response.status !== 200) {
 
-                setAlertMessages({ ...toSetInAlertMessages, genericForm: { show: true, content: response.data.message } });
+                console.log(response);
+                setAlertMessages({ ...toSetInAlertMessages, genericForm: { show: true, content: response.data } });
             } else {
 
                 // props.navigation.navigate('ProjectSelector');
             }
         }
-    }
-
-    function handleAdminLogin() {
-        userDataContext.loginUserFunc("AdminMax", "AdminMax");
-        // props.navigation.navigate('ProjectSelector');
+        setIsWaitingForAPI(false);
     }
 
     function handleLinkClick() {
@@ -172,12 +176,14 @@ const LoginForm = (props) => {
                     <Text style={[styles.textBoxDimensions, styles.headerFont]}>
                         Insert your email address
                     </Text>
-                    <TextInput autoFocus={true} autoComplete='email'
+                    <TextInput autoFocus={true} autoComplete='email' ref={emailField}
                         placeholder={"Email address"} placeholderTextColor={theme.colors.secondary[300]}
                         textContentType={"emailAddress"}
                         style={styles.inputField}
                         value={loginUser.email}
+                        onSubmitEditing={handleLogin}
                         onChangeText={(value) => { handleChange(value, "email") }}
+                        editable={!isWaitingForAPI}
                     />
                     {alertMessages.email.show ? <Text style={styles.errorMessage} >
                         <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
@@ -188,12 +194,14 @@ const LoginForm = (props) => {
                     </Text>
                     <View style={[styles.inputField, styles.passwordContainer]}>
                         <TextInput
-                            autoComplete='password'
+                            autoComplete='password' ref={passwordField}
                             placeholder={"Password"} placeholderTextColor={theme.colors.secondary[300]}
                             textContentType={"password"}
                             style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                             value={loginUser.password}
+                            onSubmitEditing={handleLogin}
                             onChangeText={(value) => { handleChange(value, "password") }}
+                            editable={!isWaitingForAPI}
                         />
                         {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
                         <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
@@ -219,23 +227,17 @@ const LoginForm = (props) => {
 
                     <View style={styles.buttonContainer}>
                         <Button
-                            title='Login' color={theme.colors.tertiary[600]}
+                            title={isWaitingForAPI ? 'Please wait' : 'Login'}
+                            color={theme.colors.tertiary[600]}
                             accessibilityLabel="Submit Form"
                             onPress={handleLogin}
                         />
                     </View>
 
-                    {/* <View style={styles.buttonContainer}>
-                        <Button
-                            title='AdminLogin' color={theme.colors.tertiary[600]}
-                            accessibilityLabel="Submit Form for user creation"
-                            onPress={handleAdminLogin}
-                        />
-                    </View> */}
-
                 </View>
 
             </View>
+            <MoreInfoLink />
         </View>
 
     )

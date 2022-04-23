@@ -182,7 +182,6 @@ const SignUpForm = (props) => {
                     if (identicalPasswords) {
                         const response = await userDataContext.registerNewUserFunc(newUser);
                         if (response.status !== 201) {
-
                             toSetInAlertMessages.email = { show: true, content: response.data };
                             toSetInAlertMessages.genericForm = { show: true, content: response.data }
                         } else {
@@ -231,6 +230,8 @@ const SignUpForm = (props) => {
                             style={styles.inputField}
                             value={newUser.email}
                             onChangeText={(value) => { handleChange(value, "email") }}
+                            onSubmitEditing={handleRegistration}
+                            editable={!isWaitingForAPI}
                         />
                         {alertMessages.email.show ? <Text style={styles.errorMessage} >
                             <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
@@ -245,6 +246,8 @@ const SignUpForm = (props) => {
                             style={styles.inputField}
                             value={newUser.username}
                             onChangeText={(value) => { handleChange(value, "username") }}
+                            onSubmitEditing={handleRegistration}
+                            editable={!isWaitingForAPI}
                         />
                         {alertMessages.username.show ? <Text style={styles.errorMessage} >
                             <MaterialIcons name="error-outline" size={theme.dimensions.methods.scale(18)} color={theme.colors.tertiary[500]} />
@@ -261,6 +264,8 @@ const SignUpForm = (props) => {
                                 style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                                 value={newUser.password}
                                 onChangeText={(value) => { handleChange(value, "password") }}
+                                onSubmitEditing={handleRegistration}
+                                editable={!isWaitingForAPI}
                             />
                             {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
                             <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
@@ -280,6 +285,8 @@ const SignUpForm = (props) => {
                                 style={styles.passwordInput} secureTextEntry={showPassword ? false : true}
                                 value={newUser.passwordRepeat}
                                 onChangeText={(value) => { handleChange(value, "passwordRepeat") }}
+                                onSubmitEditing={handleRegistration}
+                                editable={!isWaitingForAPI}
                             />
                             {/* THE WIDTH AND HEIGHT HAS TO BE SET TO SIZE-1 OTHERWISE EVERYTHING IS OFFSET */}
                             <MaterialIcons size={24} style={[styles.showPasswordButtonContainer, { height: 24 - 1, width: 24 - 1 }]}
