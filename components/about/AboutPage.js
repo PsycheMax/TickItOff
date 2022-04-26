@@ -44,7 +44,7 @@ const AboutPage = (props) => {
         },
         title: {
             fontSize: 24,
-            fontWeight: 600,
+            fontWeight: '600',
             paddingBottom: 12
         },
         paragraph: {
@@ -56,7 +56,7 @@ const AboutPage = (props) => {
             color: theme.colors.secondary[50]
         },
         url: {
-            fontWeight: 700,
+            fontWeight: '700',
             fontSize: 22,
             alignSelf: "center",
             textDecorationLine: "underline"
@@ -77,9 +77,8 @@ const AboutPage = (props) => {
         )
     }
 
-    return (
-
-        <View style={[styles.pageContainer, styles.coloredBackground, styles.roundBot]}>
+    function renderContent() {
+        return (
             <View style={[styles.backgroundElement, styles.coloredBackground]}>
                 <View style={[styles.centered]}>
                     <Logo size="full" color="white" />
@@ -87,12 +86,12 @@ const AboutPage = (props) => {
                 <Text style={[styles.whiteText, styles.title]}>About Tick It Off</Text>
                 <Text style={[styles.whiteText, styles.paragraph]}>Thank you for coming to this page!</Text>
                 <Text style={[styles.whiteText, styles.paragraph]}>
-                    Tick It Off is a solo-project I decided to create in order to streamline my learning/work activities: I tend to perform better when I organize my activities beforehand. <br />
+                    Tick It Off is a solo-project I decided to create in order to streamline my learning/work activities: I tend to perform better when I organize my activities beforehand. {"\n"}
                     Also, being able to tick a task off a list is VERY satisfying for me.
                 </Text>
                 <Text style={[styles.whiteText, styles.paragraph]}>
-                    While looking for a position as a Software Developer, I decided to create something all by myself, not following any kind of predefined path. Since I'm usually eager to learn new stuff, I decided to do so while learning React-Native. <br />
-                    I decided to avoid using any book/tutorial and see if I was ready to research, read docs and make some mistakes in order to learn how to write a fully functional (web)App in React Native. <br />
+                    While looking for a position as a Software Developer, I decided to create something all by myself, not following any kind of predefined path. Since I'm usually eager to learn new stuff, I decided to do so while learning React-Native. {"\n"}
+                    I decided to avoid using any book/tutorial and see if I was ready to research, read docs and make some mistakes in order to learn how to write a fully functional (web)App in React Native. {"\n"}
                     Since I'm a very VERY curious person, I decided to find a creative way to host this whole app (backend and frontend) on an old computer I've got at home - so please bear that in mind if the app is being quite slow.
                 </Text>
                 <Text style={[styles.whiteText, styles.paragraph]}>
@@ -111,15 +110,15 @@ const AboutPage = (props) => {
                 </Text>
                 <Text style={[styles.whiteText, styles.paragraph]}>
                     If you were wondering what's the tech stack behind this app :
-                    MongoDB, Express, React Native.<br />
-                    I also have two public Github repos you can check out: <br />
-                    <br />{`BackEnd:      `}
+                    MongoDB, Express, React Native.{"\n"}
+                    I also have two public Github repos you can check out: {"\n"}
+                    {"\n"}{`BackEnd:      `}
                     <TouchableOpacity onPress={handleClick.bind(this, props.githubBackendURL)}>
                         <Text style={[styles.whiteText, styles.paragraph, styles.url]}>
                             https://github.com/PsycheMax/TickItOff
                         </Text>
                     </TouchableOpacity>
-                    <br />{`FrontEnd:     `}
+                    {"\n"}{`FrontEnd:     `}
                     <TouchableOpacity onPress={handleClick.bind(this, props.githubFrontEndURL)}>
                         <Text style={[styles.whiteText, styles.paragraph, styles.url]}>
                             https://github.com/PsycheMax/TickItOff
@@ -127,8 +126,22 @@ const AboutPage = (props) => {
                     </TouchableOpacity>
 
                 </Text>
-            </View>
-        </View>
+            </View>)
+    }
+
+    return (
+        <>
+            {
+                Platform.OS === "android" ?
+                    <ScrollView style={[styles.pageContainer, styles.coloredBackground, styles.roundBot]}>
+                        {renderContent()}
+                    </ScrollView> :
+                    <View style={[styles.pageContainer, styles.coloredBackground, styles.roundBot]}>
+                        {renderContent()}
+                    </View>
+            }
+
+        </>
     )
 }
 
