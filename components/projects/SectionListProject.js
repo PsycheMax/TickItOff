@@ -426,21 +426,19 @@ const SectionListProject = (props) => {
 
                 // This renders a simple rounded footer for each section
                 renderSectionFooter={({ section: { tag } }) => {
-                    return <View style={[
+                    return <><View style={[
                         styles.bottomListContainer,
                         tag === "activeTasks" ? styles.activeListContainerBG : styles.archivedListContainerBG
                     ]}>
-
+                    </View>
                         {tag === "activeTasks" ? <></> :
                             <View style={[styles.marginTop]}>
-                                <MoreInfoLink />
+                                <MoreInfoLink showLogo={true} />
                             </View>
                         }
-
-                    </View>
+                    </>
                 }}
             />
-
             {/* The following modal will work both for deletion and reactivation, based on the actual status of the project being viewed */}
             <Modal visible={showDeletePrompt} transparent={true} >
                 <View style={styles.modalCenteredView}>

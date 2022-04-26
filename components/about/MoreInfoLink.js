@@ -41,11 +41,12 @@ export default function MoreInfoLink(props) {
         <View style={[styles.footerContainer, styles.centered]}>
             <TouchableOpacity onPress={handleClick}>
                 <View style={styles.moreInfoContainer}>
-                    <View style={styles.centered}>
-                        <Logo size="extraSmall" color="color" />
-                    </View>
+                    {props.showLogo ?
+                        <View style={styles.centered}>
+                            <Logo size="extraSmall" color="color" />
+                        </View> : <></>}
                     <View>
-                        <Text style={styles.moreInfoText}>Read more about Tick It Off!</Text>
+                        <Text style={styles.moreInfoText}>Tick It Off! - © 2022, MaxPace.net </Text>
                     </View>
                 </View>
             </TouchableOpacity>

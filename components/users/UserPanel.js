@@ -143,7 +143,7 @@ const UserPanel = (props) => {
                     </View>
                 </View>
             </Modal>
-            <MoreInfoLink />
+            <MoreInfoLink showLogo={true} />
         </>
         )
     }
