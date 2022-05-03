@@ -1,5 +1,5 @@
 import axios from 'axios';
-import dotenv from '../.env.js';
+// import dotenv from '../.env.js';
 
 const APIDestination = "http://maxpace.ns0.it:2001";
 // const APIDestination = dotenv.API_SERVER;
