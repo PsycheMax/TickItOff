@@ -186,11 +186,11 @@ const ProjectSelector = (props) => {
                             styles.listContainerStandardPadding, styles.bottomListContainer,
                             tag === "activeProjects" ? styles.activeListContainerBG : styles.archivedListContainerBG
                         ]}>
-                            {tag === "activeProjects" ? <></> :
+                            {/* {tag === "activeProjects" ? <></> :
                                 <View style={[styles.marginTop]}>
                                     <MoreInfoLink />
                                 </View>
-                            }
+                            } */}
 
                         </View>
                     }}

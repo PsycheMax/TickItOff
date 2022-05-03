@@ -115,7 +115,7 @@ const AboutPage = (props) => {
                     {"\n"}{`BackEnd:      `}
                     <TouchableOpacity onPress={handleClick.bind(this, props.githubBackendURL)}>
                         <Text style={[styles.whiteText, styles.paragraph, styles.url]}>
-                            https://github.com/PsycheMax/TickItOff
+                            https://github.com/PsycheMax/tick-it-off-server
                         </Text>
                     </TouchableOpacity>
                     {"\n"}{`FrontEnd:     `}
@@ -147,7 +147,7 @@ const AboutPage = (props) => {
 
 AboutPage.defaultProps = {
     mainURL: 'https://maxpace.net',
-    githubBackendURL: 'https://github.com/PsycheMax/TickItOff',
+    githubBackendURL: 'https://github.com/PsycheMax/tick-it-off-server',
     githubFrontEndURL: 'https://github.com/PsycheMax/TickItOff'
 }
 
